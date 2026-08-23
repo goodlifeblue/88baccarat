@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+@theme { --color-brand-50:#fff7ed; --color-brand-600:#b91c1c; --color-ink:#172033; --font-sans:"Noto Sans TC",ui-sans-serif,system-ui,sans-serif; }
+@layer base { html { scroll-behavior:smooth; } body { @apply bg-stone-50 text-slate-800 antialiased; } h1,h2,h3 { @apply text-ink font-bold tracking-tight; } h1 { @apply text-3xl leading-tight sm:text-5xl; } h2 { @apply text-2xl sm:text-3xl; } h3 { @apply text-xl; } a { @apply transition-colors; } }
+@layer components { .container { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; } .prose { @apply max-w-none text-slate-700 leading-8; } .prose h2 { @apply mt-10 mb-4; } .prose h3 { @apply mt-7 mb-3; } .prose p { @apply my-4; } .prose ul { @apply my-4 list-disc pl-6; } .prose a { @apply text-brand-600 underline underline-offset-4; } .button { @apply inline-flex items-center justify-center rounded-lg bg-brand-600 px-5 py-3 font-semibold text-white hover:bg-red-800; } .card { @apply rounded-xl border border-slate-200 bg-white shadow-sm; } }

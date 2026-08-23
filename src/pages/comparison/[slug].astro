@@ -1,0 +1,6 @@
+---
+import { getCollection, render } from 'astro:content'; import ArticleLayout from '../../layouts/ArticleLayout.astro';
+export async function getStaticPaths() { return (await getCollection('comparison')).map((article) => ({ params:{slug:article.id.replace(/\.mdx?$/, '')}, props:{article} })); }
+const { article } = Astro.props; const { Content, headings } = await render(article); const related = (await getCollection('comparison')).filter((entry) => entry.id !== article.id).slice(0,3);
+---
+<ArticleLayout {article} collection="comparison" {headings} {related}><Content /></ArticleLayout>

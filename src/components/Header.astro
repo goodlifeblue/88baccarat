@@ -1,0 +1,11 @@
+---
+import { navigation } from '../data/navigation';
+---
+<header class="border-b border-slate-200 bg-white">
+  <div class="container flex min-h-16 items-center justify-between gap-4">
+    <a href="/" class="text-lg font-extrabold text-ink" aria-label="百家樂攻略誌首頁">百家樂攻略誌</a>
+    <nav aria-label="主要導覽" class="hidden md:block"><ul class="flex items-center gap-5">{navigation.map((item) => <li><a class="text-sm font-medium hover:text-brand-600" href={item.href}>{item.label}</a></li>)}</ul></nav>
+    <a class="rounded-md border border-brand-600 px-3 py-2 text-sm font-semibold text-brand-600 md:hidden" href="#site-navigation">選單</a>
+  </div>
+  <nav id="site-navigation" aria-label="行動版導覽" class="border-t border-slate-100 md:hidden"><ul class="container flex gap-4 overflow-x-auto py-3 whitespace-nowrap">{navigation.map((item) => <li><a class="text-sm font-medium hover:text-brand-600" href={item.href}>{item.label}</a></li>)}</ul></nav>
+</header>
