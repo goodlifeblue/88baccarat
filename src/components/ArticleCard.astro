@@ -1,5 +1,14 @@
 ---
 const { article, collection } = Astro.props as { article: any; collection: string };
 const href = `/${collection}/${article.id.replace(/\.mdx?$/, '')}/`;
+const coverImages: Record<string, string> = {
+  'baccarat/wanfa': '/images/baccarat-basics.png',
+  'strategy/strategy': '/images/baccarat-strategy.png',
+  'strategy/zikin-guanli': '/images/baccarat-bankroll.png',
+};
+const coverImage = coverImages[`${collection}/${article.id.replace(/\.mdx?$/, '')}`];
 ---
-<article class="card flex h-full flex-col p-5"><p class="text-sm font-semibold text-brand-600">{collection}</p><h3 class="mt-2"><a href={href} class="hover:text-brand-600">{article.data.title}</a></h3><p class="mt-3 flex-1 text-sm leading-6 text-slate-600">{article.data.description}</p><a href={href} class="mt-5 text-sm font-semibold text-brand-600">閱讀文章 <span aria-hidden="true">→</span></a></article>
+<article class="card flex h-full flex-col overflow-hidden">
+  {coverImage && <a href={href} aria-label={`閱讀 ${article.data.title}`}><img class="aspect-video w-full object-cover" src={coverImage} alt="" loading="lazy" /></a>}
+  <div class="flex flex-1 flex-col p-5"><p class="text-sm font-semibold text-red-400">{collection}</p><h3 class="mt-2"><a href={href} class="hover:text-red-400">{article.data.title}</a></h3><p class="mt-3 flex-1 text-sm leading-6 text-slate-400">{article.data.description}</p><a href={href} class="mt-5 text-sm font-semibold text-red-400">閱讀文章 <span aria-hidden="true">→</span></a></div>
+</article>

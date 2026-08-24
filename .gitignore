@@ -19,3 +19,6 @@ npm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# GSAP AI skills reference repo (nested git repo, not project source)
+gsap-skills/

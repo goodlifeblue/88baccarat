@@ -1,0 +1,47 @@
+---
+import Breadcrumb from "./Breadcrumb.astro";
+
+const {
+  title,
+  description,
+  breadcrumbs = [],
+} = Astro.props as {
+  title: string;
+  description?: string;
+  breadcrumbs?: { label: string; href?: string }[];
+};
+---
+
+<section
+  class="relative flex h-[300px] items-center overflow-hidden bg-black text-white"
+>
+  <img
+    class="absolute inset-0 h-full w-full object-cover opacity-60"
+    src="/images/inner-banner-baccarat.png"
+    alt=""
+    aria-hidden="true"
+  />
+  <div class="absolute inset-0 bg-black/7"></div>
+  <div
+    class="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_20%_100%,rgba(220,38,38,0.35),transparent)]"
+  >
+  </div>
+  <div class="container relative" data-animate>
+    <div
+      class="[&_a]:text-slate-300 [&_a:hover]:text-red-400 [&_nav]:text-slate-400"
+    >
+      <Breadcrumb items={breadcrumbs} />
+    </div>
+    <p class="text-sm font-semibold tracking-[0.2em] text-red-400">
+      百家樂攻略誌
+    </p>
+    <h1 class="mt-3 max-w-4xl text-white">{title}</h1>
+    {
+      description && (
+        <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
+          {description}
+        </p>
+      )
+    }
+  </div>
+</section>

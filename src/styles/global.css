@@ -1,5 +1,134 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
-@theme { --color-brand-50:#fff7ed; --color-brand-600:#b91c1c; --color-ink:#172033; --font-sans:"Noto Sans TC",ui-sans-serif,system-ui,sans-serif; }
-@layer base { html { scroll-behavior:smooth; } body { @apply bg-stone-50 text-slate-800 antialiased; } h1,h2,h3 { @apply text-ink font-bold tracking-tight; } h1 { @apply text-3xl leading-tight sm:text-5xl; } h2 { @apply text-2xl sm:text-3xl; } h3 { @apply text-xl; } a { @apply transition-colors; } }
-@layer components { .container { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; } .prose { @apply max-w-none text-slate-700 leading-8; } .prose h2 { @apply mt-10 mb-4; } .prose h3 { @apply mt-7 mb-3; } .prose p { @apply my-4; } .prose ul { @apply my-4 list-disc pl-6; } .prose a { @apply text-brand-600 underline underline-offset-4; } .button { @apply inline-flex items-center justify-center rounded-lg bg-brand-600 px-5 py-3 font-semibold text-white hover:bg-red-800; } .card { @apply rounded-xl border border-slate-200 bg-white shadow-sm; } }
+@theme {
+    --color-brand-50: #fff7ed;
+    --color-brand-600: #b91c1c;
+    --color-ink: #050506;
+    --font-sans: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-black text-slate-300 antialiased;
+        overflow-wrap: anywhere;
+        background-image:
+            radial-gradient(ellipse 70% 45% at 20% 0%, rgba(220, 38, 38, 0.16), transparent 60%),
+            radial-gradient(ellipse 60% 40% at 100% 30%, rgba(220, 38, 38, 0.1), transparent 60%),
+            radial-gradient(ellipse 50% 35% at 50% 100%, rgba(220, 38, 38, 0.08), transparent 60%);
+        background-attachment: fixed;
+    }
+
+    h1,
+    h2,
+    h3 {
+        @apply text-white font-bold tracking-tight;
+    }
+
+    h1 {
+        @apply text-3xl leading-tight sm:text-5xl;
+    }
+
+    h2 {
+        @apply text-2xl sm:text-3xl;
+    }
+
+    h3 {
+        @apply text-xl;
+    }
+
+    a {
+        @apply transition-colors;
+    }
+
+    ::selection {
+        background: rgba(220, 38, 38, 0.45);
+        color: #fff;
+    }
+}
+
+@layer components {
+    .container {
+        @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+    }
+
+    .prose {
+        @apply max-w-none text-slate-300 leading-8;
+    }
+
+    .prose h2 {
+        @apply mt-10 mb-4;
+    }
+
+    .prose h3 {
+        @apply mt-7 mb-3;
+    }
+
+    .prose p {
+        @apply my-4;
+    }
+
+    .prose ul {
+        @apply my-4 list-disc pl-6 marker:text-red-500;
+    }
+
+    .prose a {
+        @apply text-red-400 underline underline-offset-4 hover:text-red-300;
+    }
+
+    /* Glass button with red glow, tracks pointer for a specular highlight */
+    .button {
+        @apply relative isolate inline-flex items-center justify-center overflow-hidden rounded-full border border-red-500/30 bg-white/[0.06] px-5 py-3 font-semibold text-white backdrop-blur-md transition-all duration-300;
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .button:hover {
+        @apply border-red-500/60 bg-red-600/25 -translate-y-0.5;
+        box-shadow: 0 0 28px -4px rgba(220, 38, 38, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .button::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        background: radial-gradient(160px circle at var(--x, 50%) var(--y, 50%), rgba(127, 29, 29, 0.3), transparent 65%);
+        opacity: 0;
+        transition: opacity 0.35s;
+    }
+
+    .button:hover::before {
+        opacity: 1;
+    }
+
+    /* Glass card with red-tinted border glow on hover */
+    .card {
+        @apply relative isolate overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition-all duration-300;
+        box-shadow: 0 8px 32px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .card:hover {
+        @apply border-red-500/30 -translate-y-1;
+        box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.8), 0 0 32px -10px rgba(220, 38, 38, 0.4);
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        background: radial-gradient(220px circle at var(--x, 50%) var(--y, 50%), rgba(127, 29, 29, 0.22), transparent 65%);
+        opacity: 0;
+        transition: opacity 0.35s;
+    }
+
+    .card:hover::before {
+        opacity: 1;
+    }
+}

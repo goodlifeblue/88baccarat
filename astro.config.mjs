@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: process.env.SITE_URL || 'https://example.com',
   output: 'static',
+  experimental: {
+    chromeDevtoolsWorkspace: true,
+  },
   integrations: [mdx(), sitemap()],
   vite: { plugins: [tailwindcss()] },
 });

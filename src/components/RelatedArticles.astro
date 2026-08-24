@@ -2,4 +2,4 @@
 import ArticleList from './ArticleList.astro';
 const { articles, collection } = Astro.props;
 ---
-{articles.length > 0 && <section class="mt-12 border-t border-slate-200 pt-10" aria-labelledby="related-title"><h2 id="related-title" class="mb-6">延伸閱讀</h2><ArticleList articles={articles} collection={collection} /></section>}
+{articles.length > 0 && <section class="mt-12 border-t border-white/10 pt-10" aria-labelledby="related-title"><h2 id="related-title" class="mb-6">延伸閱讀</h2><ArticleList articles={articles} collection={collection} /></section>}
