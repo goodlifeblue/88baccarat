@@ -1,1 +1,1 @@
-{ "extends": "astro/tsconfigs/strict", "include": [".astro/types.d.ts", "**/*"], "exclude": ["gsap-skills"] }
+{ "extends": "astro/tsconfigs/strict", "include": [".astro/types.d.ts", "**/*"], "exclude": ["gsap-skills", "dist"] }
