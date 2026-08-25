@@ -1,5 +1,64 @@
 ---
-import BaseLayout from './BaseLayout.astro'; import BreadcrumbSchema from '../components/seo/BreadcrumbSchema.astro'; import ArticleSchema from '../components/seo/ArticleSchema.astro'; import FAQ from '../components/FAQ.astro'; import FAQSchema from '../components/seo/FAQSchema.astro'; import TableOfContents from '../components/TableOfContents.astro'; import RelatedArticles from '../components/RelatedArticles.astro'; import CTA from '../components/CTA.astro'; import InnerBanner from '../components/InnerBanner.astro';
-const labels = { baccarat:'百家樂',strategy:'策略',guide:'新手指南',tips:'技巧',comparison:'比較' }; const { article, collection, headings, related } = Astro.props as { article: any; collection: keyof typeof labels; headings: any[]; related: any[] }; const categoryLabel = labels[collection]; const slug = article.id.replace(/\.mdx?$/, ''); const breadcrumbs = [{label:categoryLabel,href:`/${collection}/`},{label:article.data.title}]; const url = new URL(`/${collection}/${slug}/`, Astro.url).toString();
+import BaseLayout from "./BaseLayout.astro";
+import BreadcrumbSchema from "../components/seo/BreadcrumbSchema.astro";
+import ArticleSchema from "../components/seo/ArticleSchema.astro";
+import FAQ from "../components/FAQ.astro";
+import FAQSchema from "../components/seo/FAQSchema.astro";
+import TableOfContents from "../components/TableOfContents.astro";
+import RelatedArticles from "../components/RelatedArticles.astro";
+import CTA from "../components/CTA.astro";
+import InnerBanner from "../components/InnerBanner.astro";
+const labels = {
+    baccarat: "百家樂",
+    strategy: "策略",
+    guide: "新手指南",
+    tips: "技巧",
+    comparison: "比較",
+};
+const { article, collection, headings, related } = Astro.props as {
+    article: any;
+    collection: keyof typeof labels;
+    headings: any[];
+    related: any[];
+};
+const categoryLabel = labels[collection];
+const slug = article.id.replace(/\.mdx?$/, "");
+const breadcrumbs = [
+    { label: categoryLabel, href: `/${collection}/` },
+    { label: article.data.title },
+];
+const url = new URL(`/${collection}/${slug}/`, Astro.url).toString();
 ---
-<BaseLayout title={article.data.title} description={article.data.description} type="article"><InnerBanner title={article.data.title} description={article.data.description} {breadcrumbs} /><div class="container py-8 sm:py-12"><BreadcrumbSchema items={breadcrumbs} /><ArticleSchema {article} {url} /><article class="mx-auto max-w-3xl"><header><p class="text-sm font-semibold text-red-400">{categoryLabel}</p><p class="mt-3 text-sm text-slate-500"><time datetime={article.data.publishedAt.toISOString()}>{article.data.publishedAt.toLocaleDateString('zh-TW')}</time> ・ {article.data.author}</p></header><TableOfContents {headings} /><div class="prose"><slot /></div><FAQ items={article.data.faq} /><FAQSchema items={article.data.faq} /><CTA /><RelatedArticles articles={related} {collection} /></article></div></BaseLayout>
+
+<BaseLayout
+    title={article.data.title}
+    description={article.data.description}
+    image={article.data.image}
+    type="article"
+    ><InnerBanner
+        title={article.data.title}
+        description={article.data.description}
+        {breadcrumbs}
+    /><div class="container py-8 sm:py-12">
+        <BreadcrumbSchema items={breadcrumbs} /><ArticleSchema
+            {article}
+            {url}
+        /><article class="mx-auto max-w-3xl">
+            <header>
+                <p class="text-sm font-semibold text-red-400">
+                    {categoryLabel}
+                </p><p class="mt-3 text-sm text-slate-500">
+                    <time datetime={article.data.publishedAt.toISOString()}
+                        >{
+                            article.data.publishedAt.toLocaleDateString("zh-TW")
+                        }</time
+                    > ・ {article.data.author}
+                </p>
+            </header><TableOfContents {headings} /><div class="prose">
+                <slot />
+            </div><FAQ items={article.data.faq} /><FAQSchema
+                items={article.data.faq}
+            /><CTA /><RelatedArticles articles={related} {collection} />
+        </article>
+    </div></BaseLayout
+>

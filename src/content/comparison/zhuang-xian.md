@@ -1,5 +1,7 @@
 ---
 title: 百家樂莊閒比較：下注選項怎麼看
+image: /images/004.jpg
+imageAlt: 百家樂莊閒下注比較文章封面
 description: 比較百家樂莊家、閒家與和局的基本規則與風險特性。
 publishedAt: 2026-08-18
 faq:

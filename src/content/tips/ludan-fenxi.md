@@ -1,5 +1,7 @@
 ---
 title: 百家樂路單分析：如何正確看待紀錄
+image: /images/004.jpg
+imageAlt: 百家樂路單分析文章封面
 description: 說明路單的記錄用途與限制，避免將歷史結果誤當成預測訊號。
 publishedAt: 2026-08-15
 faq:

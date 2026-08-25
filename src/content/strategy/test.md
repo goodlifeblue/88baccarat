@@ -1,9 +1,9 @@
 ---
-title: 百家樂策略：建立理性的下注框架
-image: /images/002.jpg
-imageAlt: 百家樂策略與理性下注文章封面
+title: 測試：建立理性的下注框架
+image: /images/005.jpg
+imageAlt: 百家樂文章預設封面
 description: 以機率觀念、停損與停利規則建立穩健的百家樂策略。
-publishedAt: 2026-08-06
+publishedAt: 2026-08-25
 featured: true
 faq:
   - question: 有保證獲勝的百家樂策略嗎？

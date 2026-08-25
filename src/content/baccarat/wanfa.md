@@ -1,5 +1,7 @@
 ---
 title: 百家樂玩法：新手入門完整指南
+image: /images/001.jpg
+imageAlt: 百家樂玩法新手入門文章封面
 description: 用最簡單的方式理解百家樂的目標、下注選項與每局流程。
 publishedAt: 2026-08-01
 featured: true

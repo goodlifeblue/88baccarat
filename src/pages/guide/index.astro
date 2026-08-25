@@ -1,4 +1,13 @@
 ---
-import PageLayout from '../../layouts/PageLayout.astro'; import ArticleList from '../../components/ArticleList.astro'; import { getCollection } from 'astro:content'; const articles = await getCollection('guide');
+import PageLayout from "../../layouts/PageLayout.astro";
+import ArticleList from "../../components/ArticleList.astro";
+import { getCollection } from "astro:content";
+const articles = await getCollection("guide");
 ---
-<PageLayout title="百家樂新手指南" description="認識牌桌規則、開局流程與重要術語。" breadcrumbs={[{label:'新手指南'}]}><ArticleList {articles} collection="guide" /></PageLayout>
+
+<PageLayout
+    title="百家樂新手指南"
+    description="認識牌桌規則、開局流程與重要術語。"
+    breadcrumbs={[{ label: "新手指南" }]}
+    ><ArticleList {articles} collection="guide" /></PageLayout
+>

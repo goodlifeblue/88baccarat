@@ -1,5 +1,7 @@
 ---
 title: 百家樂常見問題
+image: /images/xx.png
+imageAlt: 百家樂常見問題文章封面
 description: 百家樂入門常見問題與負責任遊戲提醒。
 publishedAt: 2026-08-20
 faq:

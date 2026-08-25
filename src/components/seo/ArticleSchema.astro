@@ -1,6 +1,30 @@
 ---
-import { site } from '../../data/site'; import JsonLd from './JsonLd.astro';
+import { site } from "../../data/site";
+import JsonLd from "./JsonLd.astro";
 const { article, url } = Astro.props;
-const data = { '@context':'https://schema.org', '@type':'Article', headline:article.data.title, description:article.data.description, datePublished:article.data.publishedAt.toISOString(), dateModified:(article.data.updatedAt || article.data.publishedAt).toISOString(), mainEntityOfPage:url, author:{'@type':'Organization',name:article.data.author}, publisher:{'@type':'Organization',name:site.organization,url:site.url}, inLanguage:'zh-TW' };
+const image = new URL(
+    article.data.image || "/images/xx.png",
+    site.url,
+).toString();
+const data = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.data.title,
+    description: article.data.description,
+    image,
+    datePublished: article.data.publishedAt.toISOString(),
+    dateModified: (
+        article.data.updatedAt || article.data.publishedAt
+    ).toISOString(),
+    mainEntityOfPage: url,
+    author: { "@type": "Organization", name: article.data.author },
+    publisher: {
+        "@type": "Organization",
+        name: site.organization,
+        url: site.url,
+    },
+    inLanguage: "zh-TW",
+};
 ---
+
 <JsonLd {data} />

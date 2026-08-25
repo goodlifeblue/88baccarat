@@ -1,5 +1,7 @@
 ---
 title: 百家樂比數法：快速計算牌面點數
+image: /images/004.jpg
+imageAlt: 百家樂比數法文章封面
 description: 學會百家樂點數的個位數規則，快速判讀每手牌的比數。
 publishedAt: 2026-08-12
 faq:

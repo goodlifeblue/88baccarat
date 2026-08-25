@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CategoryCard from "../components/CategoryCard.astro";
 import ArticleCard from "../components/ArticleCard.astro";
 import ArticleList from "../components/ArticleList.astro";
 import FAQ from "../components/FAQ.astro";
@@ -55,23 +54,24 @@ const homeFaq = [
   title="百家樂玩法、策略與新手指南"
   description="系統化整理百家樂玩法、規則、策略、比數法與資金管理。"
 >
-  <section class="relative overflow-hidden bg-black py-24 text-white sm:py-36">
+  <section
+    class="hero-banner relative flex items-center justify-center overflow-hidden bg-black text-white"
+  >
     <video
       class="absolute inset-0 h-full w-full object-cover opacity-70"
       src="/poker.mp4"
       autoplay
       muted
       loop
-      playsinline></video><div class="absolute inset-0 bg-black/5"></div><div
-      class="pointer-events-none absolute inset-0 bg-black,radial-gradient(ellipse_50%_40%_at_100%_100%,rgba(220,38,38,0.2),transparent)]"
+      playsinline></video><div class="absolute inset-0 bg-black/35"></div><div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_100%_100%,rgba(220,38,38,0.2),transparent)]"
     >
-    </div><div class="container relative max-w-4xl">
-      <p class="font-semibold tracking-[0.2em] text-red-400" data-animate>
-        SEO 百家樂內容網站
-      </p><h1 class="mt-3 text-white" data-animate data-delay="0.1">
+    </div><div class="container relative max-w-4xl text-center">
+      <span class="badge">SEO 百家樂內容網站</span>
+      <h1 class="mt-3 text-white" data-animate data-delay="0.1">
         從規則到策略，讀懂百家樂的每一步
       </h1><p
-        class="mt-5 max-w-2xl text-lg leading-8 text-slate-300"
+        class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300"
         data-animate
         data-delay="0.2"
       >
@@ -82,7 +82,96 @@ const homeFaq = [
     </div>
   </section>
   <div class="container py-12 sm:py-16">
-    <section aria-labelledby="rules" class="card px-5 py-10 sm:px-10 sm:py-14">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 id="popular">熱門攻略</h2><a
+        href="/baccarat/"
+        class="text-sm font-semibold text-red-400 hover:text-red-300"
+        >探索百家樂文章 →</a
+      >
+    </div><div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        popular.map(({ article, collection }) => (
+          <ArticleCard article={article} collection={collection} />
+        ))
+      }
+    </div>
+
+    <section class="mt-14" aria-labelledby="categories">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <p
+            class="text-sm font-semibold uppercase tracking-[0.2em] text-red-400"
+          >
+            Explore
+          </p>
+          <h2 id="categories" class="mt-2">百家樂主題分類</h2>
+        </div>
+        <span class="hidden text-sm text-slate-500 sm:block"
+          >選擇主題開始閱讀</span
+        >
+      </div>
+      <div
+        class="category-marquee mt-6"
+        tabindex="0"
+        aria-label="百家樂主題分類"
+      >
+        <div class="category-marquee__track">
+          <div class="category-marquee__group">
+            {
+              categories.map((category) => (
+                <a class="category-chip" href={category.href}>
+                  <img
+                    class="h-5 w-5 object-contain"
+                    src={category.icon}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <span>{category.title}</span>
+                </a>
+              ))
+            }
+          </div>
+          <div class="category-marquee__group" aria-hidden="true">
+            {
+              categories.map((category) => (
+                <a class="category-chip" href={category.href} tabindex="-1">
+                  <img
+                    class="h-5 w-5 object-contain"
+                    src={category.icon}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <span>{category.title}</span>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section><section class="mt-14" aria-labelledby="strategy">
+      <h2 id="strategy">策略分類</h2><p class="mt-2 text-slate-400">
+        從下注紀律與資金管理建立可持續的遊戲觀念。
+      </p><div class="mt-6">
+        <ArticleList
+          articles={(await getCollection("strategy")).slice(0, 3)}
+          collection="Strategy"
+        />
+      </div>
+    </section><section class="mt-14" aria-labelledby="latest">
+      <h2 id="latest">最新文章</h2><div
+        class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {
+          latest.map(({ article, collection }) => (
+            <ArticleCard article={article} collection={collection} />
+          ))
+        }
+      </div>
+    </section>
+    <section
+      aria-labelledby="rules"
+      class="card px-5 py-10 sm:px-10 sm:py-14 mt-4"
+    >
       <div class="text-center">
         <h2 id="rules" class="text-3xl sm:text-5xl">百家樂玩法規則</h2><div
           class="mx-auto mt-4 h-1 w-16 rounded-full bg-red-500 shadow-[0_0_12px_2px_rgba(220,38,38,0.6)]"
@@ -152,45 +241,7 @@ const homeFaq = [
         實際補牌與賠率依各牌桌規則為準。
       </p>
     </section>
-    <section class="mt-14" aria-labelledby="categories">
-      <h2 id="categories">百家樂主題分類</h2><div
-        class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        {categories.map((category) => <CategoryCard {category} />)}
-      </div>
-    </section><section class="mt-14" aria-labelledby="popular">
-      <div class="flex items-baseline justify-between gap-4">
-        <h2 id="popular">熱門攻略</h2><a
-          href="/baccarat/"
-          class="text-sm font-semibold text-red-400 hover:text-red-300"
-          >探索百家樂文章 →</a
-        >
-      </div><div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          popular.map(({ article, collection }) => (
-            <ArticleCard article={article} collection={collection} />
-          ))
-        }
-      </div>
-    </section><section class="mt-14" aria-labelledby="strategy">
-      <h2 id="strategy">策略分類</h2><p class="mt-2 text-slate-400">
-        從下注紀律與資金管理建立可持續的遊戲觀念。
-      </p><div class="mt-6">
-        <ArticleList
-          articles={(await getCollection("strategy")).slice(0, 3)}
-          collection="strategy"
-        />
-      </div>
-    </section><section class="mt-14" aria-labelledby="latest">
-      <h2 id="latest">最新文章</h2><div
-        class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        {
-          latest.map(({ article, collection }) => (
-            <ArticleCard article={article} collection={collection} />
-          ))
-        }
-      </div>
-    </section><div class="mt-14 max-w-6xl"><FAQ items={homeFaq} /></div>
+
+    <div class="mt-14"><FAQ items={homeFaq} /></div>
   </div>
 </BaseLayout>

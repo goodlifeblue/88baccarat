@@ -1,5 +1,7 @@
 ---
 title: 百家樂資金管理：預算與停損原則
+image: /images/003.jpg
+imageAlt: 百家樂資金管理文章封面
 description: 用事前預算、固定注額與停損機制建立負責任的百家樂習慣。
 publishedAt: 2026-08-10
 featured: true

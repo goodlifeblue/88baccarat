@@ -1,5 +1,7 @@
 ---
 title: 百家樂規則：點數與補牌規則說明
+image: /images/004.jpg
+imageAlt: 百家樂規則與補牌說明文章封面
 description: 說明百家樂點數計算、自然勝與第三張牌的基本規則。
 publishedAt: 2026-08-03
 featured: true

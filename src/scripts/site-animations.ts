@@ -6,7 +6,10 @@ gsap.registerPlugin(ScrollTrigger);
 function initAnimations() {
   const mm = gsap.matchMedia();
 
-  mm.add({ reduceMotion: '(prefers-reduced-motion: reduce)' }, (context) => {
+  // "all: true" makes this callback always run; reduceMotion tells us whether
+  // to skip/shorten the animations. (A conditions object with only a query
+  // that doesn't currently match would otherwise never fire at all.)
+  mm.add({ all: true, reduceMotion: '(prefers-reduced-motion: reduce)' }, (context) => {
     const { reduceMotion } = context.conditions as { reduceMotion: boolean };
 
     const header = document.querySelector('header');
@@ -31,6 +34,20 @@ function initAnimations() {
           overwrite: true,
         }),
     });
+
+    const hero = document.querySelector<HTMLElement>('.hero-banner');
+    if (hero && !reduceMotion) {
+      gsap.fromTo(hero, { height: '100svh' }, {
+        height: '500px',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: '+=500',
+          scrub: true,
+        },
+      });
+    }
 
     return () => {
       // gsap.matchMedia() reverts tweens/ScrollTriggers created above automatically
