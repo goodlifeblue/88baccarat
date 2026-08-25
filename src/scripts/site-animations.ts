@@ -14,20 +14,20 @@ function initAnimations() {
 
     const header = document.querySelector('header');
     if (header) {
-      gsap.from(header, { y: -24, autoAlpha: 0, duration: reduceMotion ? 0 : 0.8, ease: 'power3.out' });
+      gsap.fromTo(header, { y: -24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: reduceMotion ? 0 : 0.8, ease: 'power3.out' });
     }
 
     gsap.utils.toArray<HTMLElement>('[data-animate]').forEach((el) => {
       const delay = reduceMotion ? 0 : Number(el.dataset.delay || 0);
-      gsap.from(el, { y: 28, autoAlpha: 0, duration: reduceMotion ? 0 : 0.9, delay, ease: 'power3.out' });
+      gsap.fromTo(el, { y: 28, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: reduceMotion ? 0 : 0.9, delay, ease: 'power3.out' });
     });
 
     ScrollTrigger.batch('.card', {
       start: 'top 90%',
       onEnter: (batch) =>
-        gsap.from(batch, {
-          y: 28,
-          autoAlpha: 0,
+        gsap.fromTo(batch, { y: 28, autoAlpha: 0 }, {
+          y: 0,
+          autoAlpha: 1,
           duration: reduceMotion ? 0 : 0.7,
           stagger: reduceMotion ? 0 : 0.1,
           ease: 'power3.out',
