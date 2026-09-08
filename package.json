@@ -2,6 +2,11 @@
   "name": "baccarat-seo-site",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.22.3 <23",
+    "npm": ">=10.9.8 <11"
+  },
+  "packageManager": "npm@10.9.8",
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",

@@ -1,11 +1,80 @@
 ---
 import { navigation } from '../data/navigation';
 ---
+
 <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur-xl">
-  <div class="container flex min-h-16 items-center justify-between gap-4">
-    <a href="/" class="text-lg font-extrabold text-white" aria-label="百家樂攻略誌首頁">♠ 百家樂攻略誌</a>
-    <nav aria-label="主要導覽" class="hidden md:block"><ul class="flex items-center gap-5">{navigation.map((item) => <li><a class="text-sm font-medium text-slate-300 hover:text-red-400" href={item.href}>{item.label}</a></li>)}</ul></nav>
-    <a class="rounded-full border border-red-500/40 bg-white/5 px-3 py-2 text-sm font-semibold text-white backdrop-blur-md transition-colors hover:bg-red-600/20 md:hidden" href="#site-navigation">選單</a>
+  <div class="container flex min-h-16 items-center justify-between gap-6">
+    <!-- Logo -->
+    <a href="/" class="shrink-0 text-lg font-extrabold text-white transition-colors hover:text-red-400" aria-label="百家樂攻略誌首頁">
+      ♠ <span class="hidden sm:inline">百家樂攻略誌</span>
+    </a>
+
+    <!-- Desktop Navigation - Full Display -->
+    <nav aria-label="主要導覽" class="hidden md:block flex-1">
+      <ul class="flex items-center gap-6 justify-center">
+        {navigation.map((item) => (
+          <li>
+            <a
+              class="text-sm font-medium text-slate-300 transition-colors hover:text-red-400"
+              href={item.href}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Mobile Hamburger Button -->
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden flex items-center justify-center h-9 w-9 rounded-lg border border-red-500/40 bg-white/5 text-white hover:bg-red-600/20 transition-colors"
+      aria-label="開啟導覽選單"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
   </div>
-  <nav id="site-navigation" aria-label="行動版導覽" class="border-t border-white/10 md:hidden"><ul class="container flex gap-4 overflow-x-auto py-3 whitespace-nowrap">{navigation.map((item) => <li><a class="text-sm font-medium text-slate-300 hover:text-red-400" href={item.href}>{item.label}</a></li>)}</ul></nav>
+
+  <!-- Mobile Menu -->
+  <nav
+    id="mobile-menu"
+    aria-label="行動版導覽"
+    class="hidden border-t border-white/10 bg-black/95 md:hidden"
+  >
+    <ul class="container space-y-1 py-3">
+      {navigation.map((item) => (
+        <li>
+          <a
+            class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-red-600/20 hover:text-red-400"
+            href={item.href}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
 </header>
+
+<script>
+  // Mobile menu toggle
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', btn.getAttribute('aria-expanded') === 'false' ? 'true' : 'false');
+  });
+
+  // Close menu when link clicked
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      btn?.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>

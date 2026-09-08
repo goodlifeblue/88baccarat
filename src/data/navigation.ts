@@ -1,6 +1,11 @@
 export const navigation = [
-  { label: '策略', href: '/strategy/' },
-  { label: '新手指南', href: '/guide/' }, { label: '技巧', href: '/tips/' },
-  { label: '比較', href: '/comparison/' }, { label: '百家樂', href: '/baccarat/' },
+  { label: '首頁', href: '/' },
+  { label: '百家樂入門', href: '/guide/' },
+  { label: '牌路教學', href: '/roadmap/' },
+  { label: '分析方法', href: '/analysis/' },
+  { label: '分析工具', href: '/tools/' },
+  { label: '使用教學', href: '/tutorial/' },
+  { label: '案例分析', href: '/case-studies/' },
+  { label: '百家樂知識', href: '/articles/' },
   { label: 'FAQ', href: '/faq/' },
 ];

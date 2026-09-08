@@ -2,4 +2,22 @@
 const { headings } = Astro.props as { headings: { depth: number; slug: string; text: string }[] };
 const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
-{items.length > 0 && <nav aria-label="文章目錄" class="card mb-8 p-5"><p class="font-bold text-white">文章目錄</p><ol class="mt-3 space-y-2 text-sm">{items.map((item) => <li class={item.depth === 3 ? 'ml-4' : ''}><a class="text-slate-400 hover:text-red-400" href={`#${item.slug}`}>{item.text}</a></li>)}</ol></nav>}
+{items.length > 0 && (
+  <nav aria-label="文章目錄" class="card mb-8 p-6">
+    <p class="font-bold text-white mb-4">文章目錄</p>
+    <div class="flex flex-wrap gap-3">
+      {items.map((item) => (
+        <a
+          href={`#${item.slug}`}
+          class={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+            item.depth === 3
+              ? 'bg-slate-700 text-slate-200 hover:bg-red-600/30 hover:text-red-300'
+              : 'bg-red-500/20 text-red-300 hover:bg-red-600/40 hover:text-red-100 border border-red-500/30'
+          }`}
+        >
+          {item.text}
+        </a>
+      ))}
+    </div>
+  </nav>
+)}
