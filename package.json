@@ -10,7 +10,14 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "directus:start": "docker compose up -d",
+    "directus:stop": "docker compose down",
+    "directus:init": "bash directus/init.sh",
+    "directus:logs": "docker compose logs -f directus",
+    "directus:setup": "node directus/setup.mjs",
+    "directus:import": "node directus/import.mjs",
+    "test:directus": "node scripts/test-directus.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -19,8 +26,10 @@
     "@astrojs/sitemap": "^3.4.1",
     "@tailwindcss/vite": "^4.1.12",
     "astro": "^5.13.5",
+    "dotenv": "^16.3.1",
     "gsap": "^3.15.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "@astrojs/markdown-remark": "6.3.11"
   },
   "devDependencies": {
     "daisyui": "^5.7.22",

@@ -1,0 +1,164 @@
+---
+// 示例：动态文章页面
+// 文件路径: src/pages/articles/[slug].astro
+
+import type { GetStaticPaths } from 'astro';
+import { getArticleBySlug, getAllArticles, directusClient } from '@/lib/directus-queries';
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+
+interface Props {
+  article: any;
+  seoMeta: any;
+  relatedArticles: any[];
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  try {
+    // 获取所有已发布的文章
+    const articles = await getAllArticles(1000);
+
+    // 为每个文章生成一个静态页面
+    return articles.map(article => ({
+      params: { slug: article.slug },
+      props: {
+        article,
+      },
+    }));
+  } catch (error) {
+    console.error('Failed to generate static paths:', error);
+    return [];
+  }
+};
+
+const { article } = Astro.props as Props;
+const seoMeta = article.id ? await directusClient.getArticleSEO(article.id) : null;
+const relatedArticles = article.id ? await directusClient.getRelatedArticles(article.id, 3) : [];
+
+if (!article) {
+  return Astro.redirect('/404');
+}
+---
+
+<ArticleLayout
+  title={article.title}
+  description={article.description}
+  image={article.image}
+  imageAlt={article.imageAlt}
+>
+  <article class="article">
+    <div class="article-header">
+      <h1>{article.title}</h1>
+
+      <div class="article-meta">
+        <span class="author">{article.author}</span>
+        <span class="date">{new Date(article.publishedAt).toLocaleDateString('zh-CN')}</span>
+        <span class="category">{article.category}</span>
+      </div>
+
+      {article.image && (
+        <img src={article.image} alt={article.imageAlt} class="featured-image" />
+      )}
+    </div>
+
+    {/* 文章内容 - Markdown 已转换为 HTML */}
+    <div class="article-content" set:html={article.content} />
+
+    {/* 相关文章 */}
+    {relatedArticles.length > 0 && (
+      <aside class="related-articles">
+        <h2>相关文章</h2>
+        <ul>
+          {relatedArticles.map(relatedArticle => (
+            <li>
+              <a href={`/articles/${relatedArticle.slug}`}>
+                {relatedArticle.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+  </article>
+</ArticleLayout>
+
+<style>
+  .article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .article-header {
+    margin-bottom: 2rem;
+  }
+
+  .article-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+
+  .featured-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+  }
+
+  .article-content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin: 2rem 0;
+  }
+
+  .article-content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .article-content :global(h2) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .article-content :global(h3) {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+  }
+
+  .article-content :global(ul),
+  .article-content :global(ol) {
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .article-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .related-articles {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #eee;
+  }
+
+  .related-articles ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .related-articles li {
+    margin-bottom: 0.75rem;
+  }
+
+  .related-articles a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  .related-articles a:hover {
+    text-decoration: underline;
+  }
+</style>

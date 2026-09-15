@@ -6,7 +6,8 @@ import FAQ from "../components/FAQ.astro";
 import FAQSchema from "../components/seo/FAQSchema.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import RelatedArticles from "../components/RelatedArticles.astro";
-import CTA from "../components/CTA.astro";
+import { site } from "../data/site";
+import { getCollection } from "astro:content";
 import InnerBanner from "../components/InnerBanner.astro";
 const labels = {
     baccarat: "百家樂",
@@ -27,13 +28,24 @@ const breadcrumbs = [
     { label: categoryLabel, href: `/${collection}/` },
     { label: article.data.title },
 ];
-const url = new URL(`/${collection}/${slug}/`, Astro.url).toString();
+const url = new URL(`/${collection}/${slug}/`, site.url).toString();
+const selected = article.data.relatedArticles || [];
+const all = selected.length ? (await Promise.all(
+    (Object.keys(labels) as Array<keyof typeof labels>).map((name) => getCollection(name))
+)).flat() : [];
+const relatedEntries = selected.length
+    ? selected.map((id: string) => all.find((entry) => entry.data.cmsId === id))
+        .filter((entry: any) => entry && !(entry.collection === collection && entry.id === article.id))
+    : related;
 ---
 
 <BaseLayout
     title={article.data.title}
-    description={article.data.description}
-    image={article.data.image}
+    description={article.data.seoDescription || article.data.description}
+    seoTitle={article.data.seoTitle}
+    canonical={url}
+    noindex={article.data.noindex}
+    image={article.data.ogImage || article.data.image}
     type="article"
     ><InnerBanner
         title={article.data.title}
@@ -53,12 +65,13 @@ const url = new URL(`/${collection}/${slug}/`, Astro.url).toString();
                             article.data.publishedAt.toLocaleDateString("zh-TW")
                         }</time
                     > ・ {article.data.author}
+                    {article.data.updatedAt && <span> ・ 更新：<time datetime={article.data.updatedAt.toISOString()}>{article.data.updatedAt.toLocaleDateString("zh-TW")}</time></span>}
                 </p>
             </header><TableOfContents {headings} /><div class="prose">
                 <slot />
-            </div><FAQ items={article.data.faq} /><FAQSchema
+            </div>{article.data.faq.length > 0 && <FAQ items={article.data.faq} />}<FAQSchema
                 items={article.data.faq}
-            /><CTA /><RelatedArticles articles={related} {collection} />
+            /><RelatedArticles articles={relatedEntries} {collection} />
         </article>
     </div></BaseLayout
 >

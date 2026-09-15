@@ -2,4 +2,4 @@
 import ArticleCard from './ArticleCard.astro';
 const { articles, collection } = Astro.props;
 ---
-<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{articles.map((article: any) => <ArticleCard article={article} collection={collection} />)}</div>
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{articles.map((article: any) => <ArticleCard article={article} collection={article.collection || collection} />)}</div>

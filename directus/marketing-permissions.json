@@ -1,0 +1,150 @@
+[
+  {
+    "collection": "articles",
+    "action": "read",
+    "fields": [
+      "*"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "articles",
+    "action": "create",
+    "fields": [
+      "title",
+      "category",
+      "excerpt",
+      "cover_image",
+      "imageAlt",
+      "content",
+      "author",
+      "status",
+      "seo_title",
+      "seo_description",
+      "faq",
+      "related",
+      "featured",
+      "slug"
+    ],
+    "permissions": {},
+    "presets": {
+      "status": "draft"
+    },
+    "validation": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    }
+  },
+  {
+    "collection": "articles",
+    "action": "update",
+    "fields": [
+      "title",
+      "category",
+      "excerpt",
+      "cover_image",
+      "imageAlt",
+      "content",
+      "author",
+      "status",
+      "seo_title",
+      "seo_description",
+      "faq",
+      "related",
+      "featured"
+    ],
+    "permissions": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    },
+    "validation": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    }
+  },
+  {
+    "collection": "article_relations",
+    "action": "read",
+    "fields": [
+      "*"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "article_relations",
+    "action": "create",
+    "fields": [
+      "article_id",
+      "related_id"
+    ],
+    "permissions": {},
+    "validation": {
+      "article_id": {
+        "status": {
+          "_in": [
+            "draft",
+            "review"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "collection": "article_relations",
+    "action": "update",
+    "fields": [
+      "article_id",
+      "related_id"
+    ],
+    "permissions": {
+      "article_id": {
+        "status": {
+          "_in": [
+            "draft",
+            "review"
+          ]
+        }
+      }
+    },
+    "validation": {
+      "article_id": {
+        "status": {
+          "_in": [
+            "draft",
+            "review"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "collection": "article_relations",
+    "action": "delete",
+    "fields": [
+      "article_id",
+      "related_id"
+    ],
+    "permissions": {
+      "article_id": {
+        "status": {
+          "_in": [
+            "draft",
+            "review"
+          ]
+        }
+      }
+    }
+  }
+]

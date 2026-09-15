@@ -22,3 +22,9 @@ npm-debug.log*
 
 # GSAP AI skills reference repo (nested git repo, not project source)
 gsap-skills/
+
+.env.*
+!.env.example
+directus/database/
+directus/uploads/
+directus/extensions/
