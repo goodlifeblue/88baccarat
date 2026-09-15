@@ -69,3 +69,24 @@ category 的 baccarat、strategy、guide、tips、comparison 各有文章頁。f
 - `npm run test:directus`：以暫時的本機 API 驗證遠端 Markdown、單一 H1、表格、圖片、FAQ、Article Schema、SEO 覆寫、相關文章、分頁、草稿排除、RSS，審核文章排除、自動 canonical、noindex，以及 CMS 斷線會阻止建置。需要允許本機監聽埠。
 
 模擬測試不代表實際 Directus schema、帳號權限與部署 Hook 已完成驗證。
+
+## 可搬移的圖片路徑
+
+封面 `cover_image` 使用 Directus Files 關聯，只儲存 File ID。內文圖片上傳至 Directus 媒體庫後，建議以相對路徑插入：
+
+```markdown
+![圖片替代文字](/assets/12345678-1234-1234-1234-123456789abc)
+```
+
+亦支援直接用 UUID 當圖片目的地，以及 Markdown reference-style 圖片。Astro 在渲染時依 `DIRECTUS_URL` 組合封面、內文和 SEO 圖片網址，支援 Directus 部署於子路徑。圖片查詢參數如 width/key 保留，但移除 access_token；媒體須有適當公開讀取權限。
+
+若編輯器已插入完整 CMS 網址，同環境網址會自動解析。搬遷後將舊 CMS 基底網址加入 `DIRECTUS_LEGACY_URLS`（逗號分隔），可讓舊內文圖片改用新主機：
+
+```env
+DIRECTUS_URL=https://cms.example.com
+DIRECTUS_LEGACY_URLS=http://localhost:8055
+```
+
+轉換的是輸出 HTML，不會自動改寫後台儲存的 Markdown。既有網站 `/images/...` 圖片與外站圖片保持原路徑，不會被自動搬入媒體庫。搬遷時須一起搬資料庫及 uploads，保留原 File ID。
+
+驗證：`node scripts/test-directus-assets.mjs`、`npm run test:directus`。圖片路徑處理不改變靜態建置／開發同步頻率。

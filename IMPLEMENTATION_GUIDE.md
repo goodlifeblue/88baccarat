@@ -41,24 +41,28 @@ Astro 网站从 API 获取数据
 ## 核心特性
 
 ✅ **SEO 友好**
+
 - 完整的元数据管理（标题、描述、关键字）
 - Open Graph / Twitter Cards 支持
 - 规范 URL 管理
 - 自动生成网站地图
 
 ✅ **营销人员友好**
+
 - 直观的 Web UI（无需编码）
 - 批量操作支持
 - 计划发布功能
 - 内容版本控制
 
 ✅ **开发者友好**
+
 - TypeScript 支持
 - REST API
 - 静态生成（SSG）
 - 模块化代码结构
 
 ✅ **性能优化**
+
 - 静态网站（极快加载）
 - CDN 友好
 - 图片自动优化
@@ -90,6 +94,7 @@ docker-compose up -d
 ```
 
 **预期结果**：
+
 ```
 ✅ Directus 已启动！
 🌐 访问 http://localhost:8055
@@ -100,6 +105,7 @@ docker-compose up -d
 打开浏览器访问：**http://localhost:8055**
 
 **默认凭证**：
+
 - 邮箱: `admin@baccarat.local`
 - 密码: `admin123`
 
@@ -150,14 +156,14 @@ npm run dev
 2. 点击蓝色 **+ Create Item** 按钮
 3. 填写必填字段：
 
-| 字段 | 说明 | 示例 |
-|------|------|------|
-| **Title** | 文章标题 | "百家乐基础知识" |
-| **Content** | 文章内容（支持 Markdown） | 完整的文章正文 |
-| **Description** | SEO 摘要（160 字以内） | "学习百家乐的基础规则和玩法..." |
-| **Category** | 文章分类 | 选择：baccarat, strategy, guide, tips... |
-| **Status** | 发布状态 | **Draft**（草稿）或 **Published**（已发布） |
-| **Published At** | 发布时间 | 点击日期选择器 |
+| 字段             | 说明                      | 示例                                        |
+| ---------------- | ------------------------- | ------------------------------------------- |
+| **Title**        | 文章标题                  | "百家乐基础知识"                            |
+| **Content**      | 文章内容（支持 Markdown） | 完整的文章正文                              |
+| **Description**  | SEO 摘要（160 字以内）    | "学习百家乐的基础规则和玩法..."             |
+| **Category**     | 文章分类                  | 选择：baccarat, strategy, guide, tips...    |
+| **Status**       | 发布状态                  | **Draft**（草稿）或 **Published**（已发布） |
+| **Published At** | 发布时间                  | 点击日期选择器                              |
 
 4. **可选字段**：
    - **Image**: 上传封面图片
@@ -170,6 +176,7 @@ npm run dev
 #### 🏷️ **Categories** - 分类管理
 
 管理文章分类。预设分类：
+
 - 百家樂知識 (baccarat)
 - 策略分析 (strategy)
 - 遊戲指南 (guide)
@@ -178,6 +185,7 @@ npm run dev
 - 常見問題 (faq)
 
 **添加新分类**：
+
 1. 点击 **Categories**
 2. 点击 **+ Create Item**
 3. 填写 **Name** 和 **Slug**
@@ -188,6 +196,7 @@ npm run dev
 为文章配置 Open Graph 和 Twitter Cards 标签。
 
 **添加 SEO 元数据**：
+
 1. 点击 **article_seo**
 2. 点击 **+ Create Item**
 3. 填写：
@@ -234,6 +243,7 @@ npm run dev
 **搜索**：在顶部搜索框输入关键字
 
 **筛选**：
+
 1. 点击 **Filter** 按钮
 2. 选择筛选条件（如 Status, Category, Featured）
 3. 应用
@@ -300,34 +310,36 @@ const article = await getArticleBySlug(slug);
 #### 使用 Directus 客户端
 
 ```typescript
-import { directusClient } from '@/lib/directus';
+import { directusClient } from "@/lib/directus";
 
 // 获取文章列表
 const articles = await directusClient.getArticles({
   limit: 10,
-  category: 'strategy',
-  sort: '-publishedAt'
+  category: "strategy",
+  sort: "-publishedAt",
 });
 
 // 按 slug 获取单篇文章
-const article = await directusClient.getArticleBySlug('my-article');
+const article = await directusClient.getArticleBySlug("my-article");
 
 // 获取 SEO 元数据
 const seoMeta = await directusClient.getArticleSEO(articleId);
 
 // 搜索文章
-const results = await directusClient.searchArticles('百家乐', 10);
+const results = await directusClient.searchArticles("百家乐", 10);
 ```
 
 ### 环境变量
 
 **开发环境** (`.env.local`)：
+
 ```env
 DIRECTUS_URL=http://localhost:8055
 DIRECTUS_API_TOKEN=your_local_token
 ```
 
 **生产环境** (`.env.production`)：
+
 ```env
 DIRECTUS_URL=https://your-domain.com/directus
 DIRECTUS_API_TOKEN=your_production_token
@@ -357,20 +369,23 @@ npm run directus:logs    # 查看 Directus 日志
 ### Q: 我是营销人员，技术问题怎么办？
 
 A: 需要技术支持时，联系你的开发团队。提供：
+
 - 具体错误信息（截图）
 - 你在做什么
 - 预期结果是什么
 
 ### Q: 文章发布后多久会显示在网站上？
 
-A: 
+A:
+
 - **立即发布**：发布时立即生效（如果网站启用了增量生成）
 - **定时发布**：系统会在指定时间自动发布
 - **全网更新**：通常在发布后 24 小时内完全更新
 
 ### Q: 可以撤回已发布的文章吗？
 
-A: 
+A:
+
 1. 编辑文章
 2. 将 **Status** 改为 **Draft** 或 **Archived**
 3. 保存
@@ -388,6 +403,7 @@ A: 需要管理员在 Directus 中配置：
 5. 保存
 
 **预设角色**：
+
 - **Admin**: 完全访问
 - **Editor**: 可创建/编辑内容
 - **Viewer**: 只读权限
@@ -395,6 +411,7 @@ A: 需要管理员在 Directus 中配置：
 ### Q: 图片上传失败怎么办？
 
 A:
+
 ```bash
 # 检查上传文件夹权限
 chmod -R 755 directus/uploads
@@ -406,6 +423,7 @@ docker-compose restart directus
 ### Q: 如何备份内容？
 
 A:
+
 ```bash
 # 备份 SQLite 数据库
 cp directus/database.sqlite directus/database.sqlite.backup
@@ -417,6 +435,7 @@ cp -r directus/uploads/ directus/uploads.backup/
 ### Q: 如何恢复备份？
 
 A:
+
 ```bash
 # 停止 Directus
 npm run directus:stop

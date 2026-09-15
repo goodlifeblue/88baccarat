@@ -5,7 +5,6 @@ export const navigation = [
   { label: '分析方法', href: '/analysis/' },
   { label: '分析工具', href: '/tools/' },
   { label: '使用教學', href: '/tutorial/' },
-  { label: '案例分析', href: '/case-studies/' },
   { label: '百家樂知識', href: '/articles/' },
   { label: 'FAQ', href: '/faq/' },
 ];

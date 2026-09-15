@@ -1,5 +1,6 @@
 import type { Loader } from 'astro/loaders';
 import { loadEnv } from 'vite';
+import { resolveDirectusAsset } from './directus-assets.mjs';
 
 export function directusLoader(): Loader {
   return {
@@ -34,13 +35,7 @@ export function directusLoader(): Loader {
         }
         if (slugs.has(id)) throw new Error(`Duplicate article URL: /${collection}/${id}/`);
         slugs.add(id);
-        const asset = (value: string | null) => {
-          if (!value) return undefined;
-          if (/^[0-9a-f-]{36}$/i.test(value)) return `${base}/assets/${value}`;
-          if (value.startsWith('/') && !value.startsWith('//')) return value;
-          if (/^https?:\/\//i.test(value)) return value;
-          throw new Error(`Invalid image URL in article ${id}`);
-        };
+        const asset = (value: string | null) => resolveDirectusAsset(value, base, (env.DIRECTUS_LEGACY_URLS || '').split(',').filter(Boolean));
         const data = await parseData({ id, data: {
           ...Object.fromEntries(Object.entries(entry).filter(([, value]) => value !== null)),
           relatedArticles: entry.related?.length ? entry.related.map((relation: { related_id: string }) => relation.related_id) : (entry.relatedArticles || []),

@@ -146,12 +146,14 @@ cp directus/database.sqlite.backup directus/database.sqlite
 ## 环境变量设置
 
 **本地开发 (.env.local)**
+
 ```env
 DIRECTUS_URL=http://localhost:8055
 DIRECTUS_API_TOKEN=你的token
 ```
 
 **生产环境**
+
 ```env
 DIRECTUS_URL=https://your-domain.com
 DIRECTUS_API_TOKEN=生产token
@@ -162,7 +164,9 @@ DIRECTUS_API_TOKEN=生产token
 ## 常见问题
 
 ### Q: 无法访问 http://localhost:8055？
-A: 
+
+A:
+
 ```bash
 # 检查容器是否运行
 docker ps | grep directus
@@ -175,18 +179,23 @@ docker-compose restart
 ```
 
 ### Q: API Token 不工作？
+
 A:
+
 1. 确认 Token 已生成且未过期
 2. 检查 .env.local 中的 Token 正确无误
 3. 在 Directus 中重新生成 Token
 
 ### Q: 页面加载很慢？
-A: 
+
+A:
+
 - 检查 Directus 容器是否正常运行
 - 查看浏览器控制台是否有错误
 - 检查网络连接
 
 ### Q: 如何在生产环境部署？
+
 A: 查看 [DIRECTUS_SETUP.md](DIRECTUS_SETUP.md) 的"部署到生产环境"部分
 
 ---

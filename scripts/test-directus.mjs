@@ -22,6 +22,8 @@ const article = {
   faq: [{ question: 'Question?', answer: 'Answer </script><script>alert(456)</script>' }],
   related: [{ related_id: 'b' }, { related_id: 'draft' }],
 };
+article.cover_image = '12345678-1234-1234-1234-123456789abc';
+article.content += '\n\n![CMS image](/assets/12345678-1234-1234-1234-123456789abc?width=800)';
 const second = { ...article, id: 'b', slug: 'related-test', category: 'tips', faq: [], related: [] };
 const draft = { ...article, id: 'draft', slug: 'draft-secret', status: 'draft' };
 const review = { ...article, id: 'review', slug: 'review-secret', status: 'review' };
@@ -58,12 +60,13 @@ try {
   const result = await build();
   assert.equal(result.code, 0, result.output);
   const html = await readFile(join(dir, 'guide/cms-test/index.html'), 'utf8');
+  assert.ok(html.includes(`http://127.0.0.1:${server.address().port}/assets/${article.cover_image}?width=800`));
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   for (const pattern of [/<h2[^>]*>Section two/, /<h3[^>]*>Section three/, /<table>/, /alt="Example alt"/, /<title>Custom SEO title<\/title>/, /content="Custom SEO description"/, /href="\/tips\/related-test\/"/, /2026-02-01T00:00:00.000Z/]) assert.match(html, pattern);
   assert.ok(!html.includes('<script>alert('));
   assert.ok(!html.includes('/guide/draft-secret/'));
   assert.ok(!html.includes('/guide/review-secret/'));
-  assert.match(html, /name="robots" content="noindex, follow"/);
+  assert.match(html, /name="robots" content="noindex, nofollow"/);
   assert.ok(!html.includes('untrusted.example'));
   assert.match(html, /rel="canonical" href="https:\/\/example.com\/guide\/cms-test\/"/);
   const schemas = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)].map((match) => JSON.parse(match[1]));
