@@ -1,9 +1,10 @@
 ---
-import { site } from "../../data/site";
+import { getSite } from "../../data/site";
+const site = await getSite();
 import JsonLd from "./JsonLd.astro";
 const { article, url } = Astro.props;
 const image = new URL(
-    article.data.image || "/images/xx.png",
+    article.data.image || site.default_cover,
     site.url,
 ).toString();
 const data = {

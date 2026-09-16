@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import { assertLocalMaintenance } from '../scripts/environment.mjs';
+assertLocalMaintenance();
 import { readdir, readFile } from 'node:fs/promises';
 import { parseFrontmatter } from '@astrojs/markdown-remark';
 const base = process.env.DIRECTUS_URL?.replace(/\/$/, '');

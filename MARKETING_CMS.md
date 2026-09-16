@@ -1,5 +1,7 @@
 # Directus 行銷文章管理
 
+環境與正式部署請以 [交付與維護手冊](docs/HANDOVER.md) 為準。正式 Deploy Hook 暫不開啟，先經 CI 審核與 SEO gate。
+
 本文件是目前實作的操作入口。網站維持 Astro 靜態輸出，網址維持 `/<category>/<slug>/`。
 
 ## 已完成的文章模板
@@ -44,7 +46,7 @@ Article Schema 自動產生；FAQ 有內容才顯示區塊及 FAQ Schema。SEO �
 
 FAQ、相關文章、封面替代文字及精選設定保留。FAQ 用可排序問題／答案清單；內文圖片以 `![替代文字](網址)` 設定。related 直接選取文章，網站僅顯示已發布文章。cover_image 優先於舊圖片網址 image。
 
-category 的 baccarat、strategy、guide、tips、comparison 各有文章頁。faq 分類只供常見問題彙整，不建立獨立文章頁。已發布文章的編輯交由審核者處理，避免修改直接進入正式網站。此版本沒有草稿版本分支；需要修改已發布文章时，由審核者操作，或先退回草稿（下一次建置將下架）。
+category 的 baccarat、strategy、guide、tips、comparison 各有文章頁。faq 分類只供常見問題彙整，不建立獨立文章頁。已發布文章的編輯交由審核者處理，避免修改直接進入正式網站。articles 已啟用 Content Versioning；已發布內容由審核者建立版本、審閱後 Promote。不要退回草稿代替版本，否則下一次建置將下架。行銷的版本編輯權限需另行審核配置。
 
 ## 權限
 
@@ -90,3 +92,42 @@ DIRECTUS_LEGACY_URLS=http://localhost:8055
 轉換的是輸出 HTML，不會自動改寫後台儲存的 Markdown。既有網站 `/images/...` 圖片與外站圖片保持原路徑，不會被自動搬入媒體庫。搬遷時須一起搬資料庫及 uploads，保留原 File ID。
 
 驗證：`node scripts/test-directus-assets.mjs`、`npm run test:directus`。圖片路徑處理不改變靜態建置／開發同步頻率。
+
+## 301 轉址規則
+
+後台 `redirects` 集合只有四個業務欄位：old_path、new_path、status_code（固定 301）、enabled。另有系統 UUID 主鍵。目前單站使用，不需要 site 欄位。管理員可管理規則；一般行銷帳號未額外開放轉址寫入權限。
+
+```text
+old_path: /guide/baccarat-rule/
+new_path: /guide/baccarat-rules/
+status_code: 301
+enabled: true
+```
+
+路徑必須以 `/` 開頭；目前不支援外站 URL、query、fragment、萬用字元與百分比編碼。文章網址請填尾斜線。建置會檢查重複來源、循環、已存在頁面的來源衝突，以及 Cloudflare 的 2000 筆靜態規則限制；連續轉址會合併到最終目的地。停用規則不輸出。若已有 public/_redirects，請先把規則整合到 CMS，避免兩份規則互相覆蓋。
+
+執行 `npm run build` 後，`dist/_redirects` 會包含：
+
+```text
+/guide/baccarat-rule/ /guide/baccarat-rules/ 301
+```
+
+將整份 dist 上傳 Cloudflare Pages 後，由 Cloudflare 回傳 HTTP 301 與 Location。Astro 的 dev／preview 不負責執行這份規則；它也不是 HTML meta refresh。CMS 修改規則後需要重新建置與上傳，不會立刻影響已上線網站。自訂 Pages Functions 若接管相同路由，需自行處理轉址。
+
+### 自動記錄文章改址
+
+本機 Compose 已掛載 `directus/hooks/redirects`。Directus 啟動時會安裝 SQLite trigger：已發布文章修改 slug／category，且儲存後仍是 published 時，在相同資料庫交易中記錄舊 → 新網址。既有指向舊網址的規則一併更新；改回先前 slug 時解除該目標的舊規則。更新失敗會一起回滾。草稿、待審核文章與 FAQ 彙整集合不自動產生轉址。
+
+新環境先啟動 Directus，再執行 `npm run directus:setup`，最後 `docker compose restart directus` 啟用觸發器。若建置帳號使用其他 policy 名稱，需自行加上 redirects 的 read 權限（enabled = true）。
+
+目前自動記錄實作限定 SQLite；搬到 PostgreSQL 或不支援自訂 extension 的遠端方案時，必須另做等效觸發器。資料庫中的 trigger 會隨 SQLite 備份保留，移除 extension 不會自動移除 trigger。
+
+驗證：`node scripts/test-redirects.mjs` 驗證規則，`npm run test:directus` 驗證產出檔案；`node scripts/test-directus-hook.mjs` 會在實際後台建立並清除暫時文章，驗證改址與回滾。
+
+## 導覽列
+
+選單與 navbar 品牌設定已移入 Directus，請依 [導覽管理 SOP](docs/NAVIGATION.md) 新增、排序、送審及發布。桌面與手機版共用相同資料。
+
+## 整站頁面與網站設定
+
+首頁、文章列表、一頁式、特殊頁、Banner、頁尾與共用文案均已移入 Directus；請依 [整站內容管理 SOP](docs/PAGES.md) 操作。程式維持版型與部署保護，CMS 管理內容。

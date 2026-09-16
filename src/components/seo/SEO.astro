@@ -1,14 +1,16 @@
 ---
-import { site } from '../../data/site';
+import { getSite } from '../../data/site';
+const site = await getSite();
 import JsonLd from './JsonLd.astro';
-const { title, description, image = '/og-image.svg', type = 'website', canonical, seoTitle } = Astro.props;
+const { title, description, image = site.og_image, type = 'website', canonical, seoTitle, noindex = false } = Astro.props;
+const blockIndexing = import.meta.env.APP_ENV !== 'production' || noindex || Astro.url.pathname === '/404.html';
 const pageTitle = seoTitle || (title ? `${title}｜${site.name}` : site.name);
 const url = canonical || new URL(Astro.url.pathname, site.url).toString();
 const imageUrl = new URL(image, site.url).toString();
 const websiteSchema = { '@context':'https://schema.org', '@type':'WebSite', name:site.name, url:site.url, inLanguage:'zh-TW', publisher:{ '@type':'Organization', name:site.organization, url:site.url } };
 ---
-<meta name="robots" content="noindex, nofollow" />
+{blockIndexing && <meta name="robots" content="noindex, nofollow" />}
 <title>{pageTitle}</title><meta name="description" content={description || site.description} /><link rel="canonical" href={url} />
-<meta property="og:type" content={type} /><meta property="og:locale" content="zh_TW" /><meta property="og:site_name" content={site.name} /><meta property="og:title" content={pageTitle} /><meta property="og:description" content={description || site.description} /><meta property="og:url" content={url} /><meta property="og:image" content={imageUrl} />
+<meta property="og:type" content={type} /><meta property="og:locale" content={site.locale} /><meta property="og:site_name" content={site.name} /><meta property="og:title" content={pageTitle} /><meta property="og:description" content={description || site.description} /><meta property="og:url" content={url} /><meta property="og:image" content={imageUrl} />
 <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={pageTitle} /><meta name="twitter:description" content={description || site.description} /><meta name="twitter:image" content={imageUrl} />
 <JsonLd data={websiteSchema} />

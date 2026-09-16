@@ -1,0 +1,13 @@
+{
+  "brand": { "brand_label": "百家樂攻略誌", "brand_symbol": "♠", "brand_href": "/" },
+  "items": [
+    { "label": "首頁", "href": "/" },
+    { "label": "百家樂入門", "href": "/guide/" },
+    { "label": "牌路教學", "href": "/roadmap/" },
+    { "label": "分析方法", "href": "/analysis/" },
+    { "label": "分析工具", "href": "/tools/" },
+    { "label": "使用教學", "href": "/tutorial/" },
+    { "label": "百家樂知識", "href": "/articles/" },
+    { "label": "FAQ", "href": "/faq/" }
+  ]
+}

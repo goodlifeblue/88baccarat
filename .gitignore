@@ -28,3 +28,6 @@ gsap-skills/
 directus/database/
 directus/uploads/
 directus/extensions/
+
+.artifacts/
+backups/

@@ -1,8 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { loadEnv } from 'vite';
+import { readEnvironment } from '../scripts/environment.mjs';
 import { directusLoader } from './lib/directus-loader';
-const env = { ...loadEnv(process.env.NODE_ENV || 'production', process.cwd(), ''), ...process.env };
+const env = readEnvironment();
 const source = env.CONTENT_SOURCE || 'local';
 if (!['local', 'directus'].includes(source)) throw new Error('CONTENT_SOURCE must be local or directus');
 const schema = z.object({

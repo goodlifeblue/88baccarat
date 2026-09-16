@@ -1,0 +1,58 @@
+name: Reviewed site release
+on:
+  push:
+    branches: [develop, main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    # Disabled until the owner configures both targets, Access, branch protection,
+    # and required reviewers for the production GitHub Environment.
+    if: vars.ENABLE_RELEASE_PIPELINE == 'true' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+    env:
+      APP_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+      CONTENT_SOURCE: directus
+      SITE_URL: ${{ vars.SITE_URL }}
+      DIRECTUS_URL: ${{ vars.DIRECTUS_URL }}
+      DIRECTUS_API_TOKEN: ${{ secrets.DIRECTUS_API_TOKEN }}
+      DIRECTUS_LEGACY_URLS: ${{ vars.DIRECTUS_LEGACY_URLS }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm install --global npm@10.9.8
+      - run: npm ci
+      - name: Require the same code to have passed staging
+        if: github.ref == 'refs/heads/main'
+        run: node scripts/check-promotion.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - run: npm run test:release
+      - run: npm run test:navigation
+      - run: npm run test:pages
+      - run: npm run build
+      - name: Upload checked artifact (includes release manifest and redirects)
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ env.APP_ENV }}-${{ github.sha }}
+          path: |
+            dist
+            .artifacts/seo-report.json
+          retention-days: 30
+          include-hidden-files: true
+      - name: Deploy only the checked artifact
+        run: node scripts/deploy-pages.mjs
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}

@@ -1,4 +1,6 @@
 ---
+import { getSite } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+const site = await getSite();
 ---
-<BaseLayout title="找不到頁面" description="此頁面不存在或已移動。"><section class="container py-20 text-center"><h1>找不到這個頁面</h1><p class="mt-4 text-slate-400">你可以回到首頁，繼續探索百家樂知識。</p><a href="/" class="button mt-6">回到首頁</a></section></BaseLayout>
+<BaseLayout noindex={true} canonical={new URL('/404.html', site.url).href} title={site.not_found_title} description={site.not_found_description}><section class="container py-20 text-center"><h1>{site.not_found_title}</h1><p class="mt-4 text-slate-400">{site.not_found_content}</p><a href="/" class="button mt-6">{site.not_found_button}</a></section></BaseLayout>

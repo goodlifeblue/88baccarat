@@ -1,0 +1,12 @@
+---
+import { getPages } from '../data/pages';
+import ManagedPage from '../components/ManagedPage.astro';
+export async function getStaticPaths() {
+  return (await getPages()).map(page => ({ params: { page: page.path === '/' ? undefined : page.path.slice(1, -1) }, props: { path: page.path } }));
+}
+// Read again during dev requests so published content edits appear on refresh.
+const path = Astro.props.path || (Astro.params.page ? `/${Astro.params.page.replace(/\/$/, '')}/` : '/');
+const page = (await getPages()).find(page => page.path === path);
+if (!page) return Astro.redirect('/404.html');
+---
+<ManagedPage {page} />

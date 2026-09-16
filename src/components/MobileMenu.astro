@@ -1,4 +1,5 @@
 ---
-import { navigation } from '../data/navigation';
+import { getNavigation } from '../data/navigation';
+const { items: navigation } = await getNavigation();
 ---
-<nav aria-label="行動版導覽"><ul>{navigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul></nav>
+<nav aria-label="行動版導覽"><ul>{navigation.map((item) => <li><a href={item.href} target={item.open_in_new_tab ? '_blank' : undefined} rel={item.open_in_new_tab ? 'noopener noreferrer' : undefined}>{item.label}</a></li>)}</ul></nav>

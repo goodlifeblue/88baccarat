@@ -1,5 +1,6 @@
 ---
-import { site } from '../../data/site'; import JsonLd from './JsonLd.astro'; const { items } = Astro.props;
-const data = { '@context':'https://schema.org', '@type':'BreadcrumbList', itemListElement:[{ name:'首頁', url:site.url, '@type':'ListItem', position:1 },...items.map((item:any,index:number) => ({ '@type':'ListItem', position:index+2, name:item.label, item:item.href ? new URL(item.href,site.url).toString() : undefined }))] };
+import { getSite } from '../../data/site';
+const site = await getSite(); import JsonLd from './JsonLd.astro'; const { items } = Astro.props;
+const data = { '@context':'https://schema.org', '@type':'BreadcrumbList', itemListElement:[{ name:site.labels.home, url:site.url, '@type':'ListItem', position:1 },...items.map((item:any,index:number) => ({ '@type':'ListItem', position:index+2, name:item.label, item:item.href ? new URL(item.href,site.url).toString() : undefined }))] };
 ---
 <JsonLd {data} />

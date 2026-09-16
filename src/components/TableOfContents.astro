@@ -1,10 +1,12 @@
 ---
+import { getSite } from '../data/site';
+const site = await getSite();
 const { headings } = Astro.props as { headings: { depth: number; slug: string; text: string }[] };
 const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 {items.length > 0 && (
   <nav aria-label="文章目錄" class="card mb-8 p-6">
-    <p class="font-bold text-white mb-4">文章目錄</p>
+    <p class="font-bold text-white mb-4">{site.labels.toc}</p>
     <div class="flex flex-wrap gap-3">
       {items.map((item) => (
         <a

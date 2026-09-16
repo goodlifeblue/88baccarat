@@ -1,0 +1,243 @@
+[
+  {
+    "path": "/",
+    "title": "從規則到策略，讀懂百家樂的每一步",
+    "description": "系統化整理百家樂玩法、規則、策略、比數法與資金管理。",
+    "breadcrumb_label": "百家樂玩法、策略與新手指南",
+    "page_type": "custom_page",
+    "status": "published",
+    "article_category": "all",
+    "custom_template": "home",
+    "content": "",
+    "sections": [
+      {
+        "type": "articles",
+        "anchor": "popular",
+        "title": "熱門攻略",
+        "link_label": "探索百家樂文章 →",
+        "link_href": "/baccarat/",
+        "category": "all",
+        "featured": true,
+        "limit": 3
+      },
+      {
+        "type": "categories",
+        "anchor": "categories",
+        "title": "百家樂主題分類",
+        "eyebrow": "Explore",
+        "description": "選擇主題開始閱讀"
+      },
+      {
+        "type": "articles",
+        "anchor": "strategy",
+        "title": "策略分類",
+        "description": "從下注紀律與資金管理建立可持續的遊戲觀念。",
+        "category": "strategy",
+        "limit": 3
+      },
+      {
+        "type": "articles",
+        "anchor": "latest",
+        "title": "最新文章",
+        "category": "all",
+        "limit": 3
+      },
+      {
+        "type": "cards",
+        "anchor": "rules",
+        "title": "百家樂玩法規則",
+        "cards": [
+          {
+            "title": "基本規則",
+            "content": "- **遊戲目標：**預測莊家或閒家哪一方的牌點數最接近 9 點\n- **牌值計算：**A=1，2–9=點數，10/J/Q/K=0\n- **初始發牌：**莊家與閒家各發 2 張牌\n- **天牌：**初始 8 點或 9 點，不需補牌"
+          },
+          {
+            "title": "賠率說明",
+            "content": "- **閒家贏：**1 賠 1（下注 100，贏 100）\n- **莊家贏：**1 賠 0.95（需扣 5% 佣金）\n- **和局：**1 賠 8（雙方點數相同）\n- **對子：**1 賠 11（同點數對子）"
+          }
+        ],
+        "content": "### 補牌規則\n\n#### 閒家補牌規則\n\n- 點數 0–5：必須補牌\n- 點數 6–7：停牌\n- 點數 8–9：天牌，不補牌\n\n#### 莊家補牌規則\n\n- 點數 0–2：必須補牌\n- 點數 3–6：根據閒家第三張牌決定\n- 點數 7：停牌\n- 點數 8–9：天牌，不補牌\n\n實際補牌與賠率依各牌桌規則為準。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "百家樂新手應先學什麼？",
+        "answer": "先理解點數計算、莊閒與和局三種下注選項，以及第三張牌規則。"
+      },
+      {
+        "question": "百家樂策略能保證獲利嗎？",
+        "answer": "不能。策略的作用是協助管理風險、設定界線並避免非理性追注。"
+      },
+      {
+        "question": "百家樂新手應先學什麼？",
+        "answer": "先理解點數計算、莊閒與和局三種下注選項，以及第三張牌規則。"
+      },
+      {
+        "question": "百家樂策略能保證獲利嗎？",
+        "answer": "不能。策略的作用是協助管理風險、設定界線並避免非理性追注。"
+      }
+    ],
+    "seo_title": "百家樂玩法、策略與新手指南｜百家樂攻略誌",
+    "hero_badge": "SEO 百家樂內容網站",
+    "hero_description": "以清晰、負責任的內容整理玩法、機率與紀律，幫助你建立自己的遊戲知識架構。",
+    "hero_button_label": "從新手指南開始",
+    "hero_button_href": "/guide/",
+    "hero_video": "/poker.mp4"
+  },
+  {
+    "path": "/analysis/",
+    "title": "百家樂牌路分析方法",
+    "description": "深入了解百家樂牌路分析方法，包括牌型觀察、數據分析、分析邏輯與實際案例解說。",
+    "breadcrumb_label": "分析方法",
+    "page_type": "single_page",
+    "status": "published",
+    "article_category": "all",
+    "custom_template": "standard",
+    "content": "## 分析方法內容\n\n\n此頁面正在建設中。敬請期待！\n\n\n[分析方法 - 完整內容結構]",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/articles/",
+    "title": "百家樂知識文章",
+    "description": "百家樂知識庫，包含規則講解、策略分析、技巧分享、牌路理論等系統化內容。",
+    "breadcrumb_label": "百家樂知識",
+    "page_type": "article_list",
+    "status": "published",
+    "article_category": "all",
+    "custom_template": "standard",
+    "content": "## 知識文章分類\n\n\n系統化整理百家樂相關知識，從基礎規則到進階分析方法。",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/baccarat/",
+    "title": "百家樂基礎知識",
+    "description": "從百家樂玩法、點數到常見下注選項，建立完整基礎。",
+    "breadcrumb_label": "百家樂",
+    "page_type": "article_list",
+    "status": "published",
+    "article_category": "baccarat",
+    "custom_template": "standard",
+    "content": "",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/case-studies/",
+    "title": "百家樂分析案例研究",
+    "description": "實際百家樂牌路分析案例，展示如何應用分析方法與工具進行數據觀察與解讀。",
+    "breadcrumb_label": "案例分析",
+    "page_type": "single_page",
+    "status": "published",
+    "article_category": "all",
+    "custom_template": "standard",
+    "content": "## 案例分析內容\n\n\n此頁面正在建設中。敬請期待！\n\n\n[案例分析 - 實際案例與講解]",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/comparison/",
+    "title": "百家樂比較",
+    "description": "比較不同百家樂玩法與下注選項的規則差異。",
+    "breadcrumb_label": "比較",
+    "page_type": "article_list",
+    "status": "published",
+    "article_category": "comparison",
+    "custom_template": "standard",
+    "content": "",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/faq/",
+    "title": "百家樂常見問題",
+    "description": "整理新手最常遇到的百家樂規則、策略與風險管理問題。",
+    "breadcrumb_label": "FAQ",
+    "page_type": "custom_page",
+    "status": "published",
+    "article_category": "all",
+    "custom_template": "faq",
+    "content": "",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/guide/",
+    "title": "百家樂新手指南",
+    "description": "認識牌桌規則、開局流程與重要術語。",
+    "breadcrumb_label": "新手指南",
+    "page_type": "article_list",
+    "status": "published",
+    "article_category": "guide",
+    "custom_template": "standard",
+    "content": "",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/roadmap/",
+    "title": "百家樂牌路教學",
+    "description": "完整學習百家樂牌路基礎知識，包括珠盤路、大路、大眼仔、小路、曱甴路等牌路判讀方法。",
+    "breadcrumb_label": "牌路教學",
+    "page_type": "single_page",
+    "status": "published",
+    "article_category": "all",
+    "custom_template": "standard",
+    "content": "## 牌路教學內容\n\n\n此頁面正在建設中。敬請期待！\n\n\n[牌路教學 - 完整內容結構]",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/strategy/",
+    "title": "百家樂策略",
+    "description": "以機率、節奏與資金界線為核心的策略知識。",
+    "breadcrumb_label": "策略",
+    "page_type": "article_list",
+    "status": "published",
+    "article_category": "strategy",
+    "custom_template": "standard",
+    "content": "",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/tips/",
+    "title": "百家樂技巧",
+    "description": "理解比數法與路單分析，培養更清楚的判讀習慣。",
+    "breadcrumb_label": "技巧",
+    "page_type": "article_list",
+    "status": "published",
+    "article_category": "tips",
+    "custom_template": "standard",
+    "content": "",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/tools/",
+    "title": "百家樂牌路分析工具",
+    "description": "介紹我們的百家樂牌路分析工具功能，包括即時牌路、牌型辨識、數據統計與 AI 分析等功能演示。",
+    "breadcrumb_label": "分析工具",
+    "page_type": "single_page",
+    "status": "published",
+    "article_category": "all",
+    "custom_template": "standard",
+    "content": "## 分析工具介紹\n\n\n此頁面正在建設中。敬請期待！\n\n\n[分析工具 - 功能展示與截圖]",
+    "sections": [],
+    "faq": []
+  },
+  {
+    "path": "/tutorial/",
+    "title": "百家樂分析工具使用教學",
+    "description": "詳細的分析工具使用教學，包括快速開始、功能說明、操作步驟與實際使用案例。",
+    "breadcrumb_label": "使用教學",
+    "page_type": "single_page",
+    "status": "published",
+    "article_category": "all",
+    "custom_template": "standard",
+    "content": "## 使用教學內容\n\n\n此頁面正在建設中。敬請期待！\n\n\n[使用教學 - Step by Step 指南]",
+    "sections": [],
+    "faq": []
+  }
+]

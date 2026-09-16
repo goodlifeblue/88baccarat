@@ -1,0 +1,4 @@
+{
+  "staging": { "siteUrl": "", "directusUrl": "", "pagesProject": "" },
+  "production": { "siteUrl": "", "directusUrl": "", "pagesProject": "" }
+}

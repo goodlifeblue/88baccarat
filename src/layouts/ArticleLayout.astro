@@ -6,16 +6,11 @@ import FAQ from "../components/FAQ.astro";
 import FAQSchema from "../components/seo/FAQSchema.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import RelatedArticles from "../components/RelatedArticles.astro";
-import { site } from "../data/site";
+import { getSite } from "../data/site";
+const site = await getSite();
 import { getCollection } from "astro:content";
 import InnerBanner from "../components/InnerBanner.astro";
-const labels = {
-    baccarat: "百家樂",
-    strategy: "策略",
-    guide: "新手指南",
-    tips: "技巧",
-    comparison: "比較",
-};
+const labels = Object.fromEntries(site.categories.map(category => [category.key, category.title]));
 const { article, collection, headings, related } = Astro.props as {
     article: any;
     collection: keyof typeof labels;
@@ -31,7 +26,7 @@ const breadcrumbs = [
 const url = new URL(`/${collection}/${slug}/`, site.url).toString();
 const selected = article.data.relatedArticles || [];
 const all = selected.length ? (await Promise.all(
-    (Object.keys(labels) as Array<keyof typeof labels>).map((name) => getCollection(name))
+    (['baccarat', 'strategy', 'guide', 'tips', 'comparison'] as const).map((name) => getCollection(name))
 )).flat() : [];
 const relatedEntries = selected.length
     ? selected.map((id: string) => all.find((entry) => entry.data.cmsId === id))
@@ -65,7 +60,7 @@ const relatedEntries = selected.length
                             article.data.publishedAt.toLocaleDateString("zh-TW")
                         }</time
                     > ・ {article.data.author}
-                    {article.data.updatedAt && <span> ・ 更新：<time datetime={article.data.updatedAt.toISOString()}>{article.data.updatedAt.toLocaleDateString("zh-TW")}</time></span>}
+                    {article.data.updatedAt && <span> ・ {site.labels.updated}<time datetime={article.data.updatedAt.toISOString()}>{article.data.updatedAt.toLocaleDateString("zh-TW")}</time></span>}
                 </p>
             </header><TableOfContents {headings} /><div class="prose">
                 <slot />

@@ -1,14 +1,17 @@
 import type { Loader } from 'astro/loaders';
-import { loadEnv } from 'vite';
+import { readEnvironment } from '../../scripts/environment.mjs';
 import { resolveDirectusAsset } from './directus-assets.mjs';
+import { fetchCMS } from './site-content.mjs';
 
 export function directusLoader(): Loader {
   return {
     name: 'directus-articles',
     async load({ collection, store, parseData, renderMarkdown }) {
-      const env = { ...loadEnv(process.env.NODE_ENV || 'production', process.cwd(), ''), ...process.env };
+      const env = readEnvironment();
       const base = env.DIRECTUS_URL?.replace(/\/$/, '');
       if (!base) throw new Error('CONTENT_SOURCE=directus requires DIRECTUS_URL');
+      const settings = await fetchCMS('site_settings', 'organization,default_cover');
+      if (!settings?.organization || !settings.default_cover) throw new Error('Complete site settings before loading articles');
       const entries = [];
       for (let offset = 0; ; offset += 100) {
         const query = new URLSearchParams({
@@ -46,7 +49,8 @@ export function directusLoader(): Loader {
           seoDescription: entry.seo_description ?? entry.seoDescription ?? undefined,
           canonicalUrl: undefined,
           noindex: entry.noindex ?? false,
-          image: asset(entry.cover_image || entry.cover || entry.image), ogImage: asset(entry.ogImage),
+          author: entry.author || settings.organization,
+          image: asset(entry.cover_image || entry.cover || entry.image || settings.default_cover), ogImage: asset(entry.ogImage),
           cmsId: String(entry.id),
         } });
         if (typeof entry.content !== 'string') throw new Error(`Missing content: ${id}`);

@@ -1,1 +1,5 @@
-<aside class="card mt-10 p-6"><h2 class="text-xl">建立理性的百家樂觀念</h2><p class="mt-2 leading-7 text-slate-400">從規則、機率與資金界線開始，讓每一個選擇都有根據。</p><a href="/guide/" class="button mt-4">閱讀新手指南</a></aside>
+---
+import { getSite } from '../data/site';
+const site = await getSite();
+---
+<aside class="card mt-10 p-6"><h2 class="text-xl">{site.cta_title}</h2><p class="mt-2 leading-7 text-slate-400">{site.cta_content}</p><a href={site.cta_href} class="button mt-4">{site.cta_label}</a></aside>

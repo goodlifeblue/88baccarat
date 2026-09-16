@@ -1,14 +1,18 @@
 ---
 import Breadcrumb from "./Breadcrumb.astro";
+import { getSite } from '../data/site';
+const site = await getSite();
 
 const {
   title,
   description,
   breadcrumbs = [],
+  image = site.inner_banner,
 } = Astro.props as {
   title: string;
   description?: string;
   breadcrumbs?: { label: string; href?: string }[];
+  image?: string;
 };
 ---
 
@@ -17,7 +21,7 @@ const {
 >
   <img
     class="absolute inset-0 h-full w-full object-cover opacity-55"
-    src="/images/inner-banner-baccarat.jpg"
+    src={image}
     alt=""
     aria-hidden="true"
   />
@@ -33,7 +37,7 @@ const {
       <Breadcrumb items={breadcrumbs} />
     </div>
     <p class="text-sm font-semibold tracking-[0.2em] text-red-400">
-      百家樂攻略誌
+      {site.name}
     </p>
     <h1 class="mt-3 max-w-4xl text-white">{title}</h1>
     {

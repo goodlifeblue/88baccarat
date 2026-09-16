@@ -1,10 +1,12 @@
 ---
+import { getSite } from '../data/site';
+const site = await getSite();
 const { article, collection } = Astro.props as {
   article: any;
   collection: string;
 };
 const href = `/${collection}/${article.id.replace(/\.mdx?$/, "")}/`;
-const coverImage = article.data.image || "/images/xx.png";
+const coverImage = article.data.image || site.default_cover;
 const coverAlt = article.data.imageAlt || `${article.data.title}文章封面`;
 ---
 
@@ -18,13 +20,13 @@ const coverAlt = article.data.imageAlt || `${article.data.title}文章封面`;
     /></a
   >
   <div class="flex flex-1 flex-col p-5">
-    <span class="text-sm  text-white-400 badge badge-sm">{collection}</span><h3
+    <span class="text-sm  text-white-400 badge badge-sm">{site.categories.find(category => category.key === collection)?.title || collection}</span><h3
       class="mt-2"
     >
       <a href={href} class="hover:text-red-400">{article.data.title}</a>
     </h3><p class="mt-3 flex-1 text-sm leading-6 text-slate-400">
       {article.data.description}
     </p><a href={href} class="mt-5 text-sm font-semibold text-red-400"
-      >閱讀文章 <span aria-hidden="true">→</span></a>
+      >{site.labels.read_article} <span aria-hidden="true">→</span></a>
   </div>
 </article>

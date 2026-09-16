@@ -1,79 +1,14 @@
 ---
-import { navigation } from '../data/navigation';
-
-const mainNav = navigation.slice(0, 4);
-const secondaryNav = navigation.slice(4);
+import { getSite } from '../data/site';
+const site = await getSite();
 ---
-
 <footer class="relative mt-16 overflow-hidden border-t border-red-500/20 bg-black py-12 text-slate-400">
   <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red-500/60 to-transparent"></div>
-
   <div class="container">
-    <!-- Main Footer Content -->
     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 mb-10">
-      <!-- Brand Section -->
-      <div>
-        <a href="/" class="text-lg font-bold text-white hover:text-red-400 transition-colors">
-          ♠ 百家樂攻略誌
-        </a>
-        <p class="mt-3 max-w-md text-sm leading-6 text-slate-400">
-          以規則、機率與風險意識為基礎，提供系統化的百家樂教育內容與分析工具。
-        </p>
-      </div>
-
-      <!-- Primary Navigation -->
-      <nav aria-label="主要頁面">
-        <h3 class="font-semibold text-white mb-3 text-sm">快速入門</h3>
-        <ul class="space-y-2">
-          {mainNav.map((item) => (
-            <li>
-              <a class="text-sm hover:text-red-400 transition-colors" href={item.href}>
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <!-- Secondary Navigation -->
-      <nav aria-label="更多內容">
-        <h3 class="font-semibold text-white mb-3 text-sm">知識中心</h3>
-        <ul class="space-y-2">
-          {secondaryNav.map((item) => (
-            <li>
-              <a class="text-sm hover:text-red-400 transition-colors" href={item.href}>
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <!-- Additional Links -->
-      <nav aria-label="其他連結">
-        <h3 class="font-semibold text-white mb-3 text-sm">相關資源</h3>
-        <ul class="space-y-2">
-          <li>
-            <a class="text-sm hover:text-red-400 transition-colors" href="/">首頁</a>
-          </li>
-          <li>
-            <a class="text-sm hover:text-red-400 transition-colors" href="/faq/">常見問題</a>
-          </li>
-          <li>
-            <a class="text-sm hover:text-red-400 transition-colors" href="#contact">聯絡我們</a>
-          </li>
-        </ul>
-      </nav>
+      <div><a href="/" class="text-lg font-bold text-white hover:text-red-400 transition-colors">{site.footer_brand}</a><p class="mt-3 max-w-md text-sm leading-6 text-slate-400">{site.footer_description}</p></div>
+      {site.footer_groups.map(group => <nav aria-label={group.title}><h3 class="font-semibold text-white mb-3 text-sm">{group.title}</h3><ul class="space-y-2">{group.links.map(link => <li><a class="text-sm hover:text-red-400 transition-colors" href={link.href}>{link.label}</a></li>)}</ul></nav>)}
     </div>
-
-    <!-- Bottom Section -->
-    <div class="border-t border-white/10 pt-8 space-y-4">
-      <p class="text-xs text-slate-500 leading-6">
-        <strong>免責聲明：</strong>本網站提供的所有內容僅供教育、娛樂與參考之用，不構成任何投資建議或保證。百家樂是機運遊戲，任何策略都無法改變個別牌局的結果。請理性遊戲、負責任消費。
-      </p>
-      <p class="text-xs text-slate-600">
-        © {new Date().getFullYear()} 百家樂攻略誌。保留所有權利。
-      </p>
-    </div>
+    <div class="border-t border-white/10 pt-8 space-y-4"><p class="text-xs text-slate-500 leading-6">{site.footer_disclaimer}</p><p class="text-xs text-slate-600">© {new Date().getFullYear()} {site.footer_copyright}</p></div>
   </div>
 </footer>

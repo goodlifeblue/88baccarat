@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import InnerBanner from './InnerBanner.astro';
+import BreadcrumbSchema from './seo/BreadcrumbSchema.astro';
+import FAQSchema from './seo/FAQSchema.astro';
+import FAQ from './FAQ.astro';
+import ArticleList from './ArticleList.astro';
+import PageSections from './PageSections.astro';
+import { getCollection } from 'astro:content';
+import { renderPageMarkdown } from '../lib/page-markdown.mjs';
+const { page } = Astro.props;
+const breadcrumbs = page.path === '/' ? [] : [{ label: page.breadcrumb_label || page.title }];
+const home = page.page_type === 'custom_page' && page.custom_template === 'home';
+const names = ['baccarat', 'strategy', 'guide', 'tips', 'comparison'] as const;
+const articles = page.page_type === 'article_list'
+  ? (await Promise.all(names.filter(name => page.article_category === 'all' || page.article_category === name).map(name => getCollection(name)))).flat().sort((a,b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()) : [];
+const faqs = page.page_type === 'custom_page' && page.custom_template === 'faq'
+  ? [...(await Promise.all([...names, 'faq' as const].map(name => getCollection(name)))).flat().flatMap(entry => entry.data.faq), ...page.faq] : page.faq;
+const html = await renderPageMarkdown(page.content);
+---
+<BaseLayout title={page.title} description={page.seo_description || page.description} seoTitle={page.seo_title} image={page.hero_image}>
+  {home ? <section class="hero-banner relative flex items-center justify-center overflow-hidden bg-black text-white">
+    {page.hero_video ? <video class="absolute inset-0 h-full w-full object-cover opacity-70" src={page.hero_video} autoplay muted loop playsinline /> : page.hero_image && <img class="absolute inset-0 h-full w-full object-cover opacity-70" src={page.hero_image} alt="" />}
+    <div class="absolute inset-0 bg-black/35" /><div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_100%_100%,rgba(220,38,38,0.2),transparent)]" />
+    <div class="container relative max-w-4xl text-center">
+      {page.hero_badge && <span class="badge">{page.hero_badge}</span>}
+      <h1 class="mt-3 text-white" data-animate data-delay="0.1">{page.title}</h1>
+      {page.hero_description && <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300" data-animate data-delay="0.2">{page.hero_description}</p>}
+      {page.hero_button_href && <a class="button mt-8" href={page.hero_button_href} data-animate data-delay="0.3">{page.hero_button_label}</a>}
+    </div>
+  </section> : <InnerBanner title={page.title} description={page.description} {breadcrumbs} image={page.hero_image} />}
+  <div class={home ? 'container py-12 sm:py-16' : 'container py-8 sm:py-12'}>
+    {page.path !== '/' && <BreadcrumbSchema items={breadcrumbs} />}
+    {html && <div class="prose" set:html={html} />}
+    {page.page_type === 'article_list' && <div class="mt-6"><ArticleList {articles} collection={page.article_category} /></div>}
+    <PageSections sections={page.sections} />
+    {faqs.length > 0 && <div class="mt-14"><FAQ items={faqs} /><FAQSchema items={faqs} /></div>}
+  </div>
+</BaseLayout>

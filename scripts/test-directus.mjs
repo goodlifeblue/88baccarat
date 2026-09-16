@@ -13,6 +13,11 @@ const schema = JSON.parse(await readFile(new URL('../directus/schema.json', impo
 assert.deepEqual(schema.fields.find((field) => field.field === 'created_by').meta.special, ['user-created']);
 assert.deepEqual(schema.fields.find((field) => field.field === 'updated_at').meta.special, ['date-updated']);
 const dir = await mkdtemp(join(tmpdir(), 'baccarat-cms-'));
+const siteSettings = JSON.parse(await readFile(new URL('../directus/seeds/site-settings.json', import.meta.url), 'utf8'));
+siteSettings.footer_description = 'CMS footer description';
+const pages = JSON.parse(await readFile(new URL('../directus/seeds/pages.json', import.meta.url), 'utf8'));
+pages.push({ path: '/campaign/example/', title: 'CMS landing', description: 'CMS landing description', page_type: 'single_page', status: 'published', content: '# Extra H1\n\n## CMS landing section\n\n<script>alert(999)</script>', faq: [], sections: [] });
+pages.push({ ...pages.at(-1), path: '/draft-page/', status: 'draft' });
 const article = {
   id: 'a', slug: 'cms-test', category: 'guide', status: 'published', title: 'CMS H1',
   excerpt: 'CMS description', seo_title: 'Custom SEO title', seo_description: 'Custom SEO description',
@@ -35,6 +40,21 @@ const server = createServer((req, res) => {
   assert.equal(req.headers.authorization, 'Bearer test-build-token');
   res.setHeader('Content-Type', 'application/json');
   if (fail) { res.writeHead(503); res.end('{}'); return; }
+  if (url.pathname === '/items/site_settings') { res.end(JSON.stringify({ data: siteSettings })); return; }
+  if (url.pathname === '/items/pages') {
+    assert.equal(url.searchParams.get('filter[status][_eq]'), 'published');
+    res.end(JSON.stringify({ data: pages })); return;
+  }
+  if (url.pathname === '/items/navbar_settings') { res.end(JSON.stringify({ data: { brand_label: 'CMS Brand', brand_symbol: '♠', brand_href: '/' } })); return; }
+  if (url.pathname === '/items/navigation') {
+    assert.equal(url.searchParams.get('filter[status][_eq]'), 'published');
+    assert.equal(url.searchParams.get('sort'), 'sort,id');
+    res.end(JSON.stringify({ data: [
+      { id: 'nav1', label: 'CMS Menu', href: '/old-manual-link/', link_type: 'page', page: { path: '/guide/cms-test/', status: 'published' }, status: 'published', open_in_new_tab: true },
+      { id: 'nav2', label: 'Hidden draft menu', href: '/draft-menu/', status: 'draft' },
+    ] })); return;
+  }
+  if (url.pathname === '/items/redirects') { res.end(JSON.stringify({data:[{old_path:'/old-guide/',new_path:'/guide/cms-test/',status_code:301,enabled:true}]})); return; }
   const category = url.searchParams.get('filter[category][_eq]');
   const offset = Number(url.searchParams.get('offset'));
   // Return a full first page to verify pagination; the second page contains the real article.
@@ -59,7 +79,19 @@ async function build() {
 try {
   const result = await build();
   assert.equal(result.code, 0, result.output);
+  assert.match(await readFile(join(dir, '_redirects'), 'utf8'), /\/old-guide\/ \/guide\/cms-test\/ 301/);
   const html = await readFile(join(dir, 'guide/cms-test/index.html'), 'utf8');
+  assert.ok(html.includes('CMS Brand'));
+  assert.ok(html.includes('CMS Menu'));
+  assert.ok(html.includes('CMS footer description'));
+  assert.ok(!html.includes('/old-manual-link/'));
+  assert.ok(!html.includes('Hidden draft menu'));
+  assert.match(html, /href="\/guide\/cms-test\/"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/);
+  const landing = await readFile(join(dir, 'campaign/example/index.html'), 'utf8');
+  assert.equal((landing.match(/<h1\b/g) || []).length, 1);
+  assert.match(landing, /CMS landing section/);
+  assert.ok(!landing.includes('<script>alert(999)'));
+  await assert.rejects(readFile(join(dir, 'draft-page/index.html'), 'utf8'));
   assert.ok(html.includes(`http://127.0.0.1:${server.address().port}/assets/${article.cover_image}?width=800`));
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   for (const pattern of [/<h2[^>]*>Section two/, /<h3[^>]*>Section three/, /<table>/, /alt="Example alt"/, /<title>Custom SEO title<\/title>/, /content="Custom SEO description"/, /href="\/tips\/related-test\/"/, /2026-02-01T00:00:00.000Z/]) assert.match(html, pattern);

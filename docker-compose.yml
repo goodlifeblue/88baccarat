@@ -14,3 +14,4 @@ services:
       - ./directus/database:/directus/database
       - ./directus/uploads:/directus/uploads
       - ./directus/extensions:/directus/extensions
+      - ./directus/hooks/redirects:/directus/extensions/directus-extension-article-redirects:ro

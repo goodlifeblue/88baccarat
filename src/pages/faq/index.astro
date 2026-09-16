@@ -1,4 +1,0 @@
----
-import PageLayout from '../../layouts/PageLayout.astro'; import FAQ from '../../components/FAQ.astro'; import FAQSchema from '../../components/seo/FAQSchema.astro'; import { getCollection } from 'astro:content'; const names = ['baccarat','strategy','guide','tips','comparison','faq'] as const; const entries = (await Promise.all(names.map((name) => getCollection(name)))).flat(); const items = entries.flatMap((entry) => entry.data.faq);
----
-<PageLayout title="百家樂常見問題" description="整理新手最常遇到的百家樂規則、策略與風險管理問題。" breadcrumbs={[{label:'FAQ'}]}><FAQ {items} /><FAQSchema {items} /></PageLayout>

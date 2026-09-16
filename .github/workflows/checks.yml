@@ -1,0 +1,33 @@
+name: Pull request checks
+on:
+  pull_request:
+    branches: [develop, main]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: local
+      CONTENT_SOURCE: local
+      SITE_URL: http://localhost:4321
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm install --global npm@10.9.8
+      - run: npm ci
+      - run: npm run test:release
+      - run: npm run test:navigation
+      - run: npm run test:pages
+      - run: node scripts/test-directus-assets.mjs
+      - run: node scripts/test-redirects.mjs
+      - run: npm run test:directus
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr-seo-report
+          path: .artifacts/seo-report.json

@@ -9,7 +9,7 @@
   "packageManager": "npm@10.9.8",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && npm run seo-check",
     "preview": "astro preview",
     "directus:start": "docker compose up -d",
     "directus:stop": "docker compose down",
@@ -17,10 +17,18 @@
     "directus:logs": "docker compose logs -f directus",
     "directus:setup": "node directus/setup.mjs",
     "directus:import": "node directus/import.mjs",
-    "test:directus": "node scripts/test-directus.mjs"
+    "directus:import-navigation": "node directus/import-navigation.mjs",
+    "directus:import-site": "node directus/import-site.mjs",
+    "test:directus": "node scripts/test-directus.mjs",
+    "test:navigation": "node --test scripts/navigation.test.mjs",
+    "test:pages": "node --test scripts/pages.test.mjs",
+    "seo-check": "node scripts/seo-check.mjs",
+    "test:release": "node --test scripts/release-guards.test.mjs",
+    "backup:local": "node scripts/backup-local.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
+    "@astrojs/markdown-remark": "6.3.11",
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.4.1",
@@ -28,13 +36,14 @@
     "astro": "^5.13.5",
     "dotenv": "^16.3.1",
     "gsap": "^3.15.0",
-    "typescript": "^5.9.2",
-    "@astrojs/markdown-remark": "6.3.11"
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
     "daisyui": "^5.7.22",
+    "fast-xml-parser": "5.11.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.3.0",
+    "parse5": "7.3.0",
     "prettier": "^3.9.6"
   }
 }

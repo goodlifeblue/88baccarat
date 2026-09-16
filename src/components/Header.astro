@@ -1,12 +1,13 @@
 ---
-import { navigation } from '../data/navigation';
+import { getNavigation } from '../data/navigation';
+const { items: navigation, brand } = await getNavigation();
 ---
 
 <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur-xl">
   <div class="container flex min-h-16 items-center justify-between gap-6">
     <!-- Logo -->
-    <a href="/" class="shrink-0 text-lg font-extrabold text-white transition-colors hover:text-red-400" aria-label="百家樂攻略誌首頁">
-      ♠ <span class="hidden sm:inline">百家樂攻略誌</span>
+    <a href={brand.brand_href} class="shrink-0 text-lg font-extrabold text-white transition-colors hover:text-red-400" aria-label={brand.brand_label}>
+      {brand.brand_symbol} <span class="sm:inline">{brand.brand_label}</span>
     </a>
 
     <!-- Desktop Navigation - Full Display -->
@@ -17,6 +18,8 @@ import { navigation } from '../data/navigation';
             <a
               class="text-sm font-medium text-slate-300 transition-colors hover:text-red-400"
               href={item.href}
+              target={item.open_in_new_tab ? '_blank' : undefined}
+              rel={item.open_in_new_tab ? 'noopener noreferrer' : undefined}
             >
               {item.label}
             </a>
@@ -51,6 +54,8 @@ import { navigation } from '../data/navigation';
           <a
             class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-red-600/20 hover:text-red-400"
             href={item.href}
+            target={item.open_in_new_tab ? '_blank' : undefined}
+            rel={item.open_in_new_tab ? 'noopener noreferrer' : undefined}
           >
             {item.label}
           </a>

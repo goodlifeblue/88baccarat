@@ -1,0 +1,8 @@
+# Configure in protected GitHub Environment "production" only.
+APP_ENV=production
+CONTENT_SOURCE=directus
+SITE_URL=https://REPLACE_WITH_PRODUCTION_SITE
+DIRECTUS_URL=https://REPLACE_WITH_PRODUCTION_CMS
+# Environment Secrets: DIRECTUS_API_TOKEN, CLOUDFLARE_API_TOKEN
+# Environment Variable: CLOUDFLARE_ACCOUNT_ID
+# URLs must match config/deployment.json. No production write credentials on Mac.

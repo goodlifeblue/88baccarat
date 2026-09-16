@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleList from './ArticleList.astro';
+import { getSite } from '../data/site';
+import { renderPageMarkdown } from '../lib/page-markdown.mjs';
+const { sections = [] } = Astro.props;
+const site = await getSite();
+const names = ['baccarat', 'strategy', 'guide', 'tips', 'comparison'] as const;
+const all = sections.some((section: any) => section.type === 'articles')
+  ? (await Promise.all(names.map(name => getCollection(name)))).flat().sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()) : [];
+const prepared = await Promise.all(sections.map(async (section: any) => ({
+  ...section,
+  html: await renderPageMarkdown(section.content),
+  cards: await Promise.all((section.cards || []).map(async (card: any) => ({ ...card, html: await renderPageMarkdown(card.content) }))),
+  articles: all.filter(article => (!section.category || section.category === 'all' || article.collection === section.category) && (!section.featured || article.data.featured)).slice(0, section.limit || 3),
+})));
+---
+{prepared.map((section: any) => (
+  <section class={section.type === 'cards' ? 'card px-5 py-10 sm:px-10 sm:py-14 mt-14' : 'mt-14'} aria-labelledby={section.title ? section.anchor : undefined}>
+    <div class="flex items-baseline justify-between gap-4">
+      <div>
+        {section.eyebrow && <p class="text-sm font-semibold uppercase tracking-[0.2em] text-red-400">{section.eyebrow}</p>}
+        {section.title && <h2 id={section.anchor}>{section.title}</h2>}
+        {section.description && <p class="mt-2 text-slate-400">{section.description}</p>}
+      </div>
+      {section.link_href && <a class={section.type === 'cta' ? 'button' : 'text-sm font-semibold text-red-400 hover:text-red-300'} href={section.link_href}>{section.link_label}</a>}
+    </div>
+    {section.type === 'articles' && <div class="mt-6"><ArticleList articles={section.articles} collection={section.category} /></div>}
+    {section.type === 'categories' && <div class="category-marquee mt-6" tabindex="0" aria-label={section.title}><div class="category-marquee__track">
+      <div class="category-marquee__group">{site.categories.map(category => <a class="category-chip" href={category.href}><img class="h-5 w-5 object-contain" src={category.icon} alt="" aria-hidden="true" /><span>{category.title}</span></a>)}</div>
+      <div class="category-marquee__group" aria-hidden="true">{site.categories.map(category => <a class="category-chip" href={category.href} tabindex="-1"><img class="h-5 w-5 object-contain" src={category.icon} alt="" aria-hidden="true" /><span>{category.title}</span></a>)}</div>
+    </div></div>}
+    {section.type === 'cards' && <div class="mt-10 grid gap-6 lg:grid-cols-2">{section.cards.map((card: any) => <article class="card p-6 sm:p-9"><h3>{card.title}</h3><div class="prose mt-7" set:html={card.html} /></article>)}</div>}
+    {section.html && <div class="prose mt-6" set:html={section.html} />}
+  </section>
+))}

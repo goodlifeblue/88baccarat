@@ -10,7 +10,7 @@
         "hidden": false,
         "singleton": false,
         "translatable": false,
-        "versioning": false,
+        "versioning": true,
         "sort": 1
       },
       "schema": {
@@ -22,6 +22,90 @@
       "schema": {},
       "meta": {
         "hidden": true
+      }
+    },
+    {
+      "collection": "redirects",
+      "schema": {},
+      "meta": {
+        "icon": "alt_route",
+        "note": "網站 301 規則，建置並上傳 dist 後生效",
+        "display_template": "{{old_path}} → {{new_path}}",
+        "sort": 3
+      }
+    },
+    {
+      "collection": "navigation",
+      "schema": {},
+      "meta": {
+        "icon": "menu",
+        "singleton": false,
+        "versioning": true,
+        "display_template": "{{label}}",
+        "sort": 4,
+        "sort_field": "sort",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "導覽項目"
+          }
+        ],
+        "note": "修改後需重新建置與部署才會更新靜態網站。"
+      }
+    },
+    {
+      "collection": "navbar_settings",
+      "schema": {},
+      "meta": {
+        "icon": "web",
+        "singleton": true,
+        "versioning": true,
+        "display_template": "{{brand_label}}",
+        "sort": 5,
+        "sort_field": null,
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "導覽列設定"
+          }
+        ],
+        "note": "修改後需重新建置與部署才會更新靜態網站。"
+      }
+    },
+    {
+      "collection": "pages",
+      "schema": {},
+      "meta": {
+        "icon": "web",
+        "singleton": false,
+        "versioning": true,
+        "display_template": "{{title}}",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "頁面管理"
+          }
+        ],
+        "sort": 6,
+        "note": "內容修改後需建置、檢查與部署，才會更新靜態網站。"
+      }
+    },
+    {
+      "collection": "site_settings",
+      "schema": {},
+      "meta": {
+        "icon": "settings",
+        "singleton": true,
+        "versioning": true,
+        "display_template": "{{name}}",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "網站全域設定"
+          }
+        ],
+        "sort": 7,
+        "note": "內容修改後需建置、檢查與部署，才會更新靜態網站。"
       }
     }
   ],
@@ -553,6 +637,1543 @@
         "note": "Directus 自動記錄建立者",
         "sort": 23
       }
+    },
+    {
+      "collection": "redirects",
+      "field": "id",
+      "type": "uuid",
+      "schema": {
+        "is_primary_key": true,
+        "is_nullable": false
+      },
+      "meta": {
+        "special": [
+          "uuid"
+        ],
+        "hidden": true,
+        "readonly": true
+      }
+    },
+    {
+      "collection": "redirects",
+      "field": "old_path",
+      "type": "string",
+      "schema": {
+        "is_nullable": false,
+        "is_unique": true
+      },
+      "meta": {
+        "interface": "input",
+        "required": true,
+        "note": "舊路徑，例如 /guide/old/"
+      }
+    },
+    {
+      "collection": "redirects",
+      "field": "new_path",
+      "type": "string",
+      "schema": {
+        "is_nullable": false
+      },
+      "meta": {
+        "interface": "input",
+        "required": true,
+        "note": "新路徑，例如 /guide/new/"
+      }
+    },
+    {
+      "collection": "redirects",
+      "field": "status_code",
+      "type": "integer",
+      "schema": {
+        "is_nullable": false,
+        "default_value": 301
+      },
+      "meta": {
+        "interface": "input",
+        "readonly": true
+      }
+    },
+    {
+      "collection": "redirects",
+      "field": "enabled",
+      "type": "boolean",
+      "schema": {
+        "is_nullable": false,
+        "default_value": true
+      },
+      "meta": {
+        "interface": "boolean",
+        "special": [
+          "cast-boolean"
+        ]
+      }
+    },
+    {
+      "collection": "navigation",
+      "field": "id",
+      "type": "uuid",
+      "meta": {
+        "interface": "input",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "ID"
+          }
+        ],
+        "special": [
+          "uuid"
+        ],
+        "hidden": true,
+        "readonly": true
+      },
+      "schema": {
+        "is_primary_key": true,
+        "is_nullable": false
+      }
+    },
+    {
+      "collection": "navigation",
+      "field": "label",
+      "type": "string",
+      "meta": {
+        "interface": "input",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "選單文字"
+          }
+        ],
+        "required": true
+      },
+      "schema": {
+        "is_nullable": false
+      }
+    },
+    {
+      "collection": "navigation",
+      "field": "href",
+      "type": "string",
+      "meta": {
+        "interface": "input",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "連結網址"
+          }
+        ],
+        "required": false,
+        "note": "連結類型為自訂網址時填寫。Directus 頁面連結會自動使用所選頁面網址。"
+      },
+      "schema": {
+        "is_nullable": true
+      }
+    },
+    {
+      "collection": "navigation",
+      "field": "sort",
+      "type": "integer",
+      "meta": {
+        "interface": "input",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "排序"
+          }
+        ]
+      },
+      "schema": {
+        "default_value": 0,
+        "is_nullable": false
+      }
+    },
+    {
+      "collection": "navigation",
+      "field": "status",
+      "type": "string",
+      "meta": {
+        "interface": "select-dropdown",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "發布狀態"
+          }
+        ],
+        "options": {
+          "choices": [
+            {
+              "text": "草稿",
+              "value": "draft"
+            },
+            {
+              "text": "待審核",
+              "value": "review"
+            },
+            {
+              "text": "已發布",
+              "value": "published"
+            },
+            {
+              "text": "已停用",
+              "value": "archived"
+            }
+          ]
+        }
+      },
+      "schema": {
+        "default_value": "draft",
+        "is_nullable": false
+      }
+    },
+    {
+      "collection": "navigation",
+      "field": "open_in_new_tab",
+      "type": "boolean",
+      "meta": {
+        "interface": "boolean",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "另開分頁"
+          }
+        ],
+        "special": [
+          "cast-boolean"
+        ]
+      },
+      "schema": {
+        "default_value": false,
+        "is_nullable": false
+      }
+    },
+    {
+      "collection": "navbar_settings",
+      "field": "id",
+      "type": "uuid",
+      "meta": {
+        "interface": "input",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "ID"
+          }
+        ],
+        "special": [
+          "uuid"
+        ],
+        "hidden": true,
+        "readonly": true
+      },
+      "schema": {
+        "is_primary_key": true,
+        "is_nullable": false
+      }
+    },
+    {
+      "collection": "navbar_settings",
+      "field": "brand_label",
+      "type": "string",
+      "meta": {
+        "interface": "input",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "品牌名稱"
+          }
+        ],
+        "required": true
+      },
+      "schema": {
+        "is_nullable": false,
+        "default_value": "百家樂攻略誌"
+      }
+    },
+    {
+      "collection": "navbar_settings",
+      "field": "brand_symbol",
+      "type": "string",
+      "meta": {
+        "interface": "input",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "品牌符號"
+          }
+        ],
+        "required": false
+      },
+      "schema": {
+        "is_nullable": true,
+        "default_value": "♠"
+      }
+    },
+    {
+      "collection": "navbar_settings",
+      "field": "brand_href",
+      "type": "string",
+      "meta": {
+        "interface": "input",
+        "width": "full",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "品牌連結"
+          }
+        ],
+        "required": true
+      },
+      "schema": {
+        "is_nullable": false,
+        "default_value": "/"
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "id",
+      "type": "uuid",
+      "schema": {
+        "is_primary_key": true,
+        "is_nullable": false
+      },
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "id"
+          }
+        ],
+        "hidden": true,
+        "readonly": true,
+        "special": [
+          "uuid"
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "title",
+      "type": "string",
+      "schema": {
+        "is_nullable": false
+      },
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "頁面標題 / H1"
+          }
+        ],
+        "required": true
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "path",
+      "type": "string",
+      "schema": {
+        "is_unique": true,
+        "is_nullable": false
+      },
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "頁面網址"
+          }
+        ],
+        "required": true,
+        "note": "首頁使用 /；其餘 /roadmap/。已發布網址變更需另建 301。"
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "page_type",
+      "type": "string",
+      "schema": {
+        "default_value": "single_page",
+        "is_nullable": false
+      },
+      "meta": {
+        "interface": "select-dropdown",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "Page Type"
+          }
+        ],
+        "options": {
+          "choices": [
+            {
+              "text": "Single Page（一頁式）",
+              "value": "single_page"
+            },
+            {
+              "text": "Article List（文章列表）",
+              "value": "article_list"
+            },
+            {
+              "text": "Custom Page（特殊頁）",
+              "value": "custom_page"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "status",
+      "type": "string",
+      "schema": {
+        "default_value": "draft",
+        "is_nullable": false
+      },
+      "meta": {
+        "interface": "select-dropdown",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "發布狀態"
+          }
+        ],
+        "options": {
+          "choices": [
+            {
+              "text": "草稿",
+              "value": "draft"
+            },
+            {
+              "text": "待審核",
+              "value": "review"
+            },
+            {
+              "text": "已發布",
+              "value": "published"
+            },
+            {
+              "text": "已停用",
+              "value": "archived"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "description",
+      "type": "text",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "頁面摘要"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "breadcrumb_label",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "麵包屑名稱"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "seo_title",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "SEO Title"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "seo_description",
+      "type": "text",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "Meta Description"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "hero_badge",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "Banner 標籤"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "hero_description",
+      "type": "text",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "Banner 說明"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "hero_button_label",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "Banner 按鈕文字"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "hero_button_href",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "Banner 按鈕連結"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "content",
+      "type": "text",
+      "schema": {},
+      "meta": {
+        "interface": "input-rich-text-md",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "頁面內容（Markdown）"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "article_category",
+      "type": "string",
+      "schema": {
+        "default_value": "all"
+      },
+      "meta": {
+        "interface": "select-dropdown",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "文章分類"
+          }
+        ],
+        "options": {
+          "choices": [
+            {
+              "text": "all",
+              "value": "all"
+            },
+            {
+              "text": "baccarat",
+              "value": "baccarat"
+            },
+            {
+              "text": "strategy",
+              "value": "strategy"
+            },
+            {
+              "text": "guide",
+              "value": "guide"
+            },
+            {
+              "text": "tips",
+              "value": "tips"
+            },
+            {
+              "text": "comparison",
+              "value": "comparison"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "custom_template",
+      "type": "string",
+      "schema": {
+        "default_value": "standard"
+      },
+      "meta": {
+        "interface": "select-dropdown",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "特殊頁版型"
+          }
+        ],
+        "options": {
+          "choices": [
+            {
+              "text": "內容區塊",
+              "value": "standard"
+            },
+            {
+              "text": "首頁 Banner＋內容區塊",
+              "value": "home"
+            },
+            {
+              "text": "彙整所有文章 FAQ",
+              "value": "faq"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "hero_video",
+      "type": "uuid",
+      "schema": {},
+      "meta": {
+        "interface": "file",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "Banner 影片"
+          }
+        ],
+        "special": [
+          "file"
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "hero_image",
+      "type": "uuid",
+      "schema": {},
+      "meta": {
+        "interface": "file-image",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "Banner 圖片"
+          }
+        ],
+        "special": [
+          "file"
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "faq",
+      "type": "json",
+      "schema": {
+        "is_nullable": true
+      },
+      "meta": {
+        "interface": "list",
+        "note": "文章末尾 FAQ；同時產生 FAQ Schema",
+        "sort": 15,
+        "special": [
+          "cast-json"
+        ],
+        "options": {
+          "fields": [
+            {
+              "field": "question",
+              "name": "問題",
+              "type": "text",
+              "meta": {
+                "interface": "input",
+                "required": true
+              }
+            },
+            {
+              "field": "answer",
+              "name": "答案",
+              "type": "text",
+              "meta": {
+                "interface": "input-multiline",
+                "required": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "collection": "pages",
+      "field": "sections",
+      "type": "json",
+      "schema": {},
+      "meta": {
+        "interface": "list",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "內容區塊（可排序）"
+          }
+        ],
+        "options": {
+          "template": "{{title}} · {{type}}",
+          "fields": [
+            {
+              "field": "type",
+              "name": "區塊類型",
+              "type": "string",
+              "meta": {
+                "interface": "select-dropdown",
+                "options": {
+                  "choices": [
+                    {
+                      "text": "文字內容",
+                      "value": "markdown"
+                    },
+                    {
+                      "text": "文章卡片",
+                      "value": "articles"
+                    },
+                    {
+                      "text": "分類輪播",
+                      "value": "categories"
+                    },
+                    {
+                      "text": "說明卡片",
+                      "value": "cards"
+                    },
+                    {
+                      "text": "行動按鈕",
+                      "value": "cta"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "field": "anchor",
+              "name": "錨點 ID（英數或連字號）",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "title",
+              "name": "區塊標題",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "description",
+              "name": "區塊說明",
+              "type": "text",
+              "meta": {
+                "interface": "input-multiline"
+              }
+            },
+            {
+              "field": "eyebrow",
+              "name": "上方標籤",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "link_label",
+              "name": "連結文字",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "link_href",
+              "name": "連結網址",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "category",
+              "name": "文章分類",
+              "type": "string",
+              "meta": {
+                "interface": "select-dropdown",
+                "options": {
+                  "choices": [
+                    {
+                      "text": "all",
+                      "value": "all"
+                    },
+                    {
+                      "text": "baccarat",
+                      "value": "baccarat"
+                    },
+                    {
+                      "text": "strategy",
+                      "value": "strategy"
+                    },
+                    {
+                      "text": "guide",
+                      "value": "guide"
+                    },
+                    {
+                      "text": "tips",
+                      "value": "tips"
+                    },
+                    {
+                      "text": "comparison",
+                      "value": "comparison"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "field": "featured",
+              "name": "只顯示精選文章",
+              "type": "boolean",
+              "meta": {
+                "interface": "boolean"
+              }
+            },
+            {
+              "field": "limit",
+              "name": "文章數量",
+              "type": "integer",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "content",
+              "name": "Markdown 內容",
+              "type": "text",
+              "meta": {
+                "interface": "input-rich-text-md"
+              }
+            },
+            {
+              "field": "cards",
+              "name": "說明卡片",
+              "type": "json",
+              "meta": {
+                "interface": "list",
+                "options": {
+                  "template": "{{title}}",
+                  "fields": [
+                    {
+                      "field": "title",
+                      "name": "標題",
+                      "type": "string",
+                      "meta": {
+                        "interface": "input"
+                      }
+                    },
+                    {
+                      "field": "content",
+                      "name": "內容",
+                      "type": "text",
+                      "meta": {
+                        "interface": "input-rich-text-md"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "special": [
+          "cast-json"
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "id",
+      "type": "uuid",
+      "schema": {
+        "is_primary_key": true,
+        "is_nullable": false
+      },
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "id"
+          }
+        ],
+        "hidden": true,
+        "readonly": true,
+        "special": [
+          "uuid"
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "name",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "網站名稱"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "description",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "網站說明"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "organization",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "發行組織"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "locale",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "OG 語系"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "og_image",
+      "type": "uuid",
+      "schema": {},
+      "meta": {
+        "interface": "file-image",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "預設分享圖片"
+          }
+        ],
+        "special": [
+          "file"
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "favicon",
+      "type": "uuid",
+      "schema": {},
+      "meta": {
+        "interface": "file-image",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "網站圖示"
+          }
+        ],
+        "special": [
+          "file"
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "inner_banner",
+      "type": "uuid",
+      "schema": {},
+      "meta": {
+        "interface": "file-image",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "內頁 Banner"
+          }
+        ],
+        "special": [
+          "file"
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "default_cover",
+      "type": "uuid",
+      "schema": {},
+      "meta": {
+        "interface": "file-image",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "預設文章封面"
+          }
+        ],
+        "special": [
+          "file"
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "footer_brand",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "頁尾品牌"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "footer_description",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "頁尾介紹"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "footer_groups",
+      "type": "json",
+      "schema": {},
+      "meta": {
+        "interface": "list",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "頁尾連結群組"
+          }
+        ],
+        "special": [
+          "cast-json"
+        ],
+        "options": {
+          "template": "{{title}}",
+          "fields": [
+            {
+              "field": "title",
+              "name": "群組標題",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "links",
+              "name": "連結",
+              "type": "json",
+              "meta": {
+                "interface": "list",
+                "options": {
+                  "template": "{{label}}",
+                  "fields": [
+                    {
+                      "field": "label",
+                      "name": "連結文字",
+                      "type": "string",
+                      "meta": {
+                        "interface": "input"
+                      }
+                    },
+                    {
+                      "field": "href",
+                      "name": "連結網址",
+                      "type": "string",
+                      "meta": {
+                        "interface": "input"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "footer_disclaimer",
+      "type": "text",
+      "schema": {},
+      "meta": {
+        "interface": "input-multiline",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "免責聲明"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "footer_copyright",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "版權文字"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "not_found_title",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "404 標題"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "not_found_description",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "404 SEO 說明"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "not_found_content",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "404 文案"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "not_found_button",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "404 按鈕"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "cta_title",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "CTA 標題"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "cta_content",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "CTA 文案"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "cta_label",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "CTA 按鈕"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "cta_href",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "CTA 連結"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "categories",
+      "type": "json",
+      "schema": {},
+      "meta": {
+        "interface": "list",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "主題分類"
+          }
+        ],
+        "special": [
+          "cast-json"
+        ],
+        "options": {
+          "template": "{{title}}",
+          "fields": [
+            {
+              "field": "key",
+              "name": "分類代碼（對應既有文章路由）",
+              "type": "string",
+              "meta": {
+                "interface": "select-dropdown",
+                "options": {
+                  "choices": [
+                    {
+                      "text": "baccarat",
+                      "value": "baccarat"
+                    },
+                    {
+                      "text": "strategy",
+                      "value": "strategy"
+                    },
+                    {
+                      "text": "guide",
+                      "value": "guide"
+                    },
+                    {
+                      "text": "tips",
+                      "value": "tips"
+                    },
+                    {
+                      "text": "comparison",
+                      "value": "comparison"
+                    },
+                    {
+                      "text": "faq",
+                      "value": "faq"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "field": "title",
+              "name": "分類名稱",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "description",
+              "name": "說明",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "href",
+              "name": "網址",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            },
+            {
+              "field": "icon",
+              "name": "圖示 File ID 或 /assets/ 路徑",
+              "type": "string",
+              "meta": {
+                "interface": "input"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "ui_home",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "首頁標籤"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "ui_faq",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "FAQ 標籤"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "ui_related",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "延伸閱讀標籤"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "ui_toc",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "目錄標籤"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "ui_read_article",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "閱讀文章標籤"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "site_settings",
+      "field": "ui_updated",
+      "type": "string",
+      "schema": {},
+      "meta": {
+        "interface": "input",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "更新時間標籤"
+          }
+        ]
+      }
+    },
+    {
+      "collection": "navigation",
+      "field": "link_type",
+      "type": "string",
+      "schema": {
+        "default_value": "url",
+        "is_nullable": false
+      },
+      "meta": {
+        "interface": "select-dropdown",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "連結類型"
+          }
+        ],
+        "options": {
+          "choices": [
+            {
+              "text": "Directus 頁面",
+              "value": "page"
+            },
+            {
+              "text": "自訂網址",
+              "value": "url"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "collection": "navigation",
+      "field": "page",
+      "type": "uuid",
+      "schema": {},
+      "meta": {
+        "interface": "select-dropdown-m2o",
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "連結頁面"
+          }
+        ],
+        "special": [
+          "m2o"
+        ],
+        "options": {
+          "template": "{{title}} · {{page_type}} · {{path}}"
+        }
+      }
     }
   ],
   "relations": [
@@ -593,6 +2214,69 @@
       "collection": "articles",
       "field": "created_by",
       "related_collection": "directus_users",
+      "schema": {
+        "on_delete": "SET NULL"
+      },
+      "meta": {}
+    },
+    {
+      "collection": "pages",
+      "field": "hero_video",
+      "related_collection": "directus_files",
+      "schema": {
+        "on_delete": "SET NULL"
+      },
+      "meta": {}
+    },
+    {
+      "collection": "pages",
+      "field": "hero_image",
+      "related_collection": "directus_files",
+      "schema": {
+        "on_delete": "SET NULL"
+      },
+      "meta": {}
+    },
+    {
+      "collection": "site_settings",
+      "field": "og_image",
+      "related_collection": "directus_files",
+      "schema": {
+        "on_delete": "SET NULL"
+      },
+      "meta": {}
+    },
+    {
+      "collection": "site_settings",
+      "field": "favicon",
+      "related_collection": "directus_files",
+      "schema": {
+        "on_delete": "SET NULL"
+      },
+      "meta": {}
+    },
+    {
+      "collection": "site_settings",
+      "field": "inner_banner",
+      "related_collection": "directus_files",
+      "schema": {
+        "on_delete": "SET NULL"
+      },
+      "meta": {}
+    },
+    {
+      "collection": "site_settings",
+      "field": "default_cover",
+      "related_collection": "directus_files",
+      "schema": {
+        "on_delete": "SET NULL"
+      },
+      "meta": {}
+    },
+    {
+      "collection": "navigation",
+      "field": "page",
+      "related_collection": "pages",
       "schema": {
         "on_delete": "SET NULL"
       },

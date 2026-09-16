@@ -146,5 +146,269 @@
         }
       }
     }
+  },
+  {
+    "collection": "navigation",
+    "action": "read",
+    "fields": [
+      "*"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "navigation",
+    "action": "create",
+    "fields": [
+      "label",
+      "href",
+      "sort",
+      "status",
+      "open_in_new_tab",
+      "link_type",
+      "page"
+    ],
+    "permissions": {},
+    "validation": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    },
+    "presets": {
+      "status": "draft"
+    }
+  },
+  {
+    "collection": "navigation",
+    "action": "update",
+    "fields": [
+      "label",
+      "href",
+      "sort",
+      "status",
+      "open_in_new_tab",
+      "link_type",
+      "page"
+    ],
+    "permissions": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    },
+    "validation": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    }
+  },
+  {
+    "collection": "navigation",
+    "action": "delete",
+    "fields": [
+      "label",
+      "href",
+      "sort",
+      "status",
+      "open_in_new_tab",
+      "link_type",
+      "page"
+    ],
+    "permissions": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    }
+  },
+  {
+    "collection": "navbar_settings",
+    "action": "read",
+    "fields": [
+      "id",
+      "brand_label",
+      "brand_symbol",
+      "brand_href"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "navbar_settings",
+    "action": "update",
+    "fields": [
+      "brand_label",
+      "brand_symbol",
+      "brand_href"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "pages",
+    "action": "read",
+    "fields": [
+      "*"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "pages",
+    "action": "create",
+    "fields": [
+      "title",
+      "path",
+      "page_type",
+      "status",
+      "description",
+      "breadcrumb_label",
+      "seo_title",
+      "seo_description",
+      "hero_badge",
+      "hero_description",
+      "hero_button_label",
+      "hero_button_href",
+      "content",
+      "article_category",
+      "custom_template",
+      "hero_video",
+      "hero_image",
+      "faq",
+      "sections"
+    ],
+    "permissions": {},
+    "validation": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    },
+    "presets": {
+      "status": "draft"
+    }
+  },
+  {
+    "collection": "pages",
+    "action": "update",
+    "fields": [
+      "title",
+      "page_type",
+      "status",
+      "description",
+      "breadcrumb_label",
+      "seo_title",
+      "seo_description",
+      "hero_badge",
+      "hero_description",
+      "hero_button_label",
+      "hero_button_href",
+      "content",
+      "article_category",
+      "custom_template",
+      "hero_video",
+      "hero_image",
+      "faq",
+      "sections"
+    ],
+    "permissions": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    },
+    "validation": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    }
+  },
+  {
+    "collection": "pages",
+    "action": "delete",
+    "fields": [
+      "title",
+      "page_type",
+      "status",
+      "description",
+      "breadcrumb_label",
+      "seo_title",
+      "seo_description",
+      "hero_badge",
+      "hero_description",
+      "hero_button_label",
+      "hero_button_href",
+      "content",
+      "article_category",
+      "custom_template",
+      "hero_video",
+      "hero_image",
+      "faq",
+      "sections"
+    ],
+    "permissions": {
+      "status": {
+        "_in": [
+          "draft",
+          "review"
+        ]
+      }
+    }
+  },
+  {
+    "collection": "site_settings",
+    "action": "read",
+    "fields": [
+      "*"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "site_settings",
+    "action": "update",
+    "fields": [
+      "name",
+      "description",
+      "organization",
+      "locale",
+      "og_image",
+      "favicon",
+      "inner_banner",
+      "default_cover",
+      "footer_brand",
+      "footer_description",
+      "footer_groups",
+      "footer_disclaimer",
+      "footer_copyright",
+      "not_found_title",
+      "not_found_description",
+      "not_found_content",
+      "not_found_button",
+      "cta_title",
+      "cta_content",
+      "cta_label",
+      "cta_href",
+      "categories",
+      "ui_home",
+      "ui_faq",
+      "ui_related",
+      "ui_toc",
+      "ui_read_article",
+      "ui_updated"
+    ],
+    "permissions": {}
   }
 ]

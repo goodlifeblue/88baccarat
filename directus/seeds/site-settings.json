@@ -1,0 +1,129 @@
+{
+  "name": "百家樂攻略誌",
+  "description": "百家樂玩法、規則、策略與資金管理的實用指南。",
+  "organization": "百家樂攻略誌編輯部",
+  "locale": "zh_TW",
+  "og_image": "/og-image.svg",
+  "favicon": "/favicon.svg",
+  "inner_banner": "/images/inner-banner-baccarat.jpg",
+  "default_cover": "/images/xx.png",
+  "footer_brand": "♠ 百家樂攻略誌",
+  "footer_description": "以規則、機率與風險意識為基礎，提供系統化的百家樂教育內容與分析工具。",
+  "footer_groups": [
+    {
+      "title": "快速入門",
+      "links": [
+        {
+          "label": "首頁",
+          "href": "/"
+        },
+        {
+          "label": "百家樂入門",
+          "href": "/guide/"
+        },
+        {
+          "label": "牌路教學",
+          "href": "/roadmap/"
+        },
+        {
+          "label": "分析方法",
+          "href": "/analysis/"
+        }
+      ]
+    },
+    {
+      "title": "知識中心",
+      "links": [
+        {
+          "label": "分析工具",
+          "href": "/tools/"
+        },
+        {
+          "label": "使用教學",
+          "href": "/tutorial/"
+        },
+        {
+          "label": "百家樂知識",
+          "href": "/articles/"
+        },
+        {
+          "label": "FAQ",
+          "href": "/faq/"
+        }
+      ]
+    },
+    {
+      "title": "相關資源",
+      "links": [
+        {
+          "label": "首頁",
+          "href": "/"
+        },
+        {
+          "label": "常見問題",
+          "href": "/faq/"
+        }
+      ]
+    }
+  ],
+  "footer_disclaimer": "免責聲明：本網站提供的所有內容僅供教育、娛樂與參考之用，不構成任何投資建議或保證。百家樂是機運遊戲，任何策略都無法改變個別牌局的結果。請理性遊戲、負責任消費。",
+  "footer_copyright": "百家樂攻略誌。保留所有權利。",
+  "not_found_title": "找不到這個頁面",
+  "not_found_description": "此頁面不存在或已移動。",
+  "not_found_content": "你可以回到首頁，繼續探索百家樂知識。",
+  "not_found_button": "回到首頁",
+  "cta_title": "建立理性的百家樂觀念",
+  "cta_content": "從規則、機率與資金界線開始，讓每一個選擇都有根據。",
+  "cta_label": "閱讀新手指南",
+  "cta_href": "/guide/",
+  "categories": [
+    {
+      "key": "baccarat",
+      "title": "百家樂",
+      "description": "從玩法與基本規則開始認識遊戲。",
+      "href": "/baccarat/",
+      "icon": "/images/icon.png"
+    },
+    {
+      "key": "strategy",
+      "title": "策略",
+      "description": "建立可執行的下注與紀律框架。",
+      "href": "/strategy/",
+      "icon": "/images/icon02.png"
+    },
+    {
+      "key": "guide",
+      "title": "新手指南",
+      "description": "由淺入深掌握桌面與下注流程。",
+      "href": "/guide/",
+      "icon": "/images/icon03.png"
+    },
+    {
+      "key": "tips",
+      "title": "技巧",
+      "description": "比數、路單與資金管理觀念。",
+      "href": "/tips/",
+      "icon": "/images/icon.png"
+    },
+    {
+      "key": "comparison",
+      "title": "比較",
+      "description": "比較不同下注選項與遊戲方式。",
+      "href": "/comparison/",
+      "icon": "/images/icon02.png"
+    },
+    {
+      "key": "faq",
+      "title": "FAQ",
+      "description": "常見百家樂問題快速解答。",
+      "href": "/faq/",
+      "icon": "/images/icon03.png"
+    }
+  ],
+  "ui_home": "首頁",
+  "ui_faq": "常見問題",
+  "ui_related": "延伸閱讀",
+  "ui_toc": "文章目錄",
+  "ui_read_article": "閱讀文章",
+  "ui_updated": "更新："
+}

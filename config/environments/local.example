@@ -1,0 +1,7 @@
+# Copy values to .env for local use. Do not overwrite existing credentials.
+APP_ENV=local
+SITE_URL=http://localhost:4321
+CONTENT_SOURCE=directus
+DIRECTUS_URL=http://localhost:8055
+DIRECTUS_API_TOKEN=
+DIRECTUS_ADMIN_TOKEN=

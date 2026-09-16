@@ -1,0 +1,27 @@
+{
+  "approved": false,
+  "siteUrl": "",
+  "note": "Seeded from local output; compare with the real production URL inventory before approving.",
+  "routes": [
+    "/",
+    "/analysis/",
+    "/articles/",
+    "/baccarat/",
+    "/baccarat/wanfa/",
+    "/case-studies/",
+    "/comparison/",
+    "/comparison/zhuang-xian/",
+    "/faq/",
+    "/guide/",
+    "/guide/guize/",
+    "/roadmap/",
+    "/strategy/",
+    "/strategy/strategy/",
+    "/strategy/zikin-guanli/",
+    "/tips/",
+    "/tips/bishu-fa/",
+    "/tips/ludan-fenxi/",
+    "/tools/",
+    "/tutorial/"
+  ]
+}

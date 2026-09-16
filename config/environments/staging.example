@@ -1,0 +1,8 @@
+# Configure in GitHub Environment "staging", not in the Mac's .env.
+APP_ENV=staging
+CONTENT_SOURCE=directus
+SITE_URL=https://REPLACE_WITH_STAGING_SITE
+DIRECTUS_URL=https://REPLACE_WITH_STAGING_CMS
+# Environment Secrets: DIRECTUS_API_TOKEN, CLOUDFLARE_API_TOKEN
+# Environment Variable: CLOUDFLARE_ACCOUNT_ID
+# URLs must match config/deployment.json. Do not add admin credentials.
