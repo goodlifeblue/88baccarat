@@ -23,7 +23,7 @@ npm run dev
 
 Directus 使用專案專屬 session／refresh Cookie 名稱，避免其他 localhost Directus 覆蓋登入狀態（[官方設定](https://docs.directus.io/self-hosted/config-options)）。舊書籤請更新，後台需重新登入。`DIRECTUS_LEGACY_URLS` 保留舊 8055 素材網址的轉換相容性。
 
-正式站的新流程以 [交付與維護手冊](docs/HANDOVER.md) 為準：Production 僅由受保護 CI 發布，本機 dist 僅供本機/隔離測試使用。
+正式站的新流程以 [交付與維護手冊](HANDOVER.md) 為準：Production 僅由受保護 CI 發布，本機 dist 僅供本機/隔離測試使用。
 
 所有專案指令都在專案根目錄執行：
 
@@ -186,7 +186,7 @@ Compose 會將 DIRECTUS_URL 傳入容器的 PUBLIC_URL，不必另外設定一�
 
 ## 導覽列管理
 
-操作方式見 [導覽管理 SOP](docs/NAVIGATION.md)。
+操作方式見 [導覽管理 SOP](NAVIGATION.md)。
 
 ```sh
 npm run directus:setup              # 建立導覽資料表及補齊權限（本機）

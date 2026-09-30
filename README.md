@@ -10,8 +10,10 @@
 
 ## 指令與操作文件
 
-- [專案指令手冊](COMMANDS.md)：啟動、重啟、匯入、建置、Cloudflare 上傳、測試與常見錯誤。
-- [行銷 CMS 操作文件](MARKETING_CMS.md)：欄位、權限、圖片與 301 規則。
+[完整文件索引](docs/README.md)
+
+- [專案指令手冊](docs/COMMANDS.md)：啟動、重啟、匯入、建置、Cloudflare 上傳、測試與常見錯誤。
+- [行銷 CMS 操作文件](docs/MARKETING_CMS.md)：欄位、權限、圖片與 301 規則。
 
 ## 本機開發
 
@@ -34,7 +36,7 @@ Cloudflare Pages 的建置命令使用 `npm run build`，輸出目錄為 `dist`�
 
 文章模板已支援 Directus，包含 H2/H3、圖片、表格、FAQ、相關文章及自動 SEO Schema。設定 `CONTENT_SOURCE=directus` 後，首頁、列表、文章、FAQ 彙整與 RSS 皆讀取 CMS。
 
-請依 [行銷 CMS 操作文件](MARKETING_CMS.md) 啟動後台、建立欄位並匯入 Markdown。預設 `CONTENT_SOURCE=local` 保留本機開發。
+請依 [行銷 CMS 操作文件](docs/MARKETING_CMS.md) 啟動後台、建立欄位並匯入 Markdown。預設 `CONTENT_SOURCE=local` 保留本機開發。
 
 ## Navbar 內容管理
 
