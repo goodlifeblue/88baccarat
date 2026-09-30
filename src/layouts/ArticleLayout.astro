@@ -11,11 +11,12 @@ const site = await getSite();
 import { getCollection } from "astro:content";
 import InnerBanner from "../components/InnerBanner.astro";
 const labels = Object.fromEntries(site.categories.map(category => [category.key, category.title]));
-const { article, collection, headings, related } = Astro.props as {
+const { article, collection, headings, related, liveRelated = false } = Astro.props as {
     article: any;
     collection: keyof typeof labels;
     headings: any[];
     related: any[];
+    liveRelated?: boolean;
 };
 const categoryLabel = labels[collection];
 const slug = article.id.replace(/\.mdx?$/, "");
@@ -24,7 +25,7 @@ const breadcrumbs = [
     { label: article.data.title },
 ];
 const url = new URL(`/${collection}/${slug}/`, site.url).toString();
-const selected = article.data.relatedArticles || [];
+const selected = liveRelated ? [] : article.data.relatedArticles || [];
 const all = selected.length ? (await Promise.all(
     (['baccarat', 'strategy', 'guide', 'tips', 'comparison'] as const).map((name) => getCollection(name))
 )).flat() : [];

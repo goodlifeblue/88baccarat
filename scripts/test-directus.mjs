@@ -32,6 +32,7 @@ article.content += '\n\n![CMS image](/assets/12345678-1234-1234-1234-123456789ab
 const second = { ...article, id: 'b', slug: 'related-test', category: 'tips', faq: [], related: [] };
 const draft = { ...article, id: 'draft', slug: 'draft-secret', status: 'draft' };
 const review = { ...article, id: 'review', slug: 'review-secret', status: 'review' };
+pages.find(page => page.path === '/').homepage_blocks_enabled = true;
 let fail = false;
 const requests = [];
 const server = createServer((req, res) => {
@@ -41,6 +42,15 @@ const server = createServer((req, res) => {
   res.setHeader('Content-Type', 'application/json');
   if (fail) { res.writeHead(503); res.end('{}'); return; }
   if (url.pathname === '/items/site_settings') { res.end(JSON.stringify({ data: siteSettings })); return; }
+  if (url.pathname === '/items/homepage_blocks') {
+    assert.equal(url.searchParams.get('filter[enabled][_eq]'), 'true');
+    res.end(JSON.stringify({ data: [
+      { id: 'selected', title: 'CMS selected articles', type: 'articles', article_source: 'manual', enabled: true, sort: 1, articles: [
+        { id: 'one', sort: 2, article_id: article }, { id: 'two', sort: 1, article_id: second }, { id: 'draft', sort: 0, article_id: draft },
+      ] },
+      { id: 'hidden', title: 'Hidden homepage block', type: 'articles', article_source: 'manual', enabled: false, articles: [] },
+    ] })); return;
+  }
   if (url.pathname === '/items/pages') {
     assert.equal(url.searchParams.get('filter[status][_eq]'), 'published');
     res.end(JSON.stringify({ data: pages })); return;
@@ -79,6 +89,12 @@ async function build() {
 try {
   const result = await build();
   assert.equal(result.code, 0, result.output);
+  const homepage = await readFile(join(dir, 'index.html'), 'utf8');
+  assert.match(homepage, /CMS selected articles/);
+  const selectedHTML = homepage.slice(homepage.indexOf('data-homepage-block="selected"'));
+  assert.ok(selectedHTML.indexOf('/tips/related-test/') < selectedHTML.indexOf('/guide/cms-test/'));
+  assert.ok(!homepage.includes('Hidden homepage block'));
+  assert.ok(!homepage.includes('draft-secret'));
   assert.match(await readFile(join(dir, '_redirects'), 'utf8'), /\/old-guide\/ \/guide\/cms-test\/ 301/);
   const html = await readFile(join(dir, 'guide/cms-test/index.html'), 'utf8');
   assert.ok(html.includes('CMS Brand'));

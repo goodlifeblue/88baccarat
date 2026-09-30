@@ -1,6 +1,6 @@
 # 導覽列管理
 
-本機 Directus：<http://localhost:8055/admin>。
+本機 Directus：<http://localhost:8088/admin>。
 
 ## 管理選單
 

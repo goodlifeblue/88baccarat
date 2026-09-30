@@ -1,5 +1,28 @@
 # 專案指令手冊
 
+## 本專案固定網址
+
+`npm run dev` 會先檢查 4388。若同一專案已在執行，顯示現有網址並正常結束，不啟動第二份；若是其他或無法確認的程序，報錯且不停止它。身分辨識使用本機 `lsof` 與 `ps`，無法辨識時不會自動終止程序。
+
+需要重啟本專案時，依序執行：
+
+```sh
+npm run dev:stop
+npm run dev
+```
+
+停止指令只處理已確認工作目錄與 Astro 命令屬於本專案的 4388 程序，不停止其他專案或 Directus。一般修改程式由 Astro 自動更新，無須重複啟動。
+
+| 服務 | 網址 | 啟動指令 |
+| --- | --- | --- |
+| Astro 開發站 | http://localhost:4388 | `npm run dev` |
+| 靜態預覽 | http://localhost:4389 | `npm run preview`（先建置） |
+| Directus 後台 | http://localhost:8088/admin | `npm run directus:start` |
+
+本專案不再使用 4321／4322 或主機 8055。Astro 綁定 127.0.0.1 並啟用 strictPort，連接埠被占用會報錯，不會自動換到另一個專案的埠。Docker Compose 專案固定為 `88baccarat`，主機 8088 對應容器內部 8055，沿用本專案的 database／uploads 目錄。
+
+Directus 使用專案專屬 session／refresh Cookie 名稱，避免其他 localhost Directus 覆蓋登入狀態（[官方設定](https://docs.directus.io/self-hosted/config-options)）。舊書籤請更新，後台需重新登入。`DIRECTUS_LEGACY_URLS` 保留舊 8055 素材網址的轉換相容性。
+
 正式站的新流程以 [交付與維護手冊](docs/HANDOVER.md) 為準：Production 僅由受保護 CI 發布，本機 dist 僅供本機/隔離測試使用。
 
 所有專案指令都在專案根目錄執行：
@@ -23,8 +46,8 @@ npm run directus:start
 npm run dev
 ```
 
-- 網站：http://localhost:4321（實際連接埠以終端機輸出為準）
-- Directus：http://localhost:8055
+- 網站：http://localhost:4388（實際連接埠以終端機輸出為準）
+- Directus：http://localhost:8088
 - `npm run dev` 會持續執行；按 `Ctrl+C` 停止，其他指令可另開終端機執行。
 
 ## 安裝依賴
@@ -54,7 +77,7 @@ npm run dev
 | `docker compose ps -a` | 查看容器狀態，包含已停止的容器 |
 | `npm run directus:logs` | 持續查看 Directus 記錄；按 Ctrl+C 結束查看，不會停止服務 |
 | `docker compose logs --tail 50 directus` | 查看最近 50 行記錄 |
-| `curl --fail http://localhost:8055/server/health` | 檢查健康狀態；正常回傳 `{"status":"ok"}` |
+| `curl --fail http://localhost:8088/server/health` | 檢查健康狀態；正常回傳 `{"status":"ok"}` |
 
 資料庫與上傳檔案以資料夾掛載保存，`directus:stop` 不會刪除 `directus/database/`、`directus/uploads/`。修改 .env 的管理員帳密不會自動更改已建立的 Directus 帳號，帳號更新需在後台處理。
 
@@ -140,7 +163,7 @@ npm run build
 | --- | --- |
 | `CONTENT_SOURCE` | local 讀取 Markdown；directus 讀取 CMS |
 | `SITE_URL` | 前台網站正式網址，供 canonical、分享連結等使用 |
-| `DIRECTUS_URL` | CMS 基底網址；本機為 http://localhost:8055 |
+| `DIRECTUS_URL` | CMS 基底網址；本機為 http://localhost:8088 |
 | `DIRECTUS_API_TOKEN` | 網站建置用唯讀 Token，需讀取已發布文章、關聯及已啟用轉址 |
 | `DIRECTUS_ADMIN_TOKEN` | 欄位初始化、匯入及真實後台測試使用的管理員 Token |
 | `DIRECTUS_ADMIN_EMAIL` / `DIRECTUS_ADMIN_PASSWORD` | 第一次建立 Directus 管理員時使用 |
@@ -169,6 +192,13 @@ Compose 會將 DIRECTUS_URL 傳入容器的 PUBLIC_URL，不必另外設定一�
 npm run directus:setup              # 建立導覽資料表及補齊權限（本機）
 npm run directus:import-navigation  # 空集合才匯入原有選單，不覆寫既有內容
 npm run directus:import-site        # 匯入頁面／全域設定／媒體，並關聯導覽
+npm run directus:migrate-hero       # 舊 Hero 轉成第一張輪播，保留既有輪播與開關
 npm run test:navigation             # 連結安全、草稿排除與失敗阻擋測試
 npm run test:pages                  # 頁面類型、路徑、區塊與安全 Markdown
 ```
+
+pages 日期欄位由 `npm run directus:setup` 建立並加入列表。已有本機 SQLite 資料需回填時，執行 `python3 directus/backfill-page-dates.py`，只會將缺少的日期依 Directus 活動紀錄補齊；不改文章或頁面文案，也不連線遠端資料庫。
+
+同一指令也會建立「最後編輯者」欄位及列表顯示。既有本機頁面以 `python3 directus/backfill-page-editors.py` 依活動紀錄回填缺少的編輯者，不變更頁面內容與日期。
+
+Articles 與 Redirects 也顯示建立時間、更新時間與最後編輯者。執行 `npm run directus:setup` 後，可用 `python3 directus/backfill-content-audit.py` 回填有活動紀錄的既有資料；既有日期與編輯者不覆寫。舊自動轉址若沒有活動紀錄，未知日期／編輯者保持空白。再執行 `docker compose restart directus` 啟用新版轉址觸發器，後續文章改網址會同步記錄轉址日期與操作帳號。

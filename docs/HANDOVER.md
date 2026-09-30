@@ -25,7 +25,7 @@
 
 | 環境 | APP_ENV | CMS/資料 | 索引 | 更新方式 |
 | --- | --- | --- | --- | --- |
-| Local | local（預設） | localhost:8055，獨立資料 | noindex + Disallow | npm run dev／build |
+| Local | local（預設） | localhost:8088，獨立資料 | noindex + Disallow | npm run dev／build |
 | Staging | staging | 獨立遠端 CMS/DB/uploads/帳號 | noindex + X-Robots-Tag + Access | develop CI |
 | Production | production | 正式專用 CMS/DB/uploads/帳號 | 可索引；核准例外除外 | main + 審核後 CI |
 

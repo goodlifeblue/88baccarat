@@ -125,5 +125,23 @@
   "ui_related": "延伸閱讀",
   "ui_toc": "文章目錄",
   "ui_read_article": "閱讀文章",
-  "ui_updated": "更新："
+  "ui_updated": "更新：",
+  "floating_enabled": true,
+  "back_to_top_enabled": true,
+  "floating_buttons": [
+    {
+      "label": "LINE",
+      "icon": "line",
+      "href": "",
+      "enabled": false,
+      "new_tab": true
+    },
+    {
+      "label": "Telegram",
+      "icon": "telegram",
+      "href": "",
+      "enabled": false,
+      "new_tab": true
+    }
+  ]
 }

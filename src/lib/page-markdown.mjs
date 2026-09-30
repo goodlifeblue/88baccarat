@@ -7,6 +7,9 @@ let cached;
 let cachedKey;
 export async function renderPageMarkdown(content) {
   if (!content) return '';
+  return (await renderCMSMarkdown(content)).code;
+}
+export async function renderCMSMarkdown(content) {
   const env = readEnvironment();
   const key = JSON.stringify([env.CONTENT_SOURCE, env.DIRECTUS_URL, env.DIRECTUS_LEGACY_URLS]);
   if (key !== cachedKey) {
@@ -17,5 +20,5 @@ export async function renderPageMarkdown(content) {
     ] });
   }
   const processor = await cached;
-  return (await processor.render(content)).code;
+  return processor.render(content || '');
 }

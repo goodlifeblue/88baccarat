@@ -13,13 +13,19 @@ async function api(path, method = 'GET', body) {
 }
 const rules = () => api('/items/redirects?' + new URLSearchParams({'filter[old_path][_starts_with]':`/guide/${prefix}`,limit:'-1'}));
 try {
+  const me = await api('/users/me?fields=id');
   const article = await api('/items/articles','POST',{title:'Temporary redirect verification',slug:prefix+'-a',category:'guide',status:'published',excerpt:'Temporary test',content:'Test',published_at:new Date().toISOString()});
   ids.push(article.id);
   await api(`/items/articles/${article.id}`,'PATCH',{slug:prefix+'-b'});
-  assert.equal((await rules())[0]?.new_path,`/guide/${prefix}-b/`);
+  const firstRule = (await rules())[0];
+  assert.equal(firstRule?.new_path,`/guide/${prefix}-b/`);
+  assert.ok(firstRule.created_at && firstRule.updated_at);
+  assert.equal(firstRule.updated_by, me.id);
   await api(`/items/articles/${article.id}`,'PATCH',{slug:prefix+'-c'});
   assert.equal((await rules()).length,2);
   assert.ok((await rules()).every(rule=>rule.new_path===`/guide/${prefix}-c/`));
+  assert.ok((await rules()).every(rule=>rule.created_at && rule.updated_at && rule.updated_by === me.id));
+  assert.equal((await rules()).find(rule => rule.id === firstRule.id).created_at, firstRule.created_at);
   await api(`/items/articles/${article.id}`,'PATCH',{slug:prefix+'-a'});
   assert.ok((await rules()).every(rule=>rule.old_path!==`/guide/${prefix}-a/` && rule.new_path===`/guide/${prefix}-a/`));
   const other = await api('/items/articles','POST',{title:'Temporary collision test',slug:prefix+'-occupied',category:'guide',status:'draft',excerpt:'Test',content:'Test'});
@@ -27,7 +33,7 @@ try {
   await assert.rejects(()=>api(`/items/articles/${article.id}`,'PATCH',{slug:prefix+'-occupied'}));
   assert.equal((await api(`/items/articles/${article.id}`)).slug,prefix+'-a');
   assert.ok(!(await rules()).some(rule=>rule.old_path===`/guide/${prefix}-a/`));
-  console.log('PASS: live slug rename, multiple renames, slug reversion, and transaction rollback');
+  console.log('PASS: live slug rename, redirect dates/editor, multiple renames, slug reversion, and transaction rollback');
 } finally {
   for (const rule of await rules()) await api(`/items/redirects/${rule.id}`,'DELETE');
   for (const id of ids) await api(`/items/articles/${id}`,'DELETE');

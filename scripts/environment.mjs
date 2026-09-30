@@ -30,7 +30,7 @@ export function readEnvironment(input = process.env) {
     for (const file of [".env", ".env.local"])
       if (existsSync(file)) Object.assign(env, parse(readFileSync(file)));
   env = { ...env, ...input, APP_ENV: mode };
-  env.SITE_URL ||= "http://localhost:4321";
+  env.SITE_URL ||= "http://localhost:4388";
   env.CONTENT_SOURCE ||= "local";
   if (!["local", "directus"].includes(env.CONTENT_SOURCE))
     throw new Error("Invalid CONTENT_SOURCE");
@@ -92,7 +92,7 @@ export function readEnvironment(input = process.env) {
 }
 
 export function assertLocalMaintenance(env = process.env) {
-  const url = new URL(env.DIRECTUS_URL || "http://localhost:8055");
+  const url = new URL(env.DIRECTUS_URL || "http://localhost:8088");
   if (
     (env.APP_ENV || "local") !== "local" ||
     !["localhost", "127.0.0.1", "[::1]"].includes(url.hostname)

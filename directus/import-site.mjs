@@ -97,3 +97,4 @@ for (const article of articles) {
   if (Object.keys(patch).length) await api(`/items/articles/${article.id}`, 'PATCH', patch);
 }
 console.log(`Site migration complete: ${pages.length} pages, ${Object.keys(media).length} media files. Existing editorial text preserved.`);
+await import('./migrate-hero.mjs');

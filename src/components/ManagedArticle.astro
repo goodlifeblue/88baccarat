@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import { readEnvironment } from '../../scripts/environment.mjs';
+import { fetchCMS } from '../lib/site-content.mjs';
+import { cmsArticleEntry, loadPublishedCMSArticles } from '../lib/cms-articles.mjs';
+import { renderCMSMarkdown } from '../lib/page-markdown.mjs';
+const { collection, slug, entry } = Astro.props;
+const live = import.meta.env.DEV && readEnvironment().CONTENT_SOURCE === 'directus';
+let article = entry;
+let related: any[] = [];
+let html = '';
+let headings: any[] = [];
+let Content: any;
+if (live) {
+  const rows = await loadPublishedCMSArticles({ 'filter[category][_eq]': collection, 'filter[slug][_eq]': slug });
+  const settings = await fetchCMS('site_settings', 'organization,default_cover');
+  article = rows[0] ? cmsArticleEntry(rows[0], settings) : null;
+  if (article) {
+    const markdown = await renderCMSMarkdown(article.body);
+    html = markdown.code;
+    headings = markdown.metadata.headings;
+    const all = (await loadPublishedCMSArticles()).map(row => cmsArticleEntry(row, settings));
+    related = article.data.relatedArticles.length
+      ? article.data.relatedArticles.map((id: string) => all.find(item => item.data.cmsId === id)).filter((item: any) => item && item.data.cmsId !== article.data.cmsId)
+      : all.filter(item => item.collection === collection && item.id !== article.id).slice(0, 3);
+  }
+} else if (article) {
+  ({ Content, headings } = await render(article));
+  related = (await getCollection(collection)).filter((item: any) => item.id !== article.id).slice(0, 3);
+}
+if (!article) Astro.response.status = 404;
+---
+{article ? <ArticleLayout {article} {collection} {headings} {related} liveRelated={live}>
+  {live ? <Fragment set:html={html} /> : <Content />}
+</ArticleLayout> : <main class="container py-16"><h1>找不到文章</h1><p>文章尚未發布或已下架。</p><a href="/">回到首頁</a></main>}

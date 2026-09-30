@@ -1,0 +1,633 @@
+{
+  "articles": {
+    "id": {
+      "type": "uuid",
+      "label": "id"
+    },
+    "title": {
+      "type": "string",
+      "label": "文章標題"
+    },
+    "slug": {
+      "type": "string",
+      "label": "文章網址"
+    },
+    "content": {
+      "type": "text",
+      "label": "文章內文"
+    },
+    "excerpt": {
+      "type": "string",
+      "label": "文章摘要"
+    },
+    "keywords": {
+      "type": "string",
+      "label": "keywords"
+    },
+    "category": {
+      "type": "string",
+      "label": "文章分類"
+    },
+    "status": {
+      "type": "string",
+      "label": "文章狀態",
+      "default": "draft"
+    },
+    "author": {
+      "type": "string",
+      "label": "author",
+      "default": "百家樂攻略誌編輯部"
+    },
+    "image": {
+      "type": "string",
+      "label": "image"
+    },
+    "imageAlt": {
+      "type": "string",
+      "label": "imageAlt"
+    },
+    "published_at": {
+      "type": "timestamp",
+      "label": "發布日期"
+    },
+    "updated_at": {
+      "type": "timestamp",
+      "label": "更新時間"
+    },
+    "featured": {
+      "type": "boolean",
+      "label": "featured",
+      "default": false
+    },
+    "faq": {
+      "type": "json",
+      "label": "faq"
+    },
+    "relatedArticles": {
+      "type": "json",
+      "label": "relatedArticles"
+    },
+    "seo_title": {
+      "type": "string",
+      "label": "seo_title"
+    },
+    "seo_description": {
+      "type": "string",
+      "label": "seo_description"
+    },
+    "ogImage": {
+      "type": "string",
+      "label": "ogImage"
+    },
+    "cover_image": {
+      "type": "uuid",
+      "label": "cover_image"
+    },
+    "noindex": {
+      "type": "boolean",
+      "label": "noindex",
+      "default": false
+    },
+    "created_by": {
+      "type": "uuid",
+      "label": "created_by"
+    },
+    "created_at": {
+      "type": "timestamp",
+      "label": "建立時間"
+    },
+    "updated_by": {
+      "type": "uuid",
+      "label": "最後編輯者"
+    }
+  },
+  "article_relations": {
+    "id": {
+      "type": "integer",
+      "label": "id"
+    },
+    "article_id": {
+      "type": "uuid",
+      "label": "article_id"
+    },
+    "related_id": {
+      "type": "uuid",
+      "label": "related_id"
+    }
+  },
+  "redirects": {
+    "id": {
+      "type": "uuid",
+      "label": "id"
+    },
+    "old_path": {
+      "type": "string",
+      "label": "old_path"
+    },
+    "new_path": {
+      "type": "string",
+      "label": "new_path"
+    },
+    "status_code": {
+      "type": "integer",
+      "label": "status_code",
+      "default": 301
+    },
+    "enabled": {
+      "type": "boolean",
+      "label": "enabled",
+      "default": true
+    },
+    "created_at": {
+      "type": "timestamp",
+      "label": "建立時間"
+    },
+    "updated_at": {
+      "type": "timestamp",
+      "label": "更新時間"
+    },
+    "updated_by": {
+      "type": "uuid",
+      "label": "最後編輯者"
+    }
+  },
+  "navigation": {
+    "id": {
+      "type": "uuid",
+      "label": "ID"
+    },
+    "label": {
+      "type": "string",
+      "label": "選單文字"
+    },
+    "href": {
+      "type": "string",
+      "label": "連結網址"
+    },
+    "sort": {
+      "type": "integer",
+      "label": "排序",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "label": "發布狀態",
+      "default": "draft"
+    },
+    "open_in_new_tab": {
+      "type": "boolean",
+      "label": "另開分頁",
+      "default": false
+    },
+    "link_type": {
+      "type": "string",
+      "label": "連結類型",
+      "default": "url"
+    },
+    "page": {
+      "type": "uuid",
+      "label": "連結頁面"
+    }
+  },
+  "navbar_settings": {
+    "id": {
+      "type": "uuid",
+      "label": "ID"
+    },
+    "brand_label": {
+      "type": "string",
+      "label": "品牌名稱",
+      "default": "百家樂攻略誌"
+    },
+    "brand_symbol": {
+      "type": "string",
+      "label": "品牌符號",
+      "default": "♠"
+    },
+    "brand_href": {
+      "type": "string",
+      "label": "品牌連結",
+      "default": "/"
+    }
+  },
+  "pages": {
+    "id": {
+      "type": "uuid",
+      "label": "id"
+    },
+    "title": {
+      "type": "string",
+      "label": "頁面標題 / H1"
+    },
+    "path": {
+      "type": "string",
+      "label": "頁面網址"
+    },
+    "page_type": {
+      "type": "string",
+      "label": "Page Type",
+      "default": "single_page"
+    },
+    "status": {
+      "type": "string",
+      "label": "發布狀態",
+      "default": "draft"
+    },
+    "description": {
+      "type": "text",
+      "label": "頁面摘要"
+    },
+    "breadcrumb_label": {
+      "type": "string",
+      "label": "麵包屑名稱"
+    },
+    "seo_title": {
+      "type": "string",
+      "label": "SEO Title"
+    },
+    "seo_description": {
+      "type": "text",
+      "label": "Meta Description"
+    },
+    "hero_badge": {
+      "type": "string",
+      "label": "Banner 標籤"
+    },
+    "hero_description": {
+      "type": "text",
+      "label": "Banner 說明"
+    },
+    "hero_button_label": {
+      "type": "string",
+      "label": "Banner 按鈕文字"
+    },
+    "hero_button_href": {
+      "type": "string",
+      "label": "Banner 按鈕連結"
+    },
+    "content": {
+      "type": "text",
+      "label": "頁面內容（Markdown）"
+    },
+    "article_category": {
+      "type": "string",
+      "label": "文章分類",
+      "default": "all"
+    },
+    "custom_template": {
+      "type": "string",
+      "label": "特殊頁版型",
+      "default": "standard"
+    },
+    "hero_video": {
+      "type": "uuid",
+      "label": "Banner 影片"
+    },
+    "hero_image": {
+      "type": "uuid",
+      "label": "Banner 圖片"
+    },
+    "faq": {
+      "type": "json",
+      "label": "faq"
+    },
+    "sections": {
+      "type": "json",
+      "label": "內容區塊（可排序）"
+    },
+    "created_at": {
+      "type": "timestamp",
+      "label": "建立時間"
+    },
+    "updated_at": {
+      "type": "timestamp",
+      "label": "更新時間"
+    },
+    "updated_by": {
+      "type": "uuid",
+      "label": "最後編輯者"
+    },
+    "hero_enabled": {
+      "type": "boolean",
+      "label": "顯示 Hero 輪播",
+      "default": true
+    },
+    "content_enabled": {
+      "type": "boolean",
+      "label": "顯示頁面內文",
+      "default": true
+    },
+    "sections_enabled": {
+      "type": "boolean",
+      "label": "顯示內容區塊",
+      "default": true
+    },
+    "faq_enabled": {
+      "type": "boolean",
+      "label": "顯示 FAQ",
+      "default": true
+    },
+    "article_list_enabled": {
+      "type": "boolean",
+      "label": "顯示文章列表",
+      "default": true
+    },
+    "hero_autoplay": {
+      "type": "boolean",
+      "label": "輪播自動播放",
+      "default": true
+    },
+    "hero_interval": {
+      "type": "integer",
+      "label": "輪播間隔（毫秒）",
+      "default": 6000
+    },
+    "homepage_blocks_enabled": {
+      "type": "boolean",
+      "label": "homepage_blocks_enabled",
+      "default": false
+    }
+  },
+  "site_settings": {
+    "id": {
+      "type": "uuid",
+      "label": "id"
+    },
+    "name": {
+      "type": "string",
+      "label": "網站名稱"
+    },
+    "description": {
+      "type": "string",
+      "label": "網站說明"
+    },
+    "organization": {
+      "type": "string",
+      "label": "發行組織"
+    },
+    "locale": {
+      "type": "string",
+      "label": "OG 語系"
+    },
+    "og_image": {
+      "type": "uuid",
+      "label": "預設分享圖片"
+    },
+    "favicon": {
+      "type": "uuid",
+      "label": "網站圖示"
+    },
+    "inner_banner": {
+      "type": "uuid",
+      "label": "內頁 Banner"
+    },
+    "default_cover": {
+      "type": "uuid",
+      "label": "預設文章封面"
+    },
+    "footer_brand": {
+      "type": "string",
+      "label": "頁尾品牌"
+    },
+    "footer_description": {
+      "type": "string",
+      "label": "頁尾介紹"
+    },
+    "footer_groups": {
+      "type": "json",
+      "label": "頁尾連結群組"
+    },
+    "footer_disclaimer": {
+      "type": "text",
+      "label": "免責聲明"
+    },
+    "footer_copyright": {
+      "type": "string",
+      "label": "版權文字"
+    },
+    "not_found_title": {
+      "type": "string",
+      "label": "404 標題"
+    },
+    "not_found_description": {
+      "type": "string",
+      "label": "404 SEO 說明"
+    },
+    "not_found_content": {
+      "type": "string",
+      "label": "404 文案"
+    },
+    "not_found_button": {
+      "type": "string",
+      "label": "404 按鈕"
+    },
+    "cta_title": {
+      "type": "string",
+      "label": "CTA 標題"
+    },
+    "cta_content": {
+      "type": "string",
+      "label": "CTA 文案"
+    },
+    "cta_label": {
+      "type": "string",
+      "label": "CTA 按鈕"
+    },
+    "cta_href": {
+      "type": "string",
+      "label": "CTA 連結"
+    },
+    "categories": {
+      "type": "json",
+      "label": "主題分類"
+    },
+    "ui_home": {
+      "type": "string",
+      "label": "首頁標籤"
+    },
+    "ui_faq": {
+      "type": "string",
+      "label": "FAQ 標籤"
+    },
+    "ui_related": {
+      "type": "string",
+      "label": "延伸閱讀標籤"
+    },
+    "ui_toc": {
+      "type": "string",
+      "label": "目錄標籤"
+    },
+    "ui_read_article": {
+      "type": "string",
+      "label": "閱讀文章標籤"
+    },
+    "ui_updated": {
+      "type": "string",
+      "label": "更新時間標籤"
+    },
+    "floating_enabled": {
+      "type": "boolean",
+      "label": "顯示浮動功能列",
+      "default": true
+    },
+    "back_to_top_enabled": {
+      "type": "boolean",
+      "label": "顯示回到頂端按鈕",
+      "default": true
+    },
+    "floating_buttons": {
+      "type": "json",
+      "label": "浮動功能按鈕"
+    }
+  },
+  "hero_slides": {
+    "id": {
+      "type": "uuid",
+      "label": "ID"
+    },
+    "page": {
+      "type": "uuid",
+      "label": "所屬頁面"
+    },
+    "sort": {
+      "type": "integer",
+      "label": "排序",
+      "default": 0
+    },
+    "enabled": {
+      "type": "boolean",
+      "label": "顯示此輪播項目",
+      "default": true
+    },
+    "media_type": {
+      "type": "string",
+      "label": "素材類型",
+      "default": "image"
+    },
+    "image": {
+      "type": "uuid",
+      "label": "Banner 圖片"
+    },
+    "video": {
+      "type": "uuid",
+      "label": "影片"
+    },
+    "poster": {
+      "type": "uuid",
+      "label": "影片封面"
+    },
+    "title": {
+      "type": "string",
+      "label": "標題"
+    },
+    "badge": {
+      "type": "string",
+      "label": "標籤"
+    },
+    "description": {
+      "type": "text",
+      "label": "說明"
+    },
+    "button_label": {
+      "type": "string",
+      "label": "按鈕文字"
+    },
+    "button_href": {
+      "type": "string",
+      "label": "按鈕網址"
+    },
+    "image_alt": {
+      "type": "string",
+      "label": "圖片替代文字"
+    }
+  },
+  "homepage_blocks": {
+    "id": {
+      "type": "uuid",
+      "label": "id"
+    },
+    "sort": {
+      "type": "integer",
+      "label": "排序"
+    },
+    "enabled": {
+      "type": "boolean",
+      "label": "顯示此區塊",
+      "default": false
+    },
+    "type": {
+      "type": "string",
+      "label": "區塊類型",
+      "default": "articles"
+    },
+    "anchor": {
+      "type": "string",
+      "label": "錨點 ID（英數或連字號）"
+    },
+    "title": {
+      "type": "string",
+      "label": "區塊標題"
+    },
+    "description": {
+      "type": "text",
+      "label": "區塊說明"
+    },
+    "eyebrow": {
+      "type": "string",
+      "label": "上方標籤"
+    },
+    "link_label": {
+      "type": "string",
+      "label": "連結文字"
+    },
+    "link_href": {
+      "type": "string",
+      "label": "連結網址"
+    },
+    "category": {
+      "type": "string",
+      "label": "文章分類",
+      "default": "all"
+    },
+    "featured": {
+      "type": "boolean",
+      "label": "只顯示精選文章"
+    },
+    "limit": {
+      "type": "integer",
+      "label": "文章數量",
+      "default": 3
+    },
+    "content": {
+      "type": "text",
+      "label": "Markdown 內容"
+    },
+    "cards": {
+      "type": "json",
+      "label": "說明卡片"
+    },
+    "article_source": {
+      "type": "string",
+      "label": "文章來源",
+      "default": "manual"
+    }
+  },
+  "homepage_block_articles": {
+    "id": {
+      "type": "uuid",
+      "label": "id"
+    },
+    "sort": {
+      "type": "integer",
+      "label": "排序"
+    },
+    "block_id": {
+      "type": "uuid",
+      "label": "所屬區塊"
+    },
+    "article_id": {
+      "type": "uuid",
+      "label": "文章"
+    }
+  }
+}

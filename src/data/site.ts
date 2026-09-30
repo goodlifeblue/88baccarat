@@ -1,6 +1,6 @@
 import seed from '../../directus/seeds/site-settings.json';
 import { readEnvironment } from '../../scripts/environment.mjs';
-import { fetchCMS, asset } from '../lib/site-content.mjs';
+import { fetchCMS, asset, floatingButtons } from '../lib/site-content.mjs';
 import { navigationHref } from '../lib/navigation.mjs';
 
 type Site = typeof seed & { url: string; labels: Record<string, string> };
@@ -16,6 +16,7 @@ async function load(): Promise<Site> {
   data.categories = data.categories.map(category => ({ ...category, href: navigationHref(category.href), icon: asset(category.icon)! }));
   for (const group of data.footer_groups) for (const link of group.links) navigationHref(link.href);
   navigationHref(data.cta_href);
+  data.floating_buttons = floatingButtons(data);
   return { ...data, url: env.SITE_URL!, labels: Object.fromEntries(Object.entries(data).filter(([key]) => key.startsWith('ui_')).map(([key, value]) => [key.slice(3), String(value)])) };
 }
 export function getSite() {

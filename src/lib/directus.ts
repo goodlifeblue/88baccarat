@@ -215,7 +215,7 @@ class DirectusClient {
 }
 
 // 创建 Directus 客户端实例
-const directusUrl = import.meta.env.DIRECTUS_URL || process.env.DIRECTUS_URL || 'http://localhost:8055';
+const directusUrl = import.meta.env.DIRECTUS_URL || process.env.DIRECTUS_URL || 'http://localhost:8088';
 const directusToken = import.meta.env.DIRECTUS_API_TOKEN || process.env.DIRECTUS_API_TOKEN;
 
 export const directusClient = new DirectusClient({

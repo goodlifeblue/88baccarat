@@ -1,0 +1,48 @@
+---
+import { getSite } from '../data/site';
+const site = await getSite();
+---
+{site.floating_enabled !== false && <floating-actions aria-label="快捷功能">
+  {site.floating_buttons.map(button => <a class:list={['floating-action', button.icon]} href={button.href} aria-label={button.label} title={button.label} target={button.new_tab ? '_blank' : undefined} rel={button.new_tab ? 'noopener noreferrer' : undefined}>
+    {button.icon === 'line' ? <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 4C8.8 4 3 8.7 3 14.5c0 5.2 4.5 9.5 10.6 10.3l-.5 3c-.1.7.4 1 1 .7C24 23.8 29 19.6 29 14.5 29 8.7 23.2 4 16 4Z"/><text x="16" y="17" text-anchor="middle" fill="#06a84f" font-size="7" font-weight="800" font-family="Arial,sans-serif">LINE</text></svg>
+    : button.icon === 'telegram' ? <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m21 3-6 18-4-7-8-4L21 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m11 14 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    : <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m10 13 4-4m-6 6-1 1a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0m0 4 1-1a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" transform="translate(2 0)" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>}
+  </a>)}
+  {site.back_to_top_enabled !== false && <button type="button" data-back-to-top hidden class="floating-action top" aria-label="回到頂端" title="回到頂端"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 13 6-6 6 6M12 7v13M5 3h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>}
+</floating-actions>}
+<style>
+  floating-actions { position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: calc(1.25rem + env(safe-area-inset-bottom)); z-index: 40; display: flex; flex-direction: column; align-items: center; gap: .65rem; }
+  .floating-action { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #ffffff40; border-radius: 50%; background: #18181b; color: white; box-shadow: 0 4px 16px #0006; cursor: pointer; transition: transform .15s, background .15s; }
+  .floating-action:hover { transform: translateY(-2px); }
+  .floating-action:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+  .floating-action svg { width: 26px; height: 26px; }
+  .line { background: #06a84f; }
+  .telegram { background: #168ac4; }
+  .top { background: #b91c1c; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .floating-action { transition: none; } }
+</style>
+<script>
+  class FloatingActions extends HTMLElement {
+    dispose?: () => void;
+    connectedCallback() {
+      this.dispose?.();
+      const button = this.querySelector<HTMLButtonElement>('[data-back-to-top]');
+      if (!button) return;
+      const abort = new AbortController();
+      let frame = 0;
+      const update = () => { frame = 0; button.hidden = window.scrollY <= 500; };
+      window.addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(update); }, { passive: true, signal: abort.signal });
+      window.addEventListener('pageshow', update, { signal: abort.signal });
+      button.addEventListener('click', () => {
+        const main = document.querySelector('main');
+        if (main) { main.setAttribute('tabindex', '-1'); main.focus({ preventScroll: true }); }
+        window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      }, { signal: abort.signal });
+      update();
+      this.dispose = () => { abort.abort(); cancelAnimationFrame(frame); };
+    }
+    disconnectedCallback() { this.dispose?.(); }
+  }
+  if (!customElements.get('floating-actions')) customElements.define('floating-actions', FloatingActions);
+</script>

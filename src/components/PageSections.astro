@@ -6,17 +6,17 @@ import { renderPageMarkdown } from '../lib/page-markdown.mjs';
 const { sections = [] } = Astro.props;
 const site = await getSite();
 const names = ['baccarat', 'strategy', 'guide', 'tips', 'comparison'] as const;
-const all = sections.some((section: any) => section.type === 'articles')
+const all = sections.some((section: any) => section.type === 'articles' && !section.selectedArticles)
   ? (await Promise.all(names.map(name => getCollection(name)))).flat().sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()) : [];
 const prepared = await Promise.all(sections.map(async (section: any) => ({
   ...section,
   html: await renderPageMarkdown(section.content),
   cards: await Promise.all((section.cards || []).map(async (card: any) => ({ ...card, html: await renderPageMarkdown(card.content) }))),
-  articles: all.filter(article => (!section.category || section.category === 'all' || article.collection === section.category) && (!section.featured || article.data.featured)).slice(0, section.limit || 3),
+  articles: section.selectedArticles ?? all.filter(article => (!section.category || section.category === 'all' || article.collection === section.category) && (!section.featured || article.data.featured)).slice(0, section.limit || 3),
 })));
 ---
 {prepared.map((section: any) => (
-  <section class={section.type === 'cards' ? 'card px-5 py-10 sm:px-10 sm:py-14 mt-14' : 'mt-14'} aria-labelledby={section.title ? section.anchor : undefined}>
+  <section data-homepage-block={section.id} class={section.type === 'cards' ? 'card px-5 py-10 sm:px-10 sm:py-14 mt-14' : 'mt-14'} aria-labelledby={section.title ? section.anchor : undefined}>
     <div class="flex items-baseline justify-between gap-4">
       <div>
         {section.eyebrow && <p class="text-sm font-semibold uppercase tracking-[0.2em] text-red-400">{section.eyebrow}</p>}

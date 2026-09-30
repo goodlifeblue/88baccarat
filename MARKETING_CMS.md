@@ -4,6 +4,8 @@
 
 本文件是目前實作的操作入口。網站維持 Astro 靜態輸出，網址維持 `/<category>/<slug>/`。
 
+Articles、Pages、Redirects 列表皆顯示建立時間、更新時間與最後編輯者，由系統自動記錄。Articles 原有發布時間、更新時間與建立者保留。新資料尚未修改時，最後編輯者／更新時間可能為空；既有資料依活動紀錄回填，有缺漏的歷史資料不猜測。文章改網址自動產生或更新的 Redirects 也會記錄時間與操作帳號。
+
 ## 已完成的文章模板
 
 Breadcrumb → 唯一 H1 → 作者／發布與更新日期 → 目錄 → Markdown 內文（H2、H3、圖片、表格）→ FAQ → 相關文章。
@@ -13,7 +15,7 @@ Article Schema 自動產生；FAQ 有內容才顯示區塊及 FAQ Schema。SEO �
 ## 本機啟動
 
 1. 安裝並啟動 Docker Desktop。將 `.env.example` 複製成 `.env`，設定 `DIRECTUS_SECRET`、`DIRECTUS_ADMIN_EMAIL`、`DIRECTUS_ADMIN_PASSWORD`，使用自行產生的密碼與 secret。
-2. 執行 `npm run directus:init`，開啟 http://localhost:8055 登入。
+2. 執行 `npm run directus:init`，開啟 http://localhost:8088 登入。
 3. 在管理員使用者資料設定 static token，填入 `.env` 的 `DIRECTUS_ADMIN_TOKEN`。
 4. 執行 `npm run directus:setup` 建立 articles、article_relations 與欄位。可重跑，只新增缺少的欄位／關聯，不覆蓋既有欄位。`schema.json` 是這個腳本的 API 定義檔，不是 Directus schema snapshot，不要拿它直接執行 schema apply。
 5. 執行 `npm run directus:import` 匯入現有 Markdown。匯入維持原 slug 與分類，狀態為 published；已有同 slug 的文章會跳過，不覆寫行銷修改。
@@ -86,7 +88,7 @@ category 的 baccarat、strategy、guide、tips、comparison 各有文章頁。f
 
 ```env
 DIRECTUS_URL=https://cms.example.com
-DIRECTUS_LEGACY_URLS=http://localhost:8055
+DIRECTUS_LEGACY_URLS=http://localhost:8088
 ```
 
 轉換的是輸出 HTML，不會自動改寫後台儲存的 Markdown。既有網站 `/images/...` 圖片與外站圖片保持原路徑，不會被自動搬入媒體庫。搬遷時須一起搬資料庫及 uploads，保留原 File ID。
@@ -131,3 +133,17 @@ enabled: true
 ## 整站頁面與網站設定
 
 首頁、文章列表、一頁式、特殊頁、Banner、頁尾與共用文案均已移入 Directus；請依 [整站內容管理 SOP](docs/PAGES.md) 操作。程式維持版型與部署保護，CMS 管理內容。
+
+## 編輯防呆與警示
+
+圖片上傳每張上限 **5 MB**，超過請先壓縮或降低尺寸。替換圖片超限時，後台會顯示錯誤並保留原圖；影片不適用此圖片限制。
+
+文章、頁面、導覽、輪播、全站設定、相關文章及轉址均有儲存檢查；欄位下方會顯示操作提醒。若出現中文錯誤提示，依訊息補齊資料後再儲存。草稿未完成時不要發布；未完成的輪播或浮動按鈕先停用。
+
+首頁、全站設定與正在引用的媒體有刪除保護；下架頁面前先處理導覽與其他引用。完整規則與維護方式見 [後台內容防呆](docs/CONTENT_GUARDS.md)。
+
+## 首頁新增區塊與挑選文章
+
+文章尚未完成時，保持狀態「暫存文章（草稿）」並按右上角儲存。標題、分類、摘要、內文、網址可留白；之後從文章清單重新開啟編輯。暫存不會發布到前台，離開前需手動儲存。既有網址權限保持不變：若首次暫存未填網址，發布前請管理員補填。完整規則見 [文章暫存](docs/CONTENT_GUARDS.md#文章暫存)。
+
+左側「首頁區塊」可新增區塊、直接新增文章、勾選既有文章，並分別拖曳區塊及文章排序。草稿文章不會出現在前台；區塊由行銷主管啟用。完整操作見 [首頁區塊管理](docs/HOMEPAGE_BLOCKS.md)。

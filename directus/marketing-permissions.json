@@ -281,7 +281,15 @@
       "hero_video",
       "hero_image",
       "faq",
-      "sections"
+      "sections",
+      "hero_enabled",
+      "content_enabled",
+      "sections_enabled",
+      "faq_enabled",
+      "article_list_enabled",
+      "hero_autoplay",
+      "hero_interval",
+      "hero_slides"
     ],
     "permissions": {},
     "validation": {
@@ -317,7 +325,15 @@
       "hero_video",
       "hero_image",
       "faq",
-      "sections"
+      "sections",
+      "hero_enabled",
+      "content_enabled",
+      "sections_enabled",
+      "faq_enabled",
+      "article_list_enabled",
+      "hero_autoplay",
+      "hero_interval",
+      "hero_slides"
     ],
     "permissions": {
       "status": {
@@ -407,8 +423,128 @@
       "ui_related",
       "ui_toc",
       "ui_read_article",
-      "ui_updated"
+      "ui_updated",
+      "floating_enabled",
+      "back_to_top_enabled",
+      "floating_buttons"
     ],
     "permissions": {}
+  },
+  {
+    "collection": "directus_users",
+    "action": "read",
+    "fields": [
+      "id",
+      "first_name",
+      "last_name",
+      "avatar"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "hero_slides",
+    "action": "read",
+    "fields": [
+      "*"
+    ],
+    "permissions": {}
+  },
+  {
+    "collection": "hero_slides",
+    "action": "create",
+    "fields": [
+      "page",
+      "sort",
+      "enabled",
+      "media_type",
+      "image",
+      "video",
+      "poster",
+      "title",
+      "badge",
+      "description",
+      "button_label",
+      "button_href",
+      "image_alt"
+    ],
+    "permissions": {},
+    "validation": {
+      "page": {
+        "status": {
+          "_in": [
+            "draft",
+            "review"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "collection": "hero_slides",
+    "action": "update",
+    "fields": [
+      "page",
+      "sort",
+      "enabled",
+      "media_type",
+      "image",
+      "video",
+      "poster",
+      "title",
+      "badge",
+      "description",
+      "button_label",
+      "button_href",
+      "image_alt"
+    ],
+    "permissions": {
+      "page": {
+        "status": {
+          "_in": [
+            "draft",
+            "review"
+          ]
+        }
+      }
+    },
+    "validation": {
+      "page": {
+        "status": {
+          "_in": [
+            "draft",
+            "review"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "collection": "hero_slides",
+    "action": "delete",
+    "fields": [
+      "page",
+      "sort",
+      "enabled",
+      "media_type",
+      "image",
+      "video",
+      "poster",
+      "title",
+      "badge",
+      "description",
+      "button_label",
+      "button_href",
+      "image_alt"
+    ],
+    "permissions": {
+      "page": {
+        "status": {
+          "_in": [
+            "draft",
+            "review"
+          ]
+        }
+      }
+    }
   }
 ]

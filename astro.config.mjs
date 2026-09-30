@@ -16,14 +16,12 @@ export default defineConfig({
   output: 'static',
   markdown: { remarkPlugins: [...imagePlugins, articleMarkdown] },
   server: {
-    host: true,
-  },
-  preview: {
-    host: true,
+    host: '127.0.0.1',
+    port: 4388,
   },
   experimental: {
     chromeDevtoolsWorkspace: true,
   },
-  integrations: [mdx(), cmsDevPages(), cloudflareRedirects(env), releaseMetadata(env)],
-  vite: { plugins: [tailwindcss()], define: { 'import.meta.env.APP_ENV': JSON.stringify(env.APP_ENV), 'import.meta.env.SITE_URL': JSON.stringify(env.SITE_URL) } },
+  integrations: [mdx(), cmsDevPages({ liveArticles: env.CONTENT_SOURCE === 'directus' }), cloudflareRedirects(env), releaseMetadata(env)],
+  vite: { server: { strictPort: true }, preview: { strictPort: true }, plugins: [tailwindcss()], define: { 'import.meta.env.APP_ENV': JSON.stringify(env.APP_ENV), 'import.meta.env.SITE_URL': JSON.stringify(env.SITE_URL) } },
 });

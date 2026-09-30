@@ -3,5 +3,6 @@ import '../styles/global.css'; import Header from '../components/Header.astro'; 
 const { title, description, image, type, canonical, seoTitle, noindex } = Astro.props;
 import { getSite } from '../data/site';
 const site = await getSite();
+import FloatingActions from '../components/FloatingActions.astro';
 ---
-<!doctype html><html lang="zh-Hant"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link rel="icon" href={site.favicon} /><SEO {title} {description} {image} {type} {canonical} {seoTitle} {noindex} /></head><body><Header /><main><slot /></main><Footer /><script src="../scripts/site-animations.ts"></script></body></html>
+<!doctype html><html lang="zh-Hant"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link rel="icon" href={site.favicon} /><SEO {title} {description} {image} {type} {canonical} {seoTitle} {noindex} /></head><body><Header /><main><slot /></main><Footer /><FloatingActions /><script src="../scripts/site-animations.ts"></script></body></html>

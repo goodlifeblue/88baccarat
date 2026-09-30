@@ -1,10 +1,40 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validatePages, pagePath } from '../src/lib/site-content.mjs';
+import { validatePages, pagePath, floatingButtons } from '../src/lib/site-content.mjs';
 import { renderPageMarkdown } from '../src/lib/page-markdown.mjs';
 import cmsDevPages from './cms-dev-pages.mjs';
 
 const base = { path: '/', status: 'published', title: 'Home', description: 'Home description', page_type: 'single_page', faq: [], sections: [] };
+test('unfinished contact buttons do not break the site; configured links remain validated', () => {
+  const button = { label: 'LINE', icon: 'line', enabled: true };
+  const valid = { ...button, href: 'https://line.me/example' };
+  const settings = { floating_enabled: true, floating_buttons: [
+    ...['', '   ', null, undefined].map(href => ({ ...button, href })),
+    { ...button, href: 'javascript:alert(1)', enabled: false }, valid,
+  ] };
+  assert.deepEqual(floatingButtons(settings), [valid]);
+  assert.deepEqual(floatingButtons({ ...settings, floating_enabled: false }), []);
+  assert.deepEqual(floatingButtons({ floating_buttons: [{ ...button, href: 'javascript:alert(1)' }, null, { ...valid, label: 123 }, { ...valid, icon: 'unknown' }] }), []);
+  assert.deepEqual(floatingButtons({ floating_buttons: 'invalid' }), []);
+});
+test('hero supports ordered mixed media and hides disabled slides and sections', () => {
+  const [page] = validatePages([{ ...base,
+    hero_slides: [
+      { sort: 2, media_type: 'video', video: '/poker.mp4' },
+      { sort: 1, media_type: 'image', image: '/images/xx.png' },
+      { enabled: false, media_type: 'image' },
+    ],
+    sections: [{ enabled: false, type: 'unknown' }, { type: 'markdown', title: 'Visible' }],
+  }]);
+  assert.deepEqual(page.hero_slides.map(slide => slide.media_type), ['image', 'video']);
+  assert.equal(page.sections.length, 1);
+  const [hidden] = validatePages([{ ...base, hero_enabled: false, hero_slides: [{ media_type: 'unknown' }], sections_enabled: false, sections: [{ type: 'unknown' }], faq_enabled: false, faq: [{ question: '', answer: '' }] }]);
+  assert.deepEqual(hidden.hero_slides, []);
+  assert.deepEqual(hidden.sections, []);
+  assert.deepEqual(hidden.faq, []);
+  assert.throws(() => validatePages([{ ...base, hero_slides: [{ media_type: 'video' }] }]), /requires/);
+  assert.throws(() => validatePages([{ ...base, hero_interval: 10 }]), /interval/);
+});
 test('CMS dynamic routes are live only in dev; deployment builds remain static', () => {
   for (const command of ['dev', 'build']) {
     const integration = cmsDevPages();
