@@ -5,13 +5,23 @@
       "meta": {
         "collection": "articles",
         "icon": "description",
-        "note": "文章和内容管理",
+        "note": "管理攻略、技巧、比較與新手指南等獨立內容；發布後會產生各自的文章網址。",
         "display_template": "{{title}}",
         "hidden": false,
         "singleton": false,
         "translatable": false,
         "versioning": true,
-        "sort": 1
+        "sort": 1,
+        "translations": [
+          {
+            "language": "zh-TW",
+            "translation": "攻略文章"
+          },
+          {
+            "language": "en-US",
+            "translation": "攻略文章"
+          }
+        ]
       },
       "schema": {
         "name": "articles"
@@ -83,11 +93,15 @@
         "translations": [
           {
             "language": "zh-TW",
-            "translation": "頁面管理"
+            "translation": "網站頁面"
+          },
+          {
+            "language": "en-US",
+            "translation": "網站頁面"
           }
         ],
         "sort": 6,
-        "note": "內容修改後需建置、檢查與部署，才會更新靜態網站。"
+        "note": "管理首頁、規則、FAQ 等固定網站頁面與版型；內容修改後需建置、檢查與部署，才會更新靜態網站。"
       }
     },
     {
@@ -3443,7 +3457,19 @@
             "translation": "Markdown 內容"
           }
         ],
-        "sort": 16
+        "sort": 16,
+        "note": "僅「Markdown 區塊」需要填寫。文章卡片、圖片輪播與分類輪播會自動使用各自的設定，無須填此欄位。",
+        "conditions": [
+          {
+            "name": "僅 Markdown 區塊使用",
+            "rule": {
+              "type": {
+                "_neq": "markdown"
+              }
+            },
+            "hidden": true
+          }
+        ]
       },
       "collection": "homepage_blocks",
       "schema": {}

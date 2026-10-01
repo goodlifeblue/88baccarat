@@ -5,6 +5,7 @@
 | 文件 | 用途 |
 | --- | --- |
 | [COMMANDS.md](COMMANDS.md) | 本機啟動、Directus、建置、測試、備份與 Cloudflare 發布指令。 |
+| [BASIC_OPERATIONS.md](BASIC_OPERATIONS.md) | 日常使用的 Directus 後台操作手冊：文章、頁面、首頁區塊、圖片與發布。 |
 | [HANDOVER.md](HANDOVER.md) | Local、Staging、Production 流程、發布前置條件、回復與交接。 |
 | [MARKETING_CMS.md](MARKETING_CMS.md) | Directus 文章、媒體、權限、301 與內容發布操作。 |
 | [CONTENT_GUARDS.md](CONTENT_GUARDS.md) | 後台草稿／發布驗證、媒體限制與防呆維護。 |

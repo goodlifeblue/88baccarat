@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {prepareHomepageBlocks} from '../src/lib/homepage-blocks.mjs';
 import {validateContent} from '../directus/hooks/redirects/content-validation.mjs';
 import cmsDevPages from './cms-dev-pages.mjs';
+import {readFileSync} from 'node:fs';
 const settings={organization:'編輯部',default_cover:'/images/xx.png'};
 const a={id:'a',slug:'first',category:'guide',status:'published',title:'First',excerpt:'First excerpt',published_at:'2026-01-01',faq:[]};
 const b={...a,id:'b',slug:'second',title:'Second'};
@@ -25,6 +26,13 @@ test('empty manual blocks stay hidden and automatic blocks retain category and f
 test('block validation covers title, source, sort, link and enabled contents',()=>{
  validateContent('homepage_blocks',{...block,articles:[]});
  for(const patch of [{title:''},{article_source:'bad'},{sort:-1},{sort:1.5},{anchor:'faq-title'},{link_label:'閱讀',link_href:'javascript:alert(1)'},{type:'cards',cards:[{title:'',content:''}]}])assert.throws(()=>validateContent('homepage_blocks',{...block,...patch}),e=>e.status===400);
+});
+test('Markdown content is shown only for Markdown homepage blocks',()=>{
+ const schema=JSON.parse(readFileSync(new URL('../directus/schema.json',import.meta.url)));
+ const field=schema.fields.find((item)=>item.collection==='homepage_blocks'&&item.field==='content');
+ assert.deepEqual(field.meta.conditions,[{name:'僅 Markdown 區塊使用',rule:{type:{_neq:'markdown'}},hidden:true}]);
+ for(const type of ['articles','image_carousel','categories']) validateContent('homepage_blocks',{...block,type,enabled:type === 'image_carousel' ? false : block.enabled,content:null});
+ validateContent('homepage_blocks',{...block,type:'markdown',content:'## 內容'});
 });
 test('enabled image carousel requires complete public-ready slides and a safe interval',()=>{
  const carousel={...block,type:'image_carousel',carousel_interval:5000,carousel_slides:[
