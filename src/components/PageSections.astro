@@ -1,8 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import ArticleList from './ArticleList.astro';
+import HomepageImageCarousel from './HomepageImageCarousel.astro';
 import { getSite } from '../data/site';
 import { renderPageMarkdown } from '../lib/page-markdown.mjs';
+import { asset } from '../lib/site-content.mjs';
 const { sections = [] } = Astro.props;
 const site = await getSite();
 const names = ['baccarat', 'strategy', 'guide', 'tips', 'comparison'] as const;
@@ -12,6 +14,7 @@ const prepared = await Promise.all(sections.map(async (section: any) => ({
   ...section,
   html: await renderPageMarkdown(section.content),
   cards: await Promise.all((section.cards || []).map(async (card: any) => ({ ...card, html: await renderPageMarkdown(card.content) }))),
+  carouselSlides: (section.carousel_slides || []).map((slide: any) => ({ ...slide, image: asset(slide.image) })),
   articles: section.selectedArticles ?? all.filter(article => (!section.category || section.category === 'all' || article.collection === section.category) && (!section.featured || article.data.featured)).slice(0, section.limit || 3),
 })));
 ---
@@ -31,6 +34,7 @@ const prepared = await Promise.all(sections.map(async (section: any) => ({
       <div class="category-marquee__group" aria-hidden="true">{site.categories.map(category => <a class="category-chip" href={category.href} tabindex="-1"><img class="h-5 w-5 object-contain" src={category.icon} alt="" aria-hidden="true" /><span>{category.title}</span></a>)}</div>
     </div></div>}
     {section.type === 'cards' && <div class="mt-10 grid gap-6 lg:grid-cols-2">{section.cards.map((card: any) => <article class="card p-6 sm:p-9"><h3>{card.title}</h3><div class="prose mt-7" set:html={card.html} /></article>)}</div>}
+    {section.type === 'image_carousel' && <div class="mt-6"><HomepageImageCarousel slides={section.carouselSlides} autoplay={section.carousel_autoplay} interval={section.carousel_interval} title={section.title} /></div>}
     {section.html && <div class="prose mt-6" set:html={section.html} />}
   </section>
 ))}

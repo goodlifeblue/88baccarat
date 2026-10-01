@@ -606,6 +606,20 @@
       "type": "json",
       "label": "說明卡片"
     },
+    "carousel_slides": {
+      "type": "json",
+      "label": "輪播圖片"
+    },
+    "carousel_autoplay": {
+      "type": "boolean",
+      "label": "自動輪播",
+      "default": true
+    },
+    "carousel_interval": {
+      "type": "integer",
+      "label": "輪播間隔（毫秒）",
+      "default": 5000
+    },
     "article_source": {
       "type": "string",
       "label": "文章來源",

@@ -1,0 +1,13 @@
+# Never bake local content, credentials, or build products into a deployment
+# image. Directus content is migrated to the Railway Volume separately.
+.git
+.env
+.env.*
+!.env.example
+node_modules
+.astro
+dist
+directus/database
+directus/uploads
+backups
+.artifacts

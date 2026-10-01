@@ -234,13 +234,13 @@
       "field": "content",
       "type": "text",
       "meta": {
-        "interface": "input-rich-text-md",
-        "options": null,
+        "interface": "markdown-media",
+        "options": {},
         "readonly": false,
         "hidden": false,
         "sort": 4,
         "width": "full",
-        "note": "暫存文章可留白；發布前必填。Markdown：工具列插入 H2/H3、圖片與表格；FAQ 請填下方清單。不要填 H1。",
+        "note": "暫存文章可留白；發布前必填。可按「插入圖片」從檔案庫選取或直接上傳，系統會自動插入圖片；請填寫圖片替代文字。FAQ 請填下方清單。不要填 H1。",
         "required": false,
         "translations": [
           {
@@ -3169,6 +3169,10 @@
             {
               "text": "行動按鈕",
               "value": "cta"
+            },
+            {
+              "text": "圖片輪播（說明覆蓋）",
+              "value": "image_carousel"
             }
           ]
         },
@@ -3494,6 +3498,59 @@
       },
       "collection": "homepage_blocks",
       "schema": {}
+    },
+    {
+      "collection": "homepage_blocks",
+      "field": "carousel_slides",
+      "type": "json",
+      "meta": {
+        "interface": "list",
+        "options": {
+          "template": "{{title}}",
+          "fields": [
+            { "field": "image", "name": "圖片", "type": "uuid", "meta": { "interface": "carousel-image-preview", "display": "image", "display_options": { "width": 320, "height": 180, "fit": "cover" }, "note": "從「網站公開素材」選取圖片後，欄位會直接顯示 16:9 預覽；可更換或移除。" } },
+            { "field": "alt", "name": "圖片替代文字", "type": "string", "meta": { "interface": "input" } },
+            { "field": "title", "name": "大標", "type": "string", "meta": { "interface": "input" } },
+            { "field": "description", "name": "說明", "type": "text", "meta": { "interface": "input-multiline" } },
+            { "field": "label", "name": "按鈕文字（選填）", "type": "string", "meta": { "interface": "input" } },
+            { "field": "href", "name": "按鈕網址（選填）", "type": "string", "meta": { "interface": "input" } }
+          ]
+        },
+        "translations": [
+          { "language": "zh-TW", "translation": "輪播圖片" }
+        ],
+        "note": "每張圖片均須填替代文字、大標與說明。按鈕文字與網址需成對填寫；啟用區塊前至少新增兩張圖片。",
+        "special": ["cast-json"],
+        "sort": 18,
+        "conditions": [{ "name": "僅圖片輪播使用", "rule": { "type": { "_neq": "image_carousel" } }, "hidden": true }]
+      },
+      "schema": {}
+    },
+    {
+      "collection": "homepage_blocks",
+      "field": "carousel_autoplay",
+      "type": "boolean",
+      "meta": {
+        "interface": "boolean",
+        "translations": [{ "language": "zh-TW", "translation": "自動輪播" }],
+        "special": ["cast-boolean"],
+        "sort": 19,
+        "conditions": [{ "name": "僅圖片輪播使用", "rule": { "type": { "_neq": "image_carousel" } }, "hidden": true }]
+      },
+      "schema": { "default_value": true, "is_nullable": false }
+    },
+    {
+      "collection": "homepage_blocks",
+      "field": "carousel_interval",
+      "type": "integer",
+      "meta": {
+        "interface": "input",
+        "translations": [{ "language": "zh-TW", "translation": "輪播間隔（毫秒）" }],
+        "note": "請填 2000～30000；例如 5000 代表每 5 秒切換。使用者可隨時暫停播放。",
+        "sort": 20,
+        "conditions": [{ "name": "僅圖片輪播使用", "rule": { "type": { "_neq": "image_carousel" } }, "hidden": true }]
+      },
+      "schema": { "default_value": 5000, "is_nullable": false }
     },
     {
       "collection": "homepage_blocks",

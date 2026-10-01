@@ -27,6 +27,11 @@ test('publishing articles requires content, dates, route and complete FAQ',()=>{
  for(const patch of [{title:' '},{excerpt:''},{content:null},{slug:'bad slug'},{category:'unknown'},{published_at:null},{published_at:'bad'},{faq:[{question:'問題',answer:''}]},{relatedArticles:{}},{image:'javascript:alert(1)'},{title:[]},{featured:'yes'}])bad('articles',{...article,...patch});
  validateContent('articles',{status:'draft',title:'草稿',faq:[{question:'待寫'}]});
 });
+test('published article images need accessible alternative text and valid Directus asset IDs',()=>{
+ validateContent('articles',{...article,content:'![牌桌](/assets/123e4567-e89b-12d3-a456-426614174000)'});
+ for(const content of ['![](/assets/123e4567-e89b-12d3-a456-426614174000)','![牌桌](/assets/not-a-file)','![牌桌](/assets/)']) bad('articles',{...article,content});
+ validateContent('articles',{...article,status:'draft',content:'![](/assets/not-a-file)'});
+});
 test('pages validate templates, reserved routes and enabled sections',()=>{
  validateContent('pages',page);
  for(const patch of [{path:'/admin/'},{path:'/guide/article/'},{path:'bad'},{description:''},{page_type:'unknown'},{page_type:'article_list',article_category:'unknown'},{page_type:'custom_page',custom_template:'unknown'},{hero_interval:0},{hero_interval:30001},{sections:{}},{sections:[null]},{sections:[{type:'cards',cards:{}}]},{sections:[{type:'articles',limit:101}]},{sections:[{type:'cta',link_label:'點我',link_href:''}]},{sections:[{type:'markdown',anchor:'same'},{type:'markdown',anchor:'same'}]}])bad('pages',{...page,...patch});

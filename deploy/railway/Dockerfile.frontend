@@ -1,0 +1,12 @@
+FROM node:22.22.3-alpine
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+
+ENV NODE_ENV=production
+EXPOSE 4321
+
+# Rebuild static Astro output from Directus for every Railway deployment.
+CMD ["/bin/sh", "-c", "npm run build && ./node_modules/.bin/astro preview --host 0.0.0.0 --port ${PORT:-4321}"]

@@ -26,6 +26,14 @@ test('block validation covers title, source, sort, link and enabled contents',()
  validateContent('homepage_blocks',{...block,articles:[]});
  for(const patch of [{title:''},{article_source:'bad'},{sort:-1},{sort:1.5},{anchor:'faq-title'},{link_label:'閱讀',link_href:'javascript:alert(1)'},{type:'cards',cards:[{title:'',content:''}]}])assert.throws(()=>validateContent('homepage_blocks',{...block,...patch}),e=>e.status===400);
 });
+test('enabled image carousel requires complete public-ready slides and a safe interval',()=>{
+ const carousel={...block,type:'image_carousel',carousel_interval:5000,carousel_slides:[
+  {image:'11111111-1111-4111-8111-111111111111',alt:'第一張示意圖',title:'第一張大標',description:'第一張說明'},
+  {image:'22222222-2222-4222-8222-222222222222',alt:'第二張示意圖',title:'第二張大標',description:'第二張說明'},
+ ]};
+ validateContent('homepage_blocks',carousel);
+ for(const patch of [{carousel_slides:carousel.carousel_slides.slice(0,1)},{carousel_interval:1000},{carousel_slides:[{...carousel.carousel_slides[0],alt:''},{...carousel.carousel_slides[1]}]},{carousel_slides:[{...carousel.carousel_slides[0],label:'閱讀'},{...carousel.carousel_slides[1]}]}])assert.throws(()=>validateContent('homepage_blocks',{...carousel,...patch}),e=>e.status===400);
+});
 test('live CMS articles use dynamic dev routes while builds remain static',()=>{
  for(const command of ['dev','build']){
   const integration=cmsDevPages({liveArticles:true});integration.hooks['astro:config:setup']({command});

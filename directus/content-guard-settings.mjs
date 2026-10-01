@@ -21,6 +21,8 @@ const guidance = {
   custom_template: '自訂頁面發布前選擇 home、faq 或 standard。',
   faq: '每組問答都需填寫問題與答案。未完成請留在草稿，或關閉頁面的 FAQ 區塊。',
   sections: '啟用區塊需選類型；錨點不可重複；文章數量為 1～100；按鈕文字與網址要成對填寫。',
+  carousel_slides: '每張圖片都要填替代文字、大標與說明。啟用前至少新增兩張，且必須從「網站公開素材」選圖片；按鈕文字與網址需成對填寫。',
+  carousel_interval: '請填 2000～30000 毫秒；例如 5000 代表每 5 秒切換。使用者可在前台隨時暫停或播放。',
   hero_interval: '輪播間隔為 2000～30000 毫秒（2～30 秒），不可填 0 或小數。',
   hero_slides: '新增前先儲存頁面；圖片輪播選圖片，影片輪播選影片；未完成時先停用該張輪播。',
   media_type: '啟用前，圖片模式必須選圖片，影片模式必須選影片。',
@@ -40,7 +42,7 @@ export function guardedMeta(field) {
   const audit = ['id', 'created_at', 'created_by', 'updated_at', 'updated_by', 'canonical'].includes(name);
   let hint = guidance[name];
   if (collection === 'homepage_blocks' && name === 'sort') hint = '排序儲存後，本機前台重新整理即可更新。手動文章區塊若未選入已發布文章，整個區塊會隱藏，調整排序也不會顯示。正式站須重新建置發布。';
-  if (collection === 'articles' && ['title', 'slug', 'content', 'excerpt', 'category'].includes(name)) hint = '暫存可留白，發布前必填。' + (name === 'slug' ? '使用中英文字、數字、- 或 _；留白網址儲存後須由管理員補填，沿用現有網址編輯權限。' : '未完成時請保持「暫存文章（草稿）」並按右上角儲存。');
+  if (collection === 'articles' && ['title', 'slug', 'content', 'excerpt', 'category'].includes(name)) hint = '暫存可留白，發布前必填。' + (name === 'slug' ? '使用中英文字、數字、- 或 _；留白網址儲存後須由管理員補填，沿用現有網址編輯權限。' : name === 'content' ? '按「插入圖片」可從檔案庫選取或直接上傳，系統會自動插入圖片 Markdown；請填寫替代文字。未完成時請保持「暫存文章（草稿）」並按右上角儲存。' : '未完成時請保持「暫存文章（草稿）」並按右上角儲存。');
   if (collection === 'articles' && name === 'status') hint = '選「暫存文章（草稿）」後按右上角儲存即可保存未完成文章；不會顯示在前台。行銷可送審，發布仍由審核者操作。';
   if (audit) hint = '由系統自動維護，請勿手動修改。';
   if (!hint && (name.endsWith('_href') || name === 'href')) hint = '使用完整 HTTPS 網址或以 / 開頭的站內路徑，不可含空白；按鈕請同時填寫文字與網址。';

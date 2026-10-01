@@ -27,7 +27,32 @@ gsap-skills/
 !.env.example
 directus/database/
 directus/uploads/
-directus/extensions/
+# 保留可部署的自訂後台欄位；其他 Directus extensions 仍為本機產物。
+directus/extensions/*
+!directus/extensions/directus-extension-carousel-image-preview/
+!directus/extensions/directus-extension-carousel-image-preview/package.json
+!directus/extensions/directus-extension-carousel-image-preview/package-lock.json
+!directus/extensions/directus-extension-carousel-image-preview/src/
+!directus/extensions/directus-extension-carousel-image-preview/src/index.js
+!directus/extensions/directus-extension-carousel-image-preview/src/interface.vue
+!directus/extensions/directus-extension-carousel-image-preview/dist/
+!directus/extensions/directus-extension-carousel-image-preview/dist/index.js
+!directus/extensions/directus-extension-password-preview/
+!directus/extensions/directus-extension-password-preview/package.json
+!directus/extensions/directus-extension-password-preview/package-lock.json
+!directus/extensions/directus-extension-password-preview/src/
+!directus/extensions/directus-extension-password-preview/src/index.js
+!directus/extensions/directus-extension-password-preview/src/interface.vue
+!directus/extensions/directus-extension-password-preview/dist/
+!directus/extensions/directus-extension-password-preview/dist/index.js
+!directus/extensions/directus-extension-markdown-media/
+!directus/extensions/directus-extension-markdown-media/package.json
+!directus/extensions/directus-extension-markdown-media/package-lock.json
+!directus/extensions/directus-extension-markdown-media/src/
+!directus/extensions/directus-extension-markdown-media/src/index.js
+!directus/extensions/directus-extension-markdown-media/src/interface.vue
+!directus/extensions/directus-extension-markdown-media/dist/
+!directus/extensions/directus-extension-markdown-media/dist/index.js
 
 .artifacts/
 backups/

@@ -18,10 +18,11 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port: 4388,
+    allowedHosts: [new URL(env.SITE_URL).hostname],
   },
   experimental: {
     chromeDevtoolsWorkspace: true,
   },
   integrations: [mdx(), cmsDevPages({ liveArticles: env.CONTENT_SOURCE === 'directus' }), cloudflareRedirects(env), releaseMetadata(env)],
-  vite: { server: { strictPort: true }, preview: { strictPort: true }, plugins: [tailwindcss()], define: { 'import.meta.env.APP_ENV': JSON.stringify(env.APP_ENV), 'import.meta.env.SITE_URL': JSON.stringify(env.SITE_URL) } },
+  vite: { server: { strictPort: true, allowedHosts: [new URL(env.SITE_URL).hostname] }, preview: { strictPort: true }, plugins: [tailwindcss()], define: { 'import.meta.env.APP_ENV': JSON.stringify(env.APP_ENV), 'import.meta.env.SITE_URL': JSON.stringify(env.SITE_URL) } },
 });

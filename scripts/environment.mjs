@@ -1,4 +1,5 @@
 import { readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
 import { parse } from "dotenv";
 
 export function publicUrl(value) {
@@ -38,29 +39,30 @@ export function readEnvironment(input = process.env) {
     assertLocalMaintenance(env);
   if (mode !== "local") {
     const targets = JSON.parse(
-      readFileSync(new URL("../config/deployment.json", import.meta.url)),
+      // Astro bundles this module while rendering static routes. Resolve from
+      // the project working directory so the config is available both before
+      // and during that bundled build.
+      readFileSync(resolve(process.cwd(), "config/deployment.json")),
     );
     const target = targets[mode];
     const other = targets[mode === "production" ? "staging" : "production"];
-    if (
-      !target.siteUrl ||
-      !target.directusUrl ||
-      !target.pagesProject ||
-      !other.siteUrl ||
-      !other.directusUrl ||
-      !other.pagesProject
-    )
-      throw new Error("Configure both deployment targets before remote builds");
-    for (const key of ["siteUrl", "directusUrl"]) {
-      if (publicUrl(target[key]) === publicUrl(other[key]))
-        throw new Error(`Staging and production must use separate ${key}`);
-    }
+    if (!target.siteUrl || !target.directusUrl)
+      throw new Error(`Configure the ${mode} deployment target before remote builds`);
+    // A noindex staging-only deployment does not require production URLs.
+    // Production still requires a separately reviewed staging target.
+    if (mode === "production" && (!other.siteUrl || !other.directusUrl || !other.pagesProject))
+      throw new Error("Configure both deployment targets before production builds");
+    if (other.siteUrl && other.directusUrl)
+      for (const key of ["siteUrl", "directusUrl"]) {
+        if (publicUrl(target[key]) === publicUrl(other[key]))
+          throw new Error(`Staging and production must use separate ${key}`);
+      }
     if (
       new URL(target.siteUrl).pathname !== "/" ||
-      new URL(other.siteUrl).pathname !== "/"
+      (other.siteUrl && new URL(other.siteUrl).pathname !== "/")
     )
       throw new Error("SITE_URL must be a site root");
-    if (target.pagesProject === other.pagesProject)
+    if (mode === "production" && target.pagesProject === other.pagesProject)
       throw new Error("Use separate Cloudflare Pages projects");
     if (
       publicUrl(env.SITE_URL) !== publicUrl(target.siteUrl) ||

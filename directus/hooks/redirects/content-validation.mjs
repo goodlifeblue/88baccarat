@@ -6,7 +6,7 @@ const fieldRules = JSON.parse(readFileSync(new URL('./field-rules.json', import.
 export const collections = ['articles', 'article_relations', 'pages', 'hero_slides', 'navigation', 'navbar_settings', 'site_settings', 'redirects', 'homepage_blocks', 'homepage_block_articles'];
 const categories = ['baccarat', 'strategy', 'guide', 'tips', 'comparison', 'faq'];
 const statuses = ['draft', 'review', 'published', 'archived'];
-const jsonFields = ['faq', 'relatedArticles', 'sections', 'cards', 'categories', 'footer_groups', 'floating_buttons'];
+const jsonFields = ['faq', 'relatedArticles', 'sections', 'cards', 'categories', 'footer_groups', 'floating_buttons', 'carousel_slides'];
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export function invalid(field, message) {
   const labels = Object.assign({}, ...Object.values(fieldRules).map(fields => Object.fromEntries(Object.entries(fields).filter(([key, rule]) => rule.label !== key).map(([key, rule]) => [key, rule.label]))));
@@ -44,6 +44,21 @@ function pair(row, label, href) {
 function faq(value, required) {
   for (const [i, item] of list(value, 'faq').entries()) if (required) { text(item.question, `faq 第 ${i + 1} 項問題`); text(item.answer, `faq 第 ${i + 1} 項答案`); }
 }
+function markdownImages(value) {
+  if (typeof value !== 'string') return;
+  const images = /!\[([^\]]*)\]\(([^\s)]+)(?:\s+[^)]*)?\)/g;
+  let image;
+  let index = 0;
+  while ((image = images.exec(value))) {
+    index += 1;
+    if (!image[1].trim()) invalid('content', `文章圖片第 ${index} 張缺少替代文字；請在「插入圖片」視窗填寫圖片說明。`);
+    const source = image[2];
+    if (source.startsWith('/assets/')) {
+      const id = source.slice(8).split(/[/?#]/)[0];
+      if (!uuid.test(id)) invalid('content', `文章圖片第 ${index} 張的檔案網址不完整，請重新從檔案庫插入圖片。`);
+    }
+  }
+}
 export function decodeRow(row) {
   const result = { ...row };
   for (const field of jsonFields) if (typeof result[field] === 'string') {
@@ -69,15 +84,25 @@ export function validateContent(collection, row) {
   if (['articles', 'pages', 'navigation'].includes(collection)) choice(row.status ?? 'draft', statuses, 'status');
   if (collection === 'homepage_blocks') {
     text(row.title, 'title');
-    choice(row.type ?? 'articles', ['articles', 'markdown', 'categories', 'cards', 'cta'], 'type');
+    choice(row.type ?? 'articles', ['articles', 'markdown', 'categories', 'cards', 'cta', 'image_carousel'], 'type');
     choice(row.article_source ?? 'manual', ['manual', 'auto'], 'article_source');
     validateContent('pages', { path: '/', title: row.title, description: '首頁區塊', page_type: 'single_page', status: row.enabled ? 'published' : 'draft', sections: [row] });
+    if (row.type === 'image_carousel') {
+      const slides = list(row.carousel_slides, 'carousel_slides');
+      if (row.enabled && slides.length < 2) invalid('carousel_slides', '啟用圖片輪播前至少新增 2 張圖片；未完成時請先關閉「顯示此區塊」。');
+      if (row.carousel_interval != null && (!Number.isInteger(row.carousel_interval) || row.carousel_interval < 2000 || row.carousel_interval > 30000)) invalid('carousel_interval', '輪播間隔請填 2000～30000 毫秒（2～30 秒）的整數。');
+      for (const [i, slide] of slides.entries()) {
+        const label = `輪播圖片第 ${i + 1} 張`;
+        if (row.enabled) { asset(slide.image, label + '圖片', true); text(slide.alt, label + '替代文字'); text(slide.title, label + '大標'); text(slide.description, label + '說明'); }
+        if (slide.href || slide.label) pair(slide, 'label', 'href');
+      }
+    }
   }
   if (['homepage_blocks', 'homepage_block_articles'].includes(collection) && row.sort != null && (!Number.isInteger(row.sort) || row.sort < 0)) invalid('sort', '排序請使用不小於 0 的整數，或在清單拖曳排序。');
   if (collection === 'articles') {
     if (row.slug != null && row.slug !== '' && !/^[\p{L}\p{N}]+(?:[-_][\p{L}\p{N}]+)*$/u.test(row.slug)) invalid('slug', '文章網址只能使用中英文字、數字、連字號或底線，不可含空白或斜線。');
     if (row.category != null && row.category !== '') choice(row.category, categories, 'category');
-    if (live) { for (const f of ['title', 'slug', 'category', 'excerpt', 'content']) text(row[f], f); if (!row.published_at || !Number.isFinite(Date.parse(row.published_at))) invalid('published_at', '發布文章前請填寫有效的發布日期。'); }
+    if (live) { for (const f of ['title', 'slug', 'category', 'excerpt', 'content']) text(row[f], f); markdownImages(row.content); if (!row.published_at || !Number.isFinite(Date.parse(row.published_at))) invalid('published_at', '發布文章前請填寫有效的發布日期。'); }
     faq(row.faq, live);
     if (row.relatedArticles != null && (!Array.isArray(row.relatedArticles) || row.relatedArticles.some(x => typeof x !== 'string'))) invalid('relatedArticles', '相關文章必須是文章識別碼清單。');
     for (const f of ['image', 'ogImage', 'cover_image']) asset(row[f], f);
@@ -93,7 +118,7 @@ export function validateContent(collection, row) {
       if (section.enabled === false || row.sections_enabled === false) continue;
       const f = `sections 第 ${i + 1} 區塊`;
       for (const name of ['title', 'description', 'content', 'anchor', 'link_label', 'link_href']) if (section[name] != null && typeof section[name] !== 'string') invalid('sections', `${f}：${name} 請填文字。`);
-      choice(section.type, ['markdown', 'articles', 'categories', 'cards', 'cta'], f);
+      choice(section.type, ['markdown', 'articles', 'categories', 'cards', 'cta', 'image_carousel'], f);
       if (section.anchor && (!/^[a-z][a-z0-9-]*$/.test(section.anchor) || anchors.has(section.anchor))) invalid('sections', `${f}：錨點須以小寫英文開頭，且不可重複或使用 faq-title。`);
       if (section.anchor) anchors.add(section.anchor);
       if (section.limit != null && (!Number.isInteger(section.limit) || section.limit < 1 || section.limit > 100)) invalid('sections', `${f}：文章數量須為 1～100 的整數。`);
@@ -139,6 +164,15 @@ const keyOf = value => typeof value === 'object' ? value?.id : value;
 const fileFields = { articles: { cover_image: 'image', image: 'image', ogImage: 'image' }, pages: { hero_image: 'image', hero_video: 'video' }, hero_slides: { image: 'image', poster: 'image', video: 'video' }, site_settings: { og_image: 'image', favicon: 'image', inner_banner: 'image', default_cover: 'image' } };
 export async function validateReferences(db, collection, row, previous = {}) {
   if (collection === 'homepage_blocks' && row.enabled && row.anchor && await db('homepage_blocks').where({ enabled: true, anchor: row.anchor }).whereNot('id', row.id || '').first()) invalid('anchor', '首頁已使用相同錨點，請改用其他英文名稱。');
+  if (collection === 'homepage_blocks' && row.type === 'image_carousel') {
+    for (const [i, slide] of list(row.carousel_slides, 'carousel_slides').entries()) {
+      const id = typeof slide.image === 'string' && (uuid.test(slide.image) ? slide.image : slide.image.match(/\/assets\/([0-9a-f-]{36})/i)?.[1]);
+      if (!id) { if (row.enabled) invalid('carousel_slides', `輪播圖片第 ${i + 1} 張請重新選取網站公開素材圖片。`); continue; }
+      const file = await db('directus_files').where({ id }).first();
+      if (!file?.type?.startsWith('image/')) invalid('carousel_slides', `輪播圖片第 ${i + 1} 張必須選擇存在的圖片檔案。`);
+      if (row.enabled && !file.folder) invalid('carousel_slides', `輪播圖片第 ${i + 1} 張尚未放入「網站公開素材」資料夾，前台會無法讀取。`);
+    }
+  }
   if (collection === 'homepage_block_articles') {
     if (!row.block_id || !await db('homepage_blocks').where({ id: row.block_id }).first()) invalid('block_id', '請先選擇或儲存首頁區塊。');
     let article = typeof row.article_id === 'object' ? row.article_id : null;

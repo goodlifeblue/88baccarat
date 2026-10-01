@@ -54,7 +54,7 @@ export function validatePages(rows) {
     const sections = row.sections_enabled === false ? [] : (row.sections || []).filter(section => section.enabled !== false);
     const anchors = new Set(['faq-title']);
     for (const section of sections) {
-      if (!['markdown', 'articles', 'categories', 'cards', 'cta'].includes(section.type)) throw new Error(`Page ${path}: invalid section type`);
+      if (!['markdown', 'articles', 'categories', 'cards', 'cta', 'image_carousel'].includes(section.type)) throw new Error(`Page ${path}: invalid section type`);
       if (section.anchor && (!/^[a-z][a-z0-9-]*$/.test(section.anchor) || anchors.has(section.anchor))) throw new Error(`Page ${path}: invalid or duplicate anchor`);
       if (section.anchor) anchors.add(section.anchor);
       if (section.link_href) navigationHref(section.link_href);

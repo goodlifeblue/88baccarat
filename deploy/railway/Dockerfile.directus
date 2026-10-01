@@ -1,0 +1,18 @@
+FROM directus/directus:11.17.3
+
+# Keep project-specific Directus extensions inside the image. Runtime content
+# (SQLite database and uploads) belongs on the Railway persistent Volume.
+USER root
+COPY directus/hooks/redirects /directus/extensions/directus-extension-article-redirects
+COPY directus/extensions/directus-extension-carousel-image-preview /directus/extensions/directus-extension-carousel-image-preview
+COPY directus/extensions/directus-extension-password-preview /directus/extensions/directus-extension-password-preview
+COPY directus/extensions/directus-extension-markdown-media /directus/extensions/directus-extension-markdown-media
+COPY deploy/railway/directus-entrypoint.sh /usr/local/bin/railway-directus-entrypoint.sh
+RUN chmod 755 /usr/local/bin/railway-directus-entrypoint.sh
+RUN chown -R node:node /directus/extensions
+
+# The entrypoint needs root once to initialise a newly attached Railway
+# Volume, then Directus' files remain owned by its normal `node` user.
+USER root
+ENTRYPOINT ["/usr/local/bin/railway-directus-entrypoint.sh"]
+CMD ["/bin/sh", "-c", ": && node cli.js bootstrap && pm2-runtime start ecosystem.config.cjs"]

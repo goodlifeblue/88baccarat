@@ -1,9 +1,9 @@
-import { fetchCMS } from './site-content.mjs';
+import { asset, fetchCMS } from './site-content.mjs';
 import { cmsArticleEntry, displayArticleCategories, loadPublishedCMSArticles } from './cms-articles.mjs';
 const order = (a, b) => (a.sort ?? 0) - (b.sort ?? 0) || String(a.id).localeCompare(String(b.id));
 export function prepareHomepageBlocks(rows, automaticArticles, settings) {
   return rows.filter(row => row.enabled === true).sort(order).flatMap(row => {
-    const section = { ...row, anchor: row.anchor || `homepage-${row.id}`, cards: row.cards || [] };
+    const section = { ...row, anchor: row.anchor || `homepage-${row.id}`, cards: row.cards || [], asset };
     if (row.type !== 'articles') return [section];
     const articles = row.article_source === 'manual'
       ? [...(row.articles || [])].sort(order).map(link => link.article_id)

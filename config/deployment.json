@@ -1,4 +1,4 @@
 {
-  "staging": { "siteUrl": "", "directusUrl": "", "pagesProject": "" },
+  "staging": { "siteUrl": "https://frontend-production-fc63b.up.railway.app", "directusUrl": "https://directus-production-352c.up.railway.app", "pagesProject": "" },
   "production": { "siteUrl": "", "directusUrl": "", "pagesProject": "" }
 }

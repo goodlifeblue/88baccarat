@@ -1,0 +1,98 @@
+---
+const { slides = [], autoplay = true, interval = 5000, title } = Astro.props;
+---
+<homepage-image-carousel class="block" role="region" aria-roledescription="輪播" aria-label={title || '圖片輪播'} data-autoplay={String(autoplay)} data-interval={interval} tabindex="0">
+  <div class="carousel-layout">
+    <div class="carousel-main">
+      <div class="carousel-stage">
+        {slides.map((slide: any, index: number) => <figure data-slide hidden={index !== 0} aria-hidden={index !== 0 ? 'true' : 'false'} class="carousel-figure">
+          <img src={slide.image} alt={slide.alt} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
+          <figcaption class="carousel-caption">
+        <div class="max-w-3xl">
+          <h3 class="text-xl font-bold text-white sm:text-3xl">{slide.title}</h3>
+          <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-200 sm:text-base">{slide.description}</p>
+          {slide.href && <a class="mt-4 inline-flex rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500" href={slide.href}>{slide.label || '了解更多'}</a>}
+        </div>
+          </figcaption>
+        </figure>)}
+        <div class="carousel-top-controls">
+          <button data-pause type="button" class="carousel-button" aria-label="暫停輪播">暫停</button>
+          <span class="carousel-status" data-status>1 / {slides.length}</span>
+        </div>
+      </div>
+      {slides.length > 1 && <div class="carousel-navigation"><button data-prev type="button" class="carousel-button" aria-label="上一張">←</button><div class="carousel-dots">{slides.map((_: any, index: number) => <button data-dot={index} type="button" class="carousel-dot" aria-label={`切換至第 ${index + 1} 張`} aria-pressed={index === 0 ? 'true' : 'false'} />)}</div><button data-next type="button" class="carousel-button" aria-label="下一張">→</button></div>}
+    </div>
+    {slides.length > 1 && <aside class="carousel-thumbnails" aria-label="輪播縮圖清單">{slides.map((slide: any, index: number) => <button data-thumb={index} type="button" class="carousel-thumbnail" aria-label={`切換至第 ${index + 1} 張：${slide.title}`} aria-pressed={index === 0 ? 'true' : 'false'}><img src={slide.image} alt="" loading="lazy" /><span>{slide.title}</span></button>)}</aside>}
+  </div>
+</homepage-image-carousel>
+<style>
+  [hidden] { display: none !important; }
+  .carousel-layout { display: grid; gap: 12px; }
+  .carousel-main { min-width: 0; }
+  .carousel-stage { position: relative; overflow: hidden; border: 1px solid rgb(255 255 255 / .1); border-radius: 1rem; background: #020617; box-shadow: 0 25px 50px rgb(0 0 0 / .3); }
+  .carousel-figure { position: relative; aspect-ratio: 4 / 3; margin: 0; overflow: hidden; }
+  .carousel-figure > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .carousel-caption { position: absolute; right: 0; bottom: 0; left: 0; padding: 5.5rem 1.25rem 1.5rem; background: linear-gradient(to top, rgb(0 0 0 / .96), rgb(0 0 0 / .74) 58%, transparent); }
+  .carousel-top-controls { position: absolute; top: .75rem; right: .75rem; display: flex; gap: .5rem; align-items: center; }
+  .carousel-status { border-radius: 999px; background: rgb(0 0 0 / .72); padding: .55rem .75rem; color: #fff; font-size: .75rem; font-weight: 700; }
+  .carousel-navigation { display: flex; min-height: 3.75rem; align-items: center; justify-content: space-between; gap: 1rem; padding: .6rem .15rem 0; }
+  .carousel-dots { display: flex; flex: 1; justify-content: center; gap: .5rem; }
+  .carousel-dot { width: .65rem; height: .65rem; border: 0; border-radius: 999px; background: rgb(255 255 255 / .45); cursor: pointer; }
+  .carousel-dot[aria-pressed="true"] { background: #fff; box-shadow: 0 0 0 2px rgb(255 255 255 / .2); }
+  .carousel-thumbnails { display: flex; gap: .65rem; overflow-x: auto; padding: .1rem .1rem .5rem; }
+  .carousel-thumbnail { flex: 0 0 7.5rem; overflow: hidden; padding: 0; border: 2px solid transparent; border-radius: .65rem; background: #0f172a; color: #e2e8f0; cursor: pointer; text-align: left; }
+  .carousel-thumbnail img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .carousel-thumbnail span { display: block; overflow: hidden; padding: .35rem .45rem .45rem; font-size: .75rem; text-overflow: ellipsis; white-space: nowrap; }
+  .carousel-thumbnail[aria-pressed="true"] { border-color: #fff; box-shadow: 0 0 0 2px #dc2626; }
+  .carousel-thumbnail:focus-visible, .carousel-dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .carousel-button { min-height: 2.5rem; min-width: 2.5rem; border-radius: .5rem; background: #000b; padding: .45rem .7rem; color: white; font-size: .875rem; font-weight: 700; }
+  .carousel-button:hover { background: #b91c1c; }
+  .carousel-button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+  @media (min-width: 640px) { .carousel-figure { aspect-ratio: 16 / 9; }.carousel-caption { padding: 7rem 2rem 1.75rem; }.carousel-top-controls { top: 1.25rem; right: 1.25rem; } }
+  @media (min-width: 1024px) { .carousel-layout { grid-template-columns: minmax(0, 1fr) 11.25rem; align-items: start; }.carousel-thumbnails { display: grid; max-height: 32rem; overflow-y: auto; overflow-x: hidden; padding: 0 .15rem 0 0; }.carousel-thumbnail { width: 100%; }.carousel-navigation { padding-right: 0; } }
+</style>
+<script>
+  class HomepageImageCarousel extends HTMLElement {
+    cleanup?: () => void;
+    connectedCallback() {
+      this.cleanup?.();
+      const slides = [...this.querySelectorAll<HTMLElement>('[data-slide]')];
+      const dots = [...this.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+      const thumbnails = [...this.querySelectorAll<HTMLButtonElement>('[data-thumb]')];
+      const pause = this.querySelector<HTMLButtonElement>('[data-pause]');
+      const status = this.querySelector<HTMLElement>('[data-status]');
+      const motion = matchMedia('(prefers-reduced-motion: reduce)');
+      const abort = new AbortController();
+      let index = 0, timer: ReturnType<typeof setTimeout> | undefined;
+      let paused = this.dataset.autoplay !== 'true' || motion.matches, hovered = false, focused = false;
+      const update = () => {
+        clearTimeout(timer);
+        const stopped = paused || hovered || focused || document.hidden;
+        slides.forEach((slide, i) => { slide.hidden = i !== index; slide.setAttribute('aria-hidden', String(i !== index)); });
+        dots.forEach((dot, i) => dot.setAttribute('aria-pressed', String(i === index)));
+        thumbnails.forEach((thumbnail, i) => thumbnail.setAttribute('aria-pressed', String(i === index)));
+        if (status) status.textContent = `${index + 1} / ${slides.length}`;
+        if (pause) { pause.textContent = paused ? '播放' : '暫停'; pause.setAttribute('aria-label', paused ? '播放輪播' : '暫停輪播'); }
+        if (!stopped && slides.length > 1) timer = setTimeout(() => { index = (index + 1) % slides.length; update(); }, Number(this.dataset.interval) || 5000);
+      };
+      const move = (step: number) => { index = (index + step + slides.length) % slides.length; update(); };
+      const options = { signal: abort.signal };
+      this.querySelector('[data-prev]')?.addEventListener('click', () => move(-1), options);
+      this.querySelector('[data-next]')?.addEventListener('click', () => move(1), options);
+      dots.forEach((dot, i) => dot.addEventListener('click', () => { index = i; update(); }, options));
+      thumbnails.forEach((thumbnail, i) => thumbnail.addEventListener('click', () => { index = i; update(); }, options));
+      pause?.addEventListener('click', () => { paused = !paused; update(); }, options);
+      this.addEventListener('mouseenter', () => { hovered = true; update(); }, options);
+      this.addEventListener('mouseleave', () => { hovered = false; update(); }, options);
+      this.addEventListener('focusin', () => { focused = true; update(); }, options);
+      this.addEventListener('focusout', (event) => { if (!this.contains(event.relatedTarget as Node)) { focused = false; update(); } }, options);
+      this.addEventListener('keydown', event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); move(event.key === 'ArrowLeft' ? -1 : 1); } }, options);
+      document.addEventListener('visibilitychange', update, options);
+      motion.addEventListener('change', () => { if (motion.matches) paused = true; update(); }, options);
+      update();
+      this.cleanup = () => { abort.abort(); clearTimeout(timer); };
+    }
+    disconnectedCallback() { this.cleanup?.(); }
+  }
+  if (!customElements.get('homepage-image-carousel')) customElements.define('homepage-image-carousel', HomepageImageCarousel);
+</script>
